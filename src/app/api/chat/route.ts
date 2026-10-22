@@ -87,7 +87,9 @@ export async function POST(req: Request) {
           MODELO,
         )) {
           texto += trozo;
-          enviar({ trozo });
+          // El verificador no muestra el texto en vivo: así la ruta no devuelve
+          // la salida en bruto del modelo, solo la respuesta ya resuelta.
+          if (modo !== "verificar") enviar({ trozo });
         }
         const fin = validar(leerJson(texto), modo, ultima, t);
         if (fin.verificacion)

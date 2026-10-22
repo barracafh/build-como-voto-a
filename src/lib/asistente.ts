@@ -13,9 +13,12 @@ import {
 import type { Idioma } from "@/i18n/idiomas";
 import { marcar, traductor, type T } from "@/i18n/traducir";
 import {
+  clasificarLocal,
+  fichas,
   fueraDeAlcance,
   leerClasificacion,
   resolver,
+  UMBRAL_LOCAL,
   sistemaVerificador,
   verificarLocal,
   type Verificacion,
@@ -185,4 +188,40 @@ export function validar(
   // Sin una fuente que exista en la base, no hay respuesta.
   if (!respuesta || fuentes.length === 0) return noConfirmable(t);
   return { tipo: "pregunta", respuesta, pasos, fuentes };
+}
+
+// En el chat de la portada y en el del voto por correo: si la pregunta encaja
+// claramente con una ficha del verificador (la misma comparación exigente que
+// usa cuando no hay modelo), la respuesta pasa a ser la de la ficha, con su
+// veredicto y su cita literal. Así lo que se muestra no lo redacta el modelo.
+// Como aquí se pregunta en vez de afirmar, se enseña el enunciado de la ficha,
+// no la pregunta. Si no encaja con ninguna, se queda la respuesta del asistente.
+export function conFicha(
+  r: Respuesta,
+  texto: string,
+  t: T = traductor({}),
+): Respuesta {
+  if (r.tipo === "fuera_de_alcance") return r;
+  const c = clasificarLocal(texto);
+  if (c.tipo !== "afirmacion" || !c.ficha) return r;
+  const ficha = fichas.find((f) => f.id === c.ficha);
+  const v = resolver(c, texto, UMBRAL_LOCAL, t);
+  if (
+    !ficha ||
+    !v.verificacion ||
+    v.verificacion.resultado === "NO VERIFICABLE"
+  )
+    return r;
+  const vars = { articulo: ficha.articulo, afirmacion: ficha.afirmacion };
+  return {
+    ...v,
+    respuesta:
+      v.verificacion.resultado === "COINCIDE"
+        ? t("La fuente oficial lo dice así ({articulo}): «{afirmacion}».", vars)
+        : t(
+            "La fuente oficial ({articulo}) no dice eso: «{afirmacion}» no coincide con ella.",
+            vars,
+          ),
+    verificacion: { ...v.verificacion, afirmacion: ficha.afirmacion },
+  };
 }

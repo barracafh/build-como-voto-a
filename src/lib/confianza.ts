@@ -56,7 +56,9 @@ export function confianza(r: Respuesta): Confianza | null {
     return {
       nivel: conCita ? "alta" : "baja",
       motivo: conCita
-        ? marcar("El veredicto sale de una ficha con cita literal de la fuente oficial.")
+        ? marcar(
+            "El veredicto sale de una ficha con cita literal de la fuente oficial.",
+          )
         : marcar("Ninguna ficha oficial lo confirma ni lo contradice."),
       comprobaciones: [
         {
@@ -87,7 +89,10 @@ export function confianza(r: Respuesta): Confianza | null {
     ),
     comprobaciones: [
       fuentes(r.fuentes.length),
-      { texto: marcar("Sin cita literal: el texto lo redacta el asistente"), ok: false },
+      {
+        texto: marcar("Sin cita literal: el texto lo redacta el asistente"),
+        ok: false,
+      },
     ],
   };
 }

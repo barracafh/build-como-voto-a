@@ -380,6 +380,8 @@ const diccionario: Diccionario = {
   "Voto en blanco, voto nulo y abstención": "Voto en branco, voto nulo e abstención",
   "Voto nulo": "Voto nulo",
   "Votos válidos": "Votos válidos",
+  "La fuente oficial lo dice así ({articulo}): «{afirmacion}».": "A fonte oficial dino así ({articulo}): «{afirmacion}».",
+  "La fuente oficial ({articulo}) no dice eso: «{afirmacion}» no coincide con ella.": "A fonte oficial ({articulo}) non di iso: «{afirmacion}» non coincide con ela.",
 };
 
 export default diccionario;

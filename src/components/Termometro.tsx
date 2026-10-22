@@ -19,7 +19,10 @@ export function Termometro({ respuesta }: { respuesta: Respuesta }) {
       className="rounded-xl px-4 py-3 text-sm ring-1 ring-foreground/10"
     >
       <p className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <Thermometer aria-hidden="true" className="size-4 shrink-0 text-brand" />
+        <Thermometer
+          aria-hidden="true"
+          className="size-4 shrink-0 text-brand"
+        />
         <span className="font-medium">
           {t("Grado de confianza: {nivel}", { nivel: t(etiqueta) })}
         </span>

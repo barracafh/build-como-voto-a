@@ -3,7 +3,12 @@ import type { Respuesta } from "./asistente";
 import { confianza } from "./confianza";
 
 const fuente = { nombre: "BOE", url: "https://www.boe.es/" };
-const base: Respuesta = { tipo: "pregunta", respuesta: "…", pasos: [], fuentes: [fuente] };
+const base: Respuesta = {
+  tipo: "pregunta",
+  respuesta: "…",
+  pasos: [],
+  fuentes: [fuente],
+};
 
 describe("confianza", () => {
   test("fuera de alcance: sin termómetro", () => {
@@ -26,7 +31,13 @@ describe("confianza", () => {
       tipo: "afirmacion",
       verificacion: { afirmacion: "x", resultado: "NO COINCIDE", cita: "«…»" },
       publicadas: [
-        { afirmacion: "x", verificador: "V", calificacion: "Falso", titulo: "x", url: "https://v.es" },
+        {
+          afirmacion: "x",
+          verificador: "V",
+          calificacion: "Falso",
+          titulo: "x",
+          url: "https://v.es",
+        },
       ],
     })!;
     expect(c.nivel).toBe("alta");

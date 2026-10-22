@@ -461,6 +461,8 @@ const diccionario: Diccionario = {
   "Voto en blanco, voto nulo y abstención": "Boto zuria, boto baliogabea eta abstentzioa",
   "Voto nulo": "Boto baliogabea",
   "Votos válidos": "Baliozko botoak",
+  "La fuente oficial lo dice así ({articulo}): «{afirmacion}».": "Iturri ofizialak honela dio ({articulo}): «{afirmacion}».",
+  "La fuente oficial ({articulo}) no dice eso: «{afirmacion}» no coincide con ella.": "Iturri ofizialak ({articulo}) ez du hori esaten: «{afirmacion}» ez dator bat harekin.",
 };
 
 export default diccionario;

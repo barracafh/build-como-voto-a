@@ -380,6 +380,8 @@ const diccionario: Diccionario = {
   "Voto en blanco, voto nulo y abstención": "Vot en blanc, vot nul i abstenció",
   "Voto nulo": "Vot nul",
   "Votos válidos": "Vots vàlids",
+  "La fuente oficial lo dice así ({articulo}): «{afirmacion}».": "La font oficial ho diu així ({articulo}): «{afirmacion}».",
+  "La fuente oficial ({articulo}) no dice eso: «{afirmacion}» no coincide con ella.": "La font oficial ({articulo}) no diu això: «{afirmacion}» no hi coincideix.",
 };
 
 export default diccionario;

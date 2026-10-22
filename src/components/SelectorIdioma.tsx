@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { ChevronDown, Languages } from "lucide-react";
 import { useIdioma } from "@/i18n/cliente";
 import { COOKIE, IDIOMAS, NOMBRES, esIdioma } from "@/i18n/idiomas";
 
@@ -10,7 +11,7 @@ export function SelectorIdioma() {
   const router = useRouter();
 
   return (
-    <label className="inline-flex items-center gap-2 text-sm">
+    <label className="relative inline-flex items-center text-sm">
       <span className="sr-only">{t("Idioma")}</span>
       <select
         value={idioma}
@@ -20,7 +21,7 @@ export function SelectorIdioma() {
           document.cookie = `${COOKIE}=${nuevo}; path=/; max-age=31536000; samesite=lax`;
           router.refresh();
         }}
-        className="h-9 rounded-lg border border-input bg-background px-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="h-9 cursor-pointer appearance-none rounded-full border border-input bg-background pr-8 pl-3 text-sm sm:pl-8 font-medium outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         {IDIOMAS.map((i) => (
           <option key={i} value={i} lang={i}>
@@ -28,6 +29,15 @@ export function SelectorIdioma() {
           </option>
         ))}
       </select>
+      {/* Iconos encima del select nativo, que sigue siendo el control. */}
+      <Languages
+        aria-hidden="true"
+        className="pointer-events-none absolute left-3 size-4 text-(--text-secondary) max-sm:hidden"
+      />
+      <ChevronDown
+        aria-hidden="true"
+        className="pointer-events-none absolute right-3 size-4 text-(--text-secondary)"
+      />
     </label>
   );
 }

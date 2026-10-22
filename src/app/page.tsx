@@ -82,7 +82,7 @@ export default async function Home() {
           !terminada && (
             <Card className="gap-0.5 px-4 py-3 text-sm ring-0 shadow-(--shadow-overlay)">
               <p className="flex items-center gap-2.5 font-heading text-xl leading-[1.1] opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-150 motion-safe:duration-500 md:text-2xl">
-                <span className="size-3 shrink-0 rounded-full bg-brand-yellow ring-4 ring-brand-yellow/30 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]" />
+                <Atardecer logo className="size-6 shrink-0 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]" />
                 {fecha(votacion.inicio)}
               </p>
               <ul className="mt-1 grid gap-0.5 font-mono text-xs opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-300 motion-safe:duration-500">

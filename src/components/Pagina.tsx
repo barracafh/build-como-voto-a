@@ -33,9 +33,9 @@ export async function Pagina({ children }: { children: ReactNode }) {
           <Atardecer logo className="size-9 shrink-0" />
           {ficha.nombre}
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <SelectorIdioma />
-          <Badge variant="outline">
+          <Badge variant="outline" className="h-9 rounded-full px-3 text-sm">
             {ficha.datos === "reales" ? t("Datos públicos") : t("Datos simulados")}
           </Badge>
         </div>

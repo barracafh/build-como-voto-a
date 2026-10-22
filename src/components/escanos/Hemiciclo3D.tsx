@@ -1,71 +1,148 @@
 "use client";
 
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { Color, type InstancedMesh, Object3D, type PerspectiveCamera, Vector3 } from "three";
-import { ESCANOS } from "@/datos/hemiciclo";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  Color,
+  type InstancedMesh,
+  NeutralToneMapping,
+  Object3D,
+  type PerspectiveCamera,
+  PMREMGenerator,
+  Vector2,
+  Vector3,
+} from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { GTAOPass } from "three/examples/jsm/postprocessing/GTAOPass.js";
+import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { VignetteShader } from "three/examples/jsm/shaders/VignetteShader.js";
+import { ruta } from "@/config/sitio";
+import { CAMARA_3D, ESCANOS_3D, MODELO_HEMICICLO, RADIO_BOLITA } from "@/datos/hemiciclo-3d";
+import { CargandoSala } from "./CargandoSala";
 
-// Same 350 seats as Hemiciclo.tsx, in 3D: SVG (cx, cy) maps to (x, z) around
-// the sun at (643, 610), and each seat rises with its distance to the sun.
-const SOL_X = 643;
-const SOL_Y = 610;
-const ESCALA = 1 / 100;
-const SUBIDA = 1; // height gained per world unit of radius
-const RADIO_MIN = 2;
-
-const POSICIONES = ESCANOS.map(([cx, cy]) => {
-  const x = (cx - SOL_X) * ESCALA;
-  const z = (cy - SOL_Y) * ESCALA;
-  return new Vector3(x, (Math.hypot(x, z) - RADIO_MIN) * SUBIDA, z);
-});
-const CENTRO = POSICIONES.reduce((s, p) => s.add(p), new Vector3()).divideScalar(
-  POSICIONES.length,
-);
-// Static camera on the sun's axis, pulled back and up, looking at the congress centre.
-// Its horizontal field of view is fixed so the whole congress fits any canvas shape.
-const CAMARA: [number, number, number] = [0, 1.6, 4.2];
-const TAN_HORIZONTAL = Math.tan(Math.PI / 6) * (12 / 5) * 0.85;
+// The chamber from src/hemiciclo.blend, seen from the .blend camera behind the presidency.
+// One instanced ball per seat, in the same left-to-right order as ESCANOS, so [desde, hasta)
+// is still the contiguous block of the selected community.
+const POSICION = new Vector3(...CAMARA_3D.posicion);
+const OBJETIVO = new Vector3(...CAMARA_3D.objetivo);
+// The balls come in after the chamber, sweeping left to right.
+const ENTRADA_PASO = 0.003;
+const ENTRADA_DURACION = 0.4;
+const ENTRADA_FIN = ESCANOS_3D.length * ENTRADA_PASO + ENTRADA_DURACION;
+// ponytail: assumes the .blend camera renders 16:9; narrower canvases widen the vertical
+// field of view so the whole hemicycle still fits.
+const TAN_HORIZONTAL = Math.tan((CAMARA_3D.fovVertical * Math.PI) / 360) * (16 / 9);
 
 function resolver(token: string) {
   return new Color(getComputedStyle(document.documentElement).getPropertyValue(token).trim());
 }
 
-function Escanos({ desde, hasta }: { desde: number; hasta: number }) {
-  const malla = useRef<InstancedMesh>(null);
-  const reducido = useMemo(() => matchMedia("(prefers-reduced-motion: reduce)").matches, []);
-  const gris = useMemo(() => resolver("--disabled"), []); // light, so the reds stand out on dark
-  const rojo = useMemo(() => resolver("--brand"), []);
-  const actuales = useMemo(() => ESCANOS.map(() => gris.clone()), [gris]);
-  const destinos = ESCANOS.map((_, i) => (i >= desde && i < hasta ? rojo : gris));
+// onProgreso only fires on the first fetch; a cached model renders straight away and calls onCargada.
+function Sala({
+  onProgreso,
+  onCargada,
+}: {
+  onProgreso: (fraccion: number) => void;
+  onCargada: () => void;
+}) {
+  const { scene } = useLoader(GLTFLoader, ruta(MODELO_HEMICICLO), undefined, (e) => {
+    if (e.total) onProgreso(e.loaded / e.total);
+  });
+  useEffect(onCargada, [onCargada]);
+  return <primitive object={scene} />;
+}
+
+// Camera pose for a selection: the .blend camera with nothing selected; otherwise above the
+// chamber floor, on the line from the hemicycle centre (the origin; seat rows go from radius
+// 6 to 16) towards the centroid of [desde, hasta). Staying inside radius 5 keeps the camera
+// off the walls, wherever the community sits; larger communities pull it back to the centre.
+function encuadre(desde: number, hasta: number) {
+  if (hasta <= desde) return { posicion: POSICION, objetivo: OBJETIVO };
+  const objetivo = new Vector3();
+  for (let i = desde; i < hasta; i++) objetivo.add(new Vector3(...ESCANOS_3D[i]));
+  objetivo.divideScalar(hasta - desde);
+  const radio = Math.hypot(objetivo.x, objetivo.z);
+  const alejado = Math.min(5, Math.max(0.5, radio - 5 - Math.sqrt(hasta - desde)));
+  const posicion = new Vector3(objetivo.x / radio, 0, objetivo.z / radio).multiplyScalar(alejado);
+  posicion.y = objetivo.y + 3;
+  return { posicion, objetivo };
+}
+
+function Camara({ desde, hasta }: { desde: number; hasta: number }) {
   const invalidate = useThree((s) => s.invalidate);
   const camara = useThree((s) => s.camera) as PerspectiveCamera;
   const aspecto = useThree((s) => s.size.width / s.size.height);
+  const reducido = useMemo(() => matchMedia("(prefers-reduced-motion: reduce)").matches, []);
+  const mirando = useMemo(() => OBJETIVO.clone(), []);
+  const destino = useMemo(() => encuadre(desde, hasta), [desde, hasta]);
 
   useLayoutEffect(() => {
-    camara.fov = Math.min(100, (2 * Math.atan(TAN_HORIZONTAL / aspecto) * 180) / Math.PI);
-    camara.lookAt(CENTRO);
+    const ajuste = (2 * Math.atan(TAN_HORIZONTAL / aspecto) * 180) / Math.PI;
+    camara.fov = Math.min(100, Math.max(CAMARA_3D.fovVertical, ajuste));
     camara.updateProjectionMatrix();
     invalidate();
   }, [camara, aspecto, invalidate]);
 
+  useEffect(() => invalidate(), [destino, invalidate]);
+
+  useFrame(({ invalidate }, dt) => {
+    const k = reducido ? 1 : 1 - Math.exp(-dt * 3);
+    camara.position.lerp(destino.posicion, k);
+    mirando.lerp(destino.objetivo, k);
+    camara.lookAt(mirando);
+    if (camara.position.distanceTo(destino.posicion) + mirando.distanceTo(destino.objetivo) > 1e-3)
+      invalidate();
+  });
+
+  return null;
+}
+
+function Escanos({ desde, hasta }: { desde: number; hasta: number }) {
+  const malla = useRef<InstancedMesh>(null);
+  const reducido = useMemo(() => matchMedia("(prefers-reduced-motion: reduce)").matches, []);
+  const gris = useMemo(() => resolver("--disabled"), []);
+  const rojo = useMemo(() => resolver("--brand"), []);
+  const actuales = useMemo(() => ESCANOS_3D.map(() => gris.clone()), [gris]);
+  const destinos = ESCANOS_3D.map((_, i) => (i >= desde && i < hasta ? rojo : gris));
+  const invalidate = useThree((s) => s.invalidate);
+
   // frameloop="demand" only draws on request: start the transition on every new selection.
   useEffect(() => invalidate(), [desde, hasta, invalidate]);
 
-  useLayoutEffect(() => {
-    const m = malla.current!;
+  const reloj = useRef(reducido ? Infinity : 0);
+
+  // Seat i grows from 0 to full size, starting ENTRADA_PASO seconds after seat i - 1.
+  const colocar = (m: InstancedMesh) => {
     const o = new Object3D();
-    POSICIONES.forEach((p, i) => {
-      o.position.copy(p);
+    ESCANOS_3D.forEach((p, i) => {
+      const t = Math.min(1, Math.max(0, (reloj.current - i * ENTRADA_PASO) / ENTRADA_DURACION));
+      o.position.set(...p);
+      o.scale.setScalar(1 - (1 - t) ** 3);
       o.updateMatrix();
       m.setMatrixAt(i, o.matrix);
-      m.setColorAt(i, actuales[i]);
     });
     m.instanceMatrix.needsUpdate = true;
+  };
+
+  useLayoutEffect(() => {
+    const m = malla.current!;
+    colocar(m);
+    actuales.forEach((c, i) => m.setColorAt(i, c));
   }, [actuales]);
 
   useFrame(({ invalidate }, dt) => {
     const k = reducido ? 1 : 1 - Math.exp(-dt * 5);
-    let moviendo = false;
+    let moviendo = reloj.current < ENTRADA_FIN;
+    if (moviendo) {
+      reloj.current += Math.min(dt, 1 / 30); // demand mode: dt after idle can be huge
+      colocar(malla.current!);
+    }
     actuales.forEach((c, i) => {
       c.lerp(destinos[i], k);
       malla.current!.setColorAt(i, c);
@@ -76,11 +153,65 @@ function Escanos({ desde, hasta }: { desde: number; hasta: number }) {
   });
 
   return (
-    <instancedMesh ref={malla} args={[undefined, undefined, ESCANOS.length]}>
-      <sphereGeometry args={[0.1, 16, 12]} />
-      <meshLambertMaterial />
+    <instancedMesh ref={malla} args={[undefined, undefined, ESCANOS_3D.length]}>
+      <sphereGeometry args={[RADIO_BOLITA, 16, 12]} />
+      <meshStandardMaterial roughness={0.35} />
     </instancedMesh>
   );
+}
+
+// Image-based lighting: the .glb ships clearcoat and specular materials that look flat
+// without something to reflect. RoomEnvironment is a procedural room, built once.
+function Ambiente() {
+  const gl = useThree((s) => s.gl);
+  const scene = useThree((s) => s.scene);
+  useLayoutEffect(() => {
+    gl.toneMapping = NeutralToneMapping; // ACES shifts the brand red towards orange
+    gl.toneMappingExposure = 0.9;
+    const pmrem = new PMREMGenerator(gl);
+    const entorno = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = entorno;
+    scene.environmentIntensity = 0.4;
+    return () => {
+      scene.environment = null;
+      entorno.dispose();
+      pmrem.dispose();
+    };
+  }, [gl, scene]);
+  return null;
+}
+
+// RenderPass -> ambient occlusion (desktop only, it is the expensive one) -> subtle bloom
+// -> tone mapping + sRGB -> vignette -> SMAA (the composer bypasses the canvas MSAA).
+// Priority 1 takes over rendering from R3F; with frameloop="demand" it only runs on change.
+function PostProcesado() {
+  const { gl, scene, camera, size, viewport } = useThree();
+  const composer = useMemo(() => {
+    const c = new EffectComposer(gl);
+    c.addPass(new RenderPass(scene, camera));
+    if (matchMedia("(min-width: 768px) and (pointer: fine)").matches) {
+      const ao = new GTAOPass(scene, camera);
+      ao.blendIntensity = 0.8;
+      c.addPass(ao);
+    }
+    c.addPass(new UnrealBloomPass(new Vector2(256, 256), 0.15, 0.3, 1.1));
+    c.addPass(new OutputPass());
+    const vineta = new ShaderPass(VignetteShader);
+    vineta.uniforms.offset.value = 0.9;
+    vineta.uniforms.darkness.value = 1.1;
+    c.addPass(vineta);
+    c.addPass(new SMAAPass());
+    return c;
+  }, [gl, scene, camera]);
+
+  useEffect(() => () => composer.dispose(), [composer]);
+  useLayoutEffect(() => {
+    composer.setPixelRatio(viewport.dpr);
+    composer.setSize(size.width, size.height);
+  }, [composer, size, viewport.dpr]);
+
+  useFrame((_, dt) => composer.render(dt), 1);
+  return null;
 }
 
 export default function Hemiciclo3D({
@@ -92,13 +223,29 @@ export default function Hemiciclo3D({
   hasta: number;
   etiqueta: string;
 }) {
+  const [progreso, setProgreso] = useState<number>();
+  const [cargada, setCargada] = useState(false);
   return (
-    <div role="img" aria-label={etiqueta} className="h-full w-full">
-      <Canvas frameloop="demand" camera={{ position: CAMARA }} dpr={[1, 2]}>
-        <ambientLight intensity={2} />
-        <directionalLight position={[0, 6, 4]} intensity={1.5} />
-        <Escanos desde={desde} hasta={hasta} />
-      </Canvas>
+    <div className="relative h-full w-full">
+      <div role="img" aria-label={etiqueta} className="h-full w-full">
+        <Canvas
+          frameloop="demand"
+          camera={{ position: [...CAMARA_3D.posicion], near: 0.1, far: 200 }}
+          dpr={[1, 2]}
+        >
+          <hemisphereLight args={["#ffffff", "#444444", 0.6]} />
+          <directionalLight position={[0, 12, 8]} intensity={1.5} />
+          <Ambiente />
+          <PostProcesado />
+          <Camara desde={desde} hasta={hasta} />
+          <Suspense fallback={null}>
+            <Sala onProgreso={setProgreso} onCargada={() => setCargada(true)} />
+          </Suspense>
+          {cargada && <Escanos desde={desde} hasta={hasta} />}
+        </Canvas>
+      </div>
+      {/* After the canvas so it paints on top; outside role="img", which hides its children from assistive tech. */}
+      {!cargada && <CargandoSala progreso={progreso} />}
     </div>
   );
 }

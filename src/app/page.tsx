@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { BotonChat } from "@/components/BotonChat";
 import { Chat } from "@/components/Chat";
 import { Contador } from "@/components/Contador";
+import { Encabezado } from "@/components/Encabezado";
 import { CuentaAtras } from "@/components/CuentaAtras";
 import { Flotante } from "@/components/Flotante";
 import { Fuentes } from "@/components/Fuentes";
@@ -240,25 +241,5 @@ export default function Home() {
         />
       </div>
     </Pagina>
-  );
-}
-
-// Número de sección en rojo (el acento de Sol) y titular en serif.
-function Encabezado({
-  numero,
-  id,
-  titulo,
-}: {
-  numero: string;
-  id: string;
-  titulo: string;
-}) {
-  return (
-    <>
-      <p className="font-mono text-xs tracking-[0.08em] text-brand uppercase">{numero}</p>
-      <h2 id={id} className="mt-3 text-[clamp(32px,5vw,48px)] leading-[1.06] tracking-[-0.02em]">
-        {titulo}
-      </h2>
-    </>
   );
 }

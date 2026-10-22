@@ -47,24 +47,41 @@ export function Pagina({ children }: { children: ReactNode }) {
   );
 }
 
+// La cabecera de las páginas interiores: una versión compacta del héroe de la
+// portada, con el atardecer de Sol. Es la pieza con el sol de la vista.
+// `children` va dentro, al pie, para el dato que más importa (en fichas
+// blancas, como la cuenta atrás de la portada).
 export function Titular({
   etiqueta,
   titulo,
   entradilla,
+  children,
 }: {
   etiqueta: string;
   titulo: string;
   entradilla: ReactNode;
+  children?: ReactNode;
 }) {
   return (
-    <>
-      <p className="font-mono text-xs tracking-[0.06em] text-(--text-secondary) uppercase">
-        {etiqueta}
-      </p>
-      <h1 className="mt-4 text-[clamp(36px,4.5vw,60px)] leading-[1.1] tracking-[-0.02em]">
+    <section
+      aria-labelledby="titular"
+      className="relative overflow-hidden rounded-[28px] px-6 pt-6 pb-24 text-white [background:var(--brand-gradient)] md:-mx-12 md:px-12 md:pt-8 md:pb-28"
+    >
+      <Link
+        href="/"
+        className="inline-flex min-h-11 items-center gap-2 rounded-sm font-mono text-xs tracking-[0.08em] uppercase underline-offset-4 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-white/70"
+      >
+        <span aria-hidden="true">←</span> Inicio
+      </Link>
+      <p className="mt-6 font-mono text-xs tracking-[0.08em] uppercase">{etiqueta}</p>
+      <h1
+        id="titular"
+        className="mt-3 max-w-[18ch] text-[clamp(34px,5vw,56px)] leading-[1.06] tracking-[-0.02em]"
+      >
         {titulo}
       </h1>
-      <p className="mt-6 text-lg text-(--text-secondary)">{entradilla}</p>
-    </>
+      <p className="mt-5 max-w-[56ch] text-lg">{entradilla}</p>
+      {children && <div className="mt-8">{children}</div>}
+    </section>
   );
 }

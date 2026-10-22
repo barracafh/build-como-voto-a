@@ -9,6 +9,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { Modo, Respuesta } from "@/lib/asistente";
+import { Atardecer } from "@/components/Atardecer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -356,12 +357,21 @@ export function Chat({ modo }: { modo: Modo }) {
                     ? t("Comprobar")
                     : t("Preguntar")
               }
-              className="size-11 shrink-0 rounded-full"
+              // Al pasar por encima (o con el foco) sale el sol de cartel desde
+              // abajo en vez del resplandor de sunset, y la flecha se oscurece.
+              className="group/enviar size-11 shrink-0 rounded-full before:hidden"
             >
+              <Atardecer
+                logo
+                className="absolute inset-0 translate-y-full transition-transform duration-500 ease-(--ease-brand) group-hover/enviar:translate-y-0 group-focus-visible/enviar:translate-y-0 motion-reduce:transition-none"
+              />
               {cargando ? (
-                <LoaderCircle aria-hidden="true" className="size-5 motion-safe:animate-spin" />
+                <LoaderCircle aria-hidden="true" className="relative size-5 motion-safe:animate-spin" />
               ) : (
-                <ArrowUp aria-hidden="true" className="size-5" />
+                <ArrowUp
+                  aria-hidden="true"
+                  className="relative size-5 transition-colors duration-300 group-hover/enviar:text-foreground group-focus-visible/enviar:text-foreground"
+                />
               )}
             </Button>
           </div>

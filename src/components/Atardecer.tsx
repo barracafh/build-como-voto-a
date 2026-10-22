@@ -21,12 +21,13 @@ export function Atardecer({ className, logo = false }: { className?: string; log
 
   return (
     <div aria-hidden="true" className={cn("relative", className)}>
-      <div className="overflow-hidden">
+      <div className={cn("overflow-hidden", logo && "size-full")}>
         {/* Se corta antes del borde de abajo: el sol está saliendo. */}
         <svg
           viewBox={logo ? "0 0 200 200" : "0 0 200 186"}
           className={cn(
-            "block w-full",
+            // size-full en el logo: dentro de un Button, si no, lo encoge a size-4.
+            logo ? "block size-full" : "block w-full",
             !logo && "motion-safe:animate-[amanecer_1400ms_var(--ease-brand)_both]",
           )}
         >

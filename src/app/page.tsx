@@ -5,7 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { BotonChat } from "@/components/BotonChat";
 import { Chat } from "@/components/Chat";
-import { Atardecer } from "@/components/Atardecer";
+import { Votijo } from "@/components/Votijo";
 import { Contador } from "@/components/Contador";
 import { Encabezado } from "@/components/Encabezado";
 import { CuentaAtras } from "@/components/CuentaAtras";
@@ -74,15 +74,15 @@ export default async function Home() {
 
   return (
     <Pagina>
-      {/* El héroe: titular junto al sol de cartel (Atardecer) y debajo la
-          cuenta atrás. Es la única pieza con el sol de la vista; al bajar, una
-          versión compacta se queda flotando arriba a la derecha. */}
+      {/* El héroe: titular junto al botijo de la herramienta (Votijo), que sube
+          al cargar, y debajo la cuenta atrás. Al bajar, una versión compacta se
+          queda flotando arriba a la derecha. */}
       <Flotante
         flotante={
           !terminada && (
             <Card className="gap-0.5 px-4 py-3 text-sm ring-0 shadow-(--shadow-overlay)">
               <p className="flex items-center gap-2.5 font-heading text-xl leading-[1.1] opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-150 motion-safe:duration-500 md:text-2xl">
-                <Atardecer logo className="size-6 shrink-0 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]" />
+                <Votijo className="size-6 shrink-0 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]" />
                 {fecha(votacion.inicio)}
               </p>
               <ul className="mt-1 grid gap-0.5 font-mono text-xs opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-300 motion-safe:duration-500">
@@ -104,7 +104,7 @@ export default async function Home() {
           className="salida-con-scroll"
         >
           <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_220px] md:items-end md:gap-12">
-            <Atardecer className="w-28 md:order-last md:w-full" />
+            <Votijo className="h-auto w-28 md:order-last md:w-full motion-safe:animate-[amanecer_1400ms_var(--ease-brand)_both]" />
             <div>
               <p className="font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
                 {t("Elecciones generales · 29N")}

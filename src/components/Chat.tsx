@@ -30,7 +30,7 @@ function Firma() {
   const { t } = useIdioma();
   return (
     <p className="flex items-center gap-2 font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
-      <span aria-hidden="true" className="size-2.5 rounded-full bg-brand-yellow ring-4 ring-brand-yellow/25" />
+      <Atardecer logo className="size-4" />
       {t("Con fuentes oficiales")}
     </p>
   );

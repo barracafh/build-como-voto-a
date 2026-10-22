@@ -50,13 +50,14 @@ Base: `contexto.md` §2.2 (España), §2.3 (CERA), §2.4 (ERTA), calendario.
 
 Base: `contexto.md` §6 (alcance, formato §6.2, ejemplos §6.3, plan §6.8).
 
-- [ ] Corpus `src/datos/afirmaciones.json`: 30–40 fichas `{id, afirmacion, variantes, resultado, articulo, cita, url, fecha_consulta}` (empezar por las 8 de §6.3)
+- [x] [Implementador] Corpus `src/datos/afirmaciones.json`: 39 fichas `{id, afirmacion, variantes, resultado, articulo, cita, url, fecha_consulta}` (las 8 de §6.3 y hechos de §1–3), cada cita literal de BOE (LOREG consolidada), Interior o INE, consultados el 22/10
 - [ ] Revisión humana de cada ficha contra la fuente
 - [x] [Javier] Chatbot verificador en `/verificar` (`modo` `verificar`, ruta común `src/app/api/chat/route.ts`): COINCIDE / NO COINCIDE solo con cita literal de `contexto.md` y fuente permitida; si no, «No verificable»
-- [ ] Sustituir la base de `contexto.md` por las fichas revisadas de `src/datos/afirmaciones.json` cuando estén
+- [x] [Implementador] El verificador ya usa las fichas (`src/lib/verificador.ts`): el modelo solo elige ficha; veredicto, cita y fuente salen de ella. Si HelmCode falla, comparación léxica local (solo da veredicto con casi la misma frase)
 - [x] Tipos (b)–(d) → respuesta fija «fuera de alcance: aquí solo comprobamos cómo se vota»
 - [x] UI con el formato de §6.2: Afirmación · Resultado (COINCIDE / NO COINCIDE / NO VERIFICABLE) · Fuente · Cita · Matiz. Sin «verdadero/falso/bulo»
-- [ ] Batería de prueba: 15 afirmaciones (§6.3 + fuera de alcance + fuera de corpus)
+- [x] [Implementador] Batería de prueba: 15 afirmaciones (§6.3 + fuera de alcance + fuera de corpus) en `src/lib/verificador.test.ts` (`bun test`)
+- [x] [Implementador] Endpoint `/api/chat`: exige `content-type: application/json`, cuerpo de 32 KB como máximo y 6 mensajes; sin registro del texto
 - [ ] Opcional: Google Fact Check (`FACTCHECK_API_KEY`) para enlazar verificaciones publicadas, atribuidas
 
 ## Pieza C · Cómo se reparten los escaños

@@ -2,9 +2,12 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { Fuentes } from "@/components/Fuentes";
 import { Button } from "@/components/ui/button";
+import { ruta } from "@/config/sitio";
 import { CORTES_POR_CCAA } from "@/datos/cortes-29n";
 import { MAPA_ALTO, MAPA_ANCHO, REGIONES } from "@/datos/mapa-espana";
+import { NARRACION } from "@/datos/narracion";
 import { Hemiciclo } from "./Hemiciclo";
 import { useIdioma } from "@/i18n/cliente";
 
@@ -29,6 +32,10 @@ export function MapaCortes() {
   const [encima, setEncima] = useState<string | null>(null);
   const [abierto, setAbierto] = useState(false);
   const dialogo = useRef<HTMLDialogElement>(null);
+  // Narración de la vista 3D: suena solo al pulsar, con su texto y fuentes a la vista.
+  const audio = useRef<HTMLAudioElement>(null);
+  const [narrando, setNarrando] = useState<string | null>(null);
+  const [sonando, setSonando] = useState(false);
   const activa = encima ?? fijada;
   const datos = activa ? CORTES_POR_CCAA[activa] : TOTAL;
   const desde = activa
@@ -50,6 +57,20 @@ export function MapaCortes() {
     setFijada((f) => (f === ccaa ? null : ccaa));
     setEncima(null);
   };
+
+  const narrar = (id: string) => {
+    const a = audio.current!;
+    if (sonando && narrando === id) return a.pause();
+    a.src = ruta(`/audio/${id}.mp3`);
+    a.play().catch(() => setSonando(false));
+    setNarrando(id);
+  };
+
+  const narraciones = [
+    [fijada ? `ccaa-${fijada}` : "intro", fijada ? `Escuchar ${CORTES_POR_CCAA[fijada].nombre}` : "Escuchar"],
+    ["reparto", "¿Cómo se reparten?"],
+    ["senado", "¿Y el Senado?"],
+  ] as const;
 
   const ficha = (
     <>
@@ -130,7 +151,10 @@ export function MapaCortes() {
       <dialog
         ref={dialogo}
         aria-label={t("Hemiciclo en 3D")}
-        onClose={() => setAbierto(false)}
+        onClose={() => {
+          audio.current?.pause();
+          setAbierto(false);
+        }}
         className="fixed inset-0 m-0 h-dvh max-h-none w-dvw max-w-none bg-primary p-0 text-primary-foreground backdrop:bg-primary"
       >
         {abierto && (
@@ -140,6 +164,21 @@ export function MapaCortes() {
             </div>
             <div className="max-h-[45dvh] overflow-y-auto rounded-t-xl bg-background p-5 text-foreground md:absolute md:top-1/2 md:right-4 md:max-h-[calc(100dvh-2rem)] md:w-[min(340px,calc(40vw-2rem))] md:-translate-y-1/2 md:rounded-xl md:shadow-(--shadow-overlay)">
               {ficha}
+              <div className="mt-6 border-t border-border pt-4">
+                <div className="flex flex-wrap gap-2">
+                  {narraciones.map(([id, texto]) => (
+                    <Button key={id} variant="outline" onClick={() => narrar(id)}>
+                      {sonando && narrando === id ? "Parar" : texto}
+                    </Button>
+                  ))}
+                </div>
+                {narrando && (
+                  <div className="mt-4 [&>*+*]:mt-4">
+                    <p className="text-base">{NARRACION[narrando].texto}</p>
+                    <Fuentes fuentes={NARRACION[narrando].fuentes} />
+                  </div>
+                )}
+              </div>
             </div>
             <Button
               variant="outline"
@@ -151,6 +190,7 @@ export function MapaCortes() {
           </div>
         )}
       </dialog>
+      <audio ref={audio} onPlay={() => setSonando(true)} onPause={() => setSonando(false)} />
     </div>
   );
 }

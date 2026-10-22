@@ -69,7 +69,7 @@ export default async function EscanosPage() {
   return (
     <Pagina>
       <Titular
-        etiqueta={t("¿Cómo voto? · Escaños")}
+        etiqueta={`${ficha.nombre} · ${t("Escaños")}`}
         titulo={t("Cómo se lee el hemiciclo del Congreso")}
         entradilla={t(
           "Cada punto es un escaño. Pulsa una comunidad para ver sus diputados y a cuántos electores representa cada uno.",

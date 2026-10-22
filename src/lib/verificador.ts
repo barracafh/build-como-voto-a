@@ -341,7 +341,7 @@ const listaFichas = fichas
 
 export const sistemaVerificador = (
   hoy: string,
-) => `Eres el clasificador del verificador de «¿Cómo voto? (29N)», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del ${votacion.inicio}. Hoy es ${hoy}.
+) => `Eres el clasificador del verificador de «Votijo», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del ${votacion.inicio}. Hoy es ${hoy}.
 
 El usuario escribe algo que ha oído o leído. Tu única tarea es decidir a qué FICHA corresponde. No das veredictos ni redactas respuestas: el resultado lo pone la ficha.
 

@@ -111,7 +111,7 @@ export const sistema = (modo: Modo, idioma: Idioma = "es") =>
 const sistemaGuia = (
   modo: ModoGuia,
   idioma: Idioma,
-) => `Eres un asistente de «¿Cómo voto? (29N)», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del ${votacion.inicio}. Hoy es ${hoy()}.
+) => `Eres un asistente de «Votijo», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del ${votacion.inicio}. Hoy es ${hoy()}.
 
 ${tarea[modo]}
 

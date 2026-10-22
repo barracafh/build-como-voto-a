@@ -1,4 +1,4 @@
-# Tareas · ¿Cómo voto? (29N) · equipo como-voto-a
+# Tareas · Votijo · equipo como-voto-a
 
 Tablero compartido del squad. Añadid tareas con `- [ ]`, poned vuestro nombre entre corchetes al cogerla (`- [ ] [Ana] …`) y marcad `- [x]` al terminar. `git pull --rebase` antes de cada push; `bun run build` tiene que pasar.
 

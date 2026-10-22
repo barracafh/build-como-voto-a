@@ -83,7 +83,7 @@ const diccionario: Diccionario = {
   "Dónde se hace": "Non egiten da",
   "El asistente no responde ahora. Prueba en un momento.":
     "Laguntzaileak ez du orain erantzuten. Saiatu berriro une batean.",
-  "El proceso electoral, explicado.": "Hauteskunde-prozesua, azalduta.",
+  "Todo para votar el 29N, con fuente oficial.": "29N-an bozkatzeko behar duzun guztia, iturri ofizialarekin.",
   "Elecciones generales · 29N": "Hauteskunde orokorrak · 29N",
   "Elige cómo votar": "Aukeratu nola bozkatu",
   "Elige si vives en España o fuera y pregunta por tu caso: pasos y fechas oficiales.":
@@ -319,7 +319,7 @@ const diccionario: Diccionario = {
   "{verificador} califica «{afirmacion}» como": "{verificador} erakundeak honela kalifikatzen du «{afirmacion}»:",
   "¿Algo está mal? Avísanos": "Zerbait gaizki dago? Jakinarazi iezaguzu",
   "¿Algo más?": "Beste zerbait?",
-  "¿Cómo voto? · Escaños": "Nola bozkatu? · Eserlekuak",
+  "Escaños": "Eserlekuak",
   "¿Dónde estarás durante las elecciones?": "Non egongo zara hauteskundeetan?",
   "¿Dónde vives?": "Non bizi zara?",
   "¿Es verdad lo que me han dicho?": "Egia al da esan didatena?",

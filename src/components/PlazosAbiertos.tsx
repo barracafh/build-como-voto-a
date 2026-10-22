@@ -114,6 +114,7 @@ const grupos: Grupo[] = [
 ];
 
 const votacion = plazo("votacion");
+const campana = plazo("campana");
 
 const corta = new Intl.DateTimeFormat("es-ES", {
   day: "numeric",
@@ -122,6 +123,12 @@ const corta = new Intl.DateTimeFormat("es-ES", {
 });
 const fechaCorta = (iso: string) =>
   corta.format(new Date(`${iso}T00:00:00Z`)).replace(".", "");
+
+// «quedan 28 días», «queda 1 día», «cierra hoy».
+const queda = (fin: string, hoy: string) => {
+  const n = cierraEn(fin, hoy);
+  return n === 0 ? "cierra hoy" : n === 1 ? "queda 1 día" : `quedan ${n} días`;
+};
 
 const cuando = (p: Plazo, hoy: string) => {
   if (estado(p, hoy) === "proximo") return `Empieza el ${fechaLarga(p.inicio)}`;
@@ -133,16 +140,29 @@ const cuando = (p: Plazo, hoy: string) => {
 
 // Desde hoy hasta la votación, una pestaña por caso: el gráfico de sus plazos
 // y debajo la misma información como lista. El gráfico es decorativo.
-export function PlazosAbiertos({ hoy = hoyMadrid() }: { hoy?: string }) {
+// numero: el de la sección en la portada («03»).
+export function PlazosAbiertos({
+  hoy = hoyMadrid(),
+  numero,
+}: {
+  hoy?: string;
+  numero?: string;
+}) {
   const vigentes = abiertos(grupos, hoy);
   if (vigentes.length === 0) return null;
   const escala = { desde: hoy, hasta: votacion.fin };
 
   return (
-    <div>
+    <section aria-labelledby="plazos">
+      {numero && (
+        <p className="font-mono text-xs tracking-[0.08em] text-brand uppercase">{numero}</p>
+      )}
       <h2
         id="plazos"
-        className="font-sans text-[clamp(30px,5vw,44px)] leading-[1.08] tracking-[-0.03em]"
+        className={cn(
+          "text-[clamp(32px,5vw,48px)] leading-[1.06] tracking-[-0.02em]",
+          numero && "mt-3",
+        )}
       >
         Plazos que siguen abiertos
       </h2>
@@ -207,7 +227,7 @@ export function PlazosAbiertos({ hoy = hoyMadrid() }: { hoy?: string }) {
             {g.href && (
               <Link
                 href={g.href}
-                className="mt-2 inline-block rounded-sm underline underline-offset-4 outline-none hover:text-(--text-secondary) focus-visible:ring-3 focus-visible:ring-ring/50 md:ml-12"
+                className="mt-2 inline-block rounded-sm underline underline-offset-4 outline-none hover:text-(--text-secondary) focus-visible:ring-3 focus-visible:ring-ring/50"
               >
                 Ver tu caso paso a paso <span aria-hidden="true">→</span>
               </Link>
@@ -215,7 +235,7 @@ export function PlazosAbiertos({ hoy = hoyMadrid() }: { hoy?: string }) {
           </TabsContent>
         ))}
       </Tabs>
-    </div>
+    </section>
   );
 }
 
@@ -230,10 +250,20 @@ function Grafico({
 }) {
   const t = tramo(votacion.inicio, votacion.fin, escala);
   const centroMeta = t.izquierda + t.ancho / 2;
+  const c = tramo(campana.inicio, campana.fin, escala);
 
   return (
-    <Card aria-hidden="true" className="mt-4 gap-0 px-4 py-5 md:px-6 md:py-6">
-      <div className="relative mx-3 grid gap-3 pb-3">
+    <Card aria-hidden="true" className="mt-4 gap-0 px-4 pt-6 pb-5 md:px-6 md:pt-8 md:pb-6">
+      <div className="relative mx-3 grid gap-4 pb-4">
+        {/* La campaña de fondo y una guía punteada que baja hasta el sol. */}
+        <div
+          className="absolute inset-y-0 -top-3 rounded-md bg-secondary"
+          style={{ left: `${c.izquierda}%`, width: `${c.ancho}%` }}
+        />
+        <div
+          className="absolute -top-3 bottom-0 border-l border-dashed border-foreground/25"
+          style={{ left: `${centroMeta}%` }}
+        />
         {grupo.pasos.map((p, i) => (
           <Barra
             key={p.plazo.id}
@@ -249,18 +279,21 @@ function Grafico({
       <div className="relative">
         <Eje escala={escala} />
         <span
-          className="absolute -top-3 left-3 size-6 -translate-x-1/2 rounded-full bg-brand-yellow ring-4 ring-background motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]"
+          className="absolute -top-4 left-3 size-8 -translate-x-1/2 rounded-full bg-brand-yellow ring-6 ring-brand-yellow/25 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]"
           style={{ marginLeft: `calc((100% - 1.5rem) * ${centroMeta / 100})` }}
         />
       </div>
 
       <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-sm text-(--text-secondary)">
         <li className="flex items-center gap-2">
-          <span className="h-3 w-6 rounded-full bg-foreground" /> Abierto
+          <span className="h-3 w-6 rounded-full bg-brand" /> Abierto
         </li>
         <li className="flex items-center gap-2">
-          <span className="h-3 w-6 rounded-full ring-1 ring-foreground ring-inset" />{" "}
+          <span className="h-3 w-6 rounded-full border border-dashed border-foreground/60" />{" "}
           Aún no empieza
+        </li>
+        <li className="flex items-center gap-2">
+          <span className="h-3 w-6 rounded-sm bg-secondary ring-1 ring-foreground/10" /> Campaña
         </li>
         <li className="flex items-center gap-2">
           <span className="size-3 rounded-full bg-brand-yellow" /> Votación,{" "}
@@ -291,7 +324,7 @@ function Barra({
   const aLaDerecha = t.izquierda > 50;
 
   return (
-    <div className="relative h-11">
+    <div className="relative h-12">
       <p
         className={cn(
           "absolute top-0 flex items-baseline gap-1.5 text-sm whitespace-nowrap",
@@ -300,17 +333,17 @@ function Barra({
         style={{ left: `${aLaDerecha ? t.izquierda + t.ancho : t.izquierda}%` }}
       >
         <span className="font-medium text-brand tabular-nums">{numero}</span>
-        {paso.corto}
+        <span className="font-medium">{paso.corto}</span>
         <span className="text-(--text-secondary) max-sm:hidden">
-          · hasta el {fechaCorta(paso.plazo.fin)}
+          · {e === "abierto" ? queda(paso.plazo.fin, hoy) : `desde el ${fechaCorta(paso.plazo.inicio)}`}
         </span>
       </p>
-      <div className="absolute inset-x-0 bottom-1.5 h-px bg-border" />
+      <div className="absolute inset-x-0 bottom-2 h-px bg-border" />
       <div
         className={cn(
-          "absolute bottom-0 h-3 origin-left rounded-full motion-safe:animate-[crecer_900ms_var(--ease-brand)_both]",
-          e === "abierto" && "bg-foreground",
-          e === "proximo" && "bg-background ring-1 ring-foreground ring-inset",
+          "absolute bottom-0 h-4 origin-left rounded-full motion-safe:animate-[crecer_900ms_var(--ease-brand)_both]",
+          e === "abierto" && "bg-brand",
+          e === "proximo" && "border border-dashed border-foreground/60 bg-background",
         )}
         style={{
           left: `${t.izquierda}%`,
@@ -337,7 +370,7 @@ function Eje({ escala }: { escala: Escala }) {
           </span>
         </span>
       ))}
-      <span className="absolute top-2 left-0 -translate-x-3 text-foreground">Hoy</span>
+      <span className="absolute top-2 left-0 -translate-x-3 font-medium text-brand">Hoy</span>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fuentes } from "@/components/Fuentes";
 import { Pagina, Titular } from "@/components/Pagina";
 import { Escanos } from "@/components/escanos/Escanos";
+import { MapaCortes } from "@/components/escanos/MapaCortes";
 import { Practica } from "@/components/escanos/Practica";
 import { cargarProvincias } from "@/datos/resultados";
 import ficha from "../../../ficha.json";
@@ -48,8 +49,12 @@ const pasos = [
 
 const fuentes = [
   {
-    nombre: "Ley Orgánica 5/1985 (LOREG), arts. 161 a 163 · BOE",
+    nombre: "Ley Orgánica 5/1985 (LOREG), arts. 161 a 165 · BOE",
     url: "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672",
+  },
+  {
+    nombre: "Real Decreto 806/2026 de convocatoria, anexo · BOE",
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20742",
   },
   {
     nombre: "Infoelectoral · Ministerio del Interior",
@@ -68,6 +73,18 @@ export default function EscanosPage() {
       />
       <div className="mt-16 text-lg [&>*+*]:mt-16">
         <Escanos provincias={provincias} />
+
+        <section aria-labelledby="comunidades" className="[&>*+*]:mt-6">
+          <h2 id="comunidades" className="text-[clamp(28px,4vw,40px)] leading-[1.1]">
+            Diputados y senadores por comunidad
+          </h2>
+          <MapaCortes />
+          <p className="text-base text-(--text-secondary)">
+            Escaños que se eligen el 29 de noviembre de 2026. Los diputados salen del anexo
+            del Real Decreto 806/2026. Los senadores son los de elección directa (art. 165
+            LOREG); cada parlamento autonómico designa además otros, que no se suman aquí.
+          </p>
+        </section>
 
         <section aria-labelledby="referencias">
           <h2

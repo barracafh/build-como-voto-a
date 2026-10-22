@@ -1,8 +1,8 @@
 "use client";
 
-import { Maximize2, Minimize2, Pause, Play, SkipBack, SkipForward } from "lucide-react";
+import { Maximize2, Minimize2, Pause, Play, Rotate3d, SkipBack, SkipForward } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { Fuentes } from "@/components/Fuentes";
 import { Button } from "@/components/ui/button";
 import { ruta } from "@/config/sitio";
@@ -68,17 +68,20 @@ export function MapaCortes() {
   const [narrando, setNarrando] = useState<string | null>(null);
   const [sonando, setSonando] = useState(false);
   const activas = encima && !fijadas.includes(encima) ? [...fijadas, encima] : fijadas;
-  const cortes = activas.map((c) => CORTES_POR_CCAA[c]);
-  const datos = activas.length
-    ? {
-        nombre: cortes.map((c) => c.nombre).join(" · "),
-        diputados: cortes.reduce((s, c) => s + c.diputados, 0),
-        senadores: cortes.reduce((s, c) => s + c.senadores, 0),
-      }
-    : TOTAL;
-  const grupo = activas.length ? agrupar(activas) : null;
-  const censo = grupo ?? ESPANA;
-  const provincias = grupo?.provincias ?? [];
+  // Lo que suman unas comunidades (o España entera, sin ninguna) en Cortes y en censo.
+  const resumir = (lista: readonly string[]) => {
+    const cortes = lista.map((c) => CORTES_POR_CCAA[c]);
+    const datos = lista.length
+      ? {
+          nombre: cortes.map((c) => c.nombre).join(" · "),
+          diputados: cortes.reduce((s, c) => s + c.diputados, 0),
+          senadores: cortes.reduce((s, c) => s + c.senadores, 0),
+        }
+      : TOTAL;
+    const grupo = lista.length ? agrupar(lista) : null;
+    return { datos, grupo, censo: grupo ?? ESPANA, provincias: grupo?.provincias ?? [] };
+  };
+  const { datos, provincias } = resumir(activas);
   const bloques: Bloques = activas.map((c) => BLOQUE[c]);
   const describir = (lista: readonly string[]) => {
     if (!lista.length) return t("Hemiciclo de 350 escaños");
@@ -192,86 +195,93 @@ export function MapaCortes() {
     </svg>
   );
 
-  const leyenda = (
-    <div aria-live="polite" className="border-t border-border pt-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p className="font-mono text-xs tracking-[0.06em] text-(--text-secondary) uppercase">
-            {activas.length === 0
-              ? t("Total · pulsa una o varias comunidades")
-              : activas.length === 1
-                ? t("Comunidad autónoma")
-                : t("{n} comunidades", { n: activas.length })}
-          </p>
-          <p className="mt-1 text-lg leading-tight font-medium">{datos.nombre}</p>
+  // La tarjeta de datos de una selección: en la página sigue al hover; en 3D, solo al clic.
+  // `narracion` (los botones de la vista 3D) va justo bajo el nombre de la comunidad.
+  const leyenda = (lista: readonly string[], narracion?: ReactNode) => {
+    const { datos, grupo, censo, provincias } = resumir(lista);
+    return (
+      <div aria-live="polite" className="border-t border-border pt-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="font-mono text-xs tracking-[0.06em] text-(--text-secondary) uppercase">
+              {lista.length === 0
+                ? t("Total · pulsa una o varias comunidades")
+                : lista.length === 1
+                  ? t("Comunidad autónoma")
+                  : t("{n} comunidades", { n: lista.length })}
+            </p>
+            <p className="mt-1 text-lg leading-tight font-medium">{datos.nombre}</p>
+          </div>
+          {fijadas.length > 0 && (
+            <Button variant="outline" onClick={() => setFijadas([])}>
+              {t("Quitar selección")}
+            </Button>
+          )}
         </div>
-        {fijadas.length > 0 && (
-          <Button variant="outline" onClick={() => setFijadas([])}>
-            {t("Quitar selección")}
-          </Button>
+        {narracion}
+        <dl className="mt-4 grid grid-cols-2 gap-4">
+          {(
+            [
+              [t("Diputados"), datos.diputados],
+              [t("Senadores"), datos.senadores],
+            ] as const
+          ).map(([nombre, valor]) => (
+            <div key={nombre}>
+              <dt className="text-base text-(--text-secondary)">{nombre}</dt>
+              <dd className="font-heading text-4xl leading-none tabular-nums">{valor}</dd>
+            </div>
+          ))}
+        </dl>
+        <dl className="mt-6 grid gap-x-4 gap-y-2 text-base sm:grid-cols-[auto_minmax(0,1fr)]">
+          <dt className="text-(--text-secondary)">{t("Electores")}</dt>
+          <dd className="tabular-nums">{fmt.format(censo.electores)}</dd>
+          <dt className="text-(--text-secondary)">{t("Por diputado")}</dt>
+          <dd className="tabular-nums">{electoresPorDiputado(censo)}</dd>
+          <dt className="text-(--text-secondary)">{t("Frente a la media")}</dt>
+          <dd className="font-medium">{grupo ? <Indicador p={grupo} /> : t("Es la media de España")}</dd>
+        </dl>
+        {provincias.length > 1 && (
+          <ul
+            aria-label={t("Provincias de {nombre}", { nombre: datos.nombre })}
+            tabIndex={0}
+            className="mt-6 flex snap-x gap-3 overflow-x-auto rounded-xl pb-2 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {provincias.map((p) => (
+              <li key={p.nombre} className="w-56 shrink-0 snap-start">
+                <Card className="h-full">
+                  <CardHeader>
+                    <CardTitle>{p.nombre}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-1 text-base">
+                    <p className="tabular-nums">
+                      {t("{n} electores por diputado", { n: electoresPorDiputado(p) })}
+                    </p>
+                    <p className="text-(--text-secondary) tabular-nums">
+                      {t("{d} diputados · {e} electores", {
+                        d: p.diputados,
+                        e: fmt.format(p.electores),
+                      })}
+                    </p>
+                    <p className="mt-2 font-medium">
+                      <Indicador p={p} />
+                    </p>
+                  </CardContent>
+                </Card>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
-      <dl className="mt-4 grid grid-cols-2 gap-4">
-        {(
-          [
-            [t("Diputados"), datos.diputados],
-            [t("Senadores"), datos.senadores],
-          ] as const
-        ).map(([nombre, valor]) => (
-          <div key={nombre}>
-            <dt className="text-base text-(--text-secondary)">{nombre}</dt>
-            <dd className="font-heading text-4xl leading-none tabular-nums">{valor}</dd>
-          </div>
-        ))}
-      </dl>
-      <dl className="mt-6 grid gap-x-4 gap-y-2 text-base sm:grid-cols-[auto_minmax(0,1fr)]">
-        <dt className="text-(--text-secondary)">{t("Electores")}</dt>
-        <dd className="tabular-nums">{fmt.format(censo.electores)}</dd>
-        <dt className="text-(--text-secondary)">{t("Por diputado")}</dt>
-        <dd className="tabular-nums">{electoresPorDiputado(censo)}</dd>
-        <dt className="text-(--text-secondary)">{t("Frente a la media")}</dt>
-        <dd className="font-medium">{grupo ? <Indicador p={grupo} /> : t("Es la media de España")}</dd>
-      </dl>
-      {provincias.length > 1 && (
-        <ul
-          aria-label={t("Provincias de {nombre}", { nombre: datos.nombre })}
-          tabIndex={0}
-          className="mt-6 flex snap-x gap-3 overflow-x-auto rounded-xl pb-2 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-        >
-          {provincias.map((p) => (
-            <li key={p.nombre} className="w-56 shrink-0 snap-start">
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle>{p.nombre}</CardTitle>
-                </CardHeader>
-                <CardContent className="grid gap-1 text-base">
-                  <p className="tabular-nums">
-                    {t("{n} electores por diputado", { n: electoresPorDiputado(p) })}
-                  </p>
-                  <p className="text-(--text-secondary) tabular-nums">
-                    {t("{d} diputados · {e} electores", {
-                      d: p.diputados,
-                      e: fmt.format(p.electores),
-                    })}
-                  </p>
-                  <p className="mt-2 font-medium">
-                    <Indicador p={p} />
-                  </p>
-                </CardContent>
-              </Card>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
+    );
+  };
 
   return (
     <>
       <div className="grid grid-cols-[minmax(0,1fr)] gap-8">
         <div className="relative flex flex-col items-end gap-3 sm:block">
           <Hemiciclo bloques={bloques} etiqueta={etiqueta} />
-          <Button variant="outline" className="-order-1 sm:absolute sm:top-0 sm:right-0" onClick={() => setAbierto(true)}>
+          <Button variant="sunset" className="-order-1 sm:absolute sm:top-0 sm:right-0" onClick={() => setAbierto(true)}>
+            <Rotate3d data-icon="inline-start" aria-hidden="true" />
             {t("Ver en 3D")}
           </Button>
         </div>
@@ -280,7 +290,7 @@ export function MapaCortes() {
 
         {mapa}
 
-        {leyenda}
+        {leyenda(activas)}
 
         <dialog
           ref={dialogo}
@@ -322,7 +332,7 @@ export function MapaCortes() {
                     <SkipForward />
                   </Button>
                   <p className="min-w-0 flex-1 truncate px-2 font-mono text-xs tracking-[0.06em] text-(--text-secondary) uppercase">
-                    {minimizado && datos.nombre}
+                    {minimizado && resumir(fijadas).datos.nombre}
                   </p>
                   <Button
                     variant="outline"
@@ -341,20 +351,24 @@ export function MapaCortes() {
                   className={`max-h-[calc(45dvh-3.5rem)] overflow-y-auto rounded-xl p-5 md:max-h-[calc(100dvh-6rem)] ${VIDRIO}`}
                 >
                   {mapa}
-                  <div className="mt-6">{leyenda}</div>
-                  <div className="mt-6 border-t border-border pt-4">
-                    <div className="flex flex-wrap gap-2">
-                      {pistas.map((p) => (
-                        <Button key={p.id} variant="outline" onClick={() => narrar(p.id)}>
-                          {p.titulo}
-                        </Button>
-                      ))}
-                    </div>
-                    {narrando && (
-                      <div className="mt-4 [&>*+*]:mt-4">
-                        <p className="text-base">{NARRACION[narrando].texto}</p>
-                        <Fuentes fuentes={NARRACION[narrando].fuentes} />
-                      </div>
+                  <div className="mt-6">
+                    {leyenda(
+                      fijadas,
+                      <div className="mt-4">
+                        <div className="flex flex-wrap gap-2">
+                          {pistas.map((p) => (
+                            <Button key={p.id} variant="outline" onClick={() => narrar(p.id)}>
+                              {p.titulo}
+                            </Button>
+                          ))}
+                        </div>
+                        {narrando && (
+                          <div className="mt-4 [&>*+*]:mt-4">
+                            <p className="text-base">{NARRACION[narrando].texto}</p>
+                            <Fuentes fuentes={NARRACION[narrando].fuentes} />
+                          </div>
+                        )}
+                      </div>,
                     )}
                   </div>
                 </div>

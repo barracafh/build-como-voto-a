@@ -56,6 +56,37 @@
   }
 }
 
+/* Entrada suave de abajo arriba (respuestas del chat, sugerencias). Solo con
+   motion-safe:. */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+/* El héroe de la portada se encoge hacia arriba a la derecha mientras sale de
+   la pantalla, justo donde aparece su versión flotante. Va con el scroll
+   (animation-timeline); sin soporte o con movimiento reducido, no se anima. */
+@keyframes hero-salida {
+  to {
+    scale: 0.86;
+    opacity: 0.35;
+    border-radius: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .salida-con-scroll {
+      transform-origin: 90% 0;
+      animation: hero-salida linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 90%;
+    }
+  }
+}
+
 /* Brillo que recorre un texto mientras se espera: del texto principal al gris
    más claro del tema, que aún mantiene contraste AA sobre blanco. */
 @layer components {

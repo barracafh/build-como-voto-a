@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { LoaderCircle } from "lucide-react";
+import {
+  ArrowUp,
+  ArrowUpRight,
+  LoaderCircle,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import type { Modo, Respuesta } from "@/lib/asistente";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,6 +19,18 @@ import { ruta } from "@/config/sitio";
 import { leerParcial } from "@/lib/parcial";
 
 type Turno = { pregunta: string; respuesta: Respuesta };
+
+const MAXIMO = 1000;
+
+// Encabeza cada respuesta: el sol de Sol y de dónde sale.
+function Firma() {
+  return (
+    <p className="flex items-center gap-2 font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
+      <span aria-hidden="true" className="size-2.5 rounded-full bg-brand-yellow ring-4 ring-brand-yellow/25" />
+      Con fuentes oficiales
+    </p>
+  );
+}
 
 const textos: Record<
   Modo,
@@ -71,6 +89,18 @@ export function Chat({ modo }: { modo: Modo }) {
   const vivo =
     modo === "verificar" ? { respuesta: "", pasos: [] } : leerParcial(parcial);
   const campo = useRef<HTMLTextAreaElement>(null);
+  const [enfocado, setEnfocado] = useState(false);
+  const abierto = enfocado || texto.length > 0 || cargando;
+  // Con la barra cerrada, el ejemplo que se ve rota cada pocos segundos (no
+  // con movimiento reducido).
+  const rotatorio = [placeholder, ...ejemplos];
+  const [sugerida, setSugerida] = useState(0);
+
+  useEffect(() => {
+    if (abierto || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => setSugerida((n) => (n + 1) % rotatorio.length), 3500);
+    return () => clearInterval(id);
+  }, [abierto, rotatorio.length]);
   const espera = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -144,14 +174,12 @@ export function Chat({ modo }: { modo: Modo }) {
         <section
           key={i}
           aria-labelledby={`pregunta-${i}`}
-          className="[&>*+*]:mt-6"
+          className="[&>*+*]:mt-6 motion-safe:animate-[aparecer_500ms_var(--ease-brand)_both]"
         >
-          <h2
-            id={`pregunta-${i}`}
-            className="font-sans text-[clamp(26px,4vw,34px)] leading-[1.15] tracking-[-0.02em]"
-          >
+          <h2 id={`pregunta-${i}`} className="ml-auto w-fit max-w-[85%] rounded-3xl rounded-br-lg bg-secondary px-5 py-3 font-sans text-lg leading-[1.4] font-medium tracking-normal">
             {t.pregunta}
           </h2>
+          <Firma />
           {t.respuesta.verificacion && (
             <Card
               render={<section />}
@@ -209,12 +237,9 @@ export function Chat({ modo }: { modo: Modo }) {
           ref={espera}
           aria-labelledby="pregunta-pendiente"
           aria-busy="true"
-          className="[&>*+*]:mt-6"
+          className="[&>*+*]:mt-6 motion-safe:animate-[aparecer_400ms_var(--ease-brand)_both]"
         >
-          <h2
-            id="pregunta-pendiente"
-            className="font-sans text-[clamp(26px,4vw,34px)] leading-[1.15] tracking-[-0.02em]"
-          >
+          <h2 id="pregunta-pendiente" className="ml-auto w-fit max-w-[85%] rounded-3xl rounded-br-lg bg-secondary px-5 py-3 font-sans text-lg leading-[1.4] font-medium tracking-normal">
             {pendiente}
           </h2>
           <p role="status" className="flex items-center gap-3 font-medium">
@@ -261,62 +286,114 @@ export function Chat({ modo }: { modo: Modo }) {
         </section>
       )}
 
-      <form onSubmit={enviar} className="[&>*+*]:mt-4">
-        <label htmlFor="pregunta" className="block text-base font-medium">
+      <form onSubmit={enviar}>
+        <label htmlFor="pregunta" className="sr-only">
           {turnos.length ? "¿Algo más?" : etiqueta}
         </label>
-        <Textarea
-          id="pregunta"
-          ref={campo}
-          value={texto}
-          onChange={(e) => setTexto(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              preguntar(texto);
-            }
-          }}
-          maxLength={1000}
-          rows={3}
-          aria-describedby="aviso-privacidad"
-          placeholder={placeholder}
-          className="md:text-base"
-        />
-        <p id="aviso-privacidad" className="text-base text-(--text-secondary)">
+        {/* El campo empieza como una barra de una línea y, al pulsarlo, se
+            abre en un editor con atajos y contador. Si se queda vacío al
+            salir, se vuelve a cerrar. */}
+        <div
+          data-abierto={abierto}
+          onClick={() => campo.current?.focus()}
+          className="group/campo cursor-text rounded-[28px] bg-background ring-1 ring-foreground/15 transition-[box-shadow,border-radius] duration-300 ease-(--ease-brand) hover:ring-foreground/30 focus-within:ring-2 focus-within:ring-foreground data-[abierto=true]:rounded-3xl"
+        >
+          <div className="flex items-end gap-2 py-2 pr-2 pl-4">
+            <Sparkles
+              aria-hidden="true"
+              className="mt-3 size-5 shrink-0 self-start text-brand transition-transform duration-500 ease-(--ease-brand) group-data-[abierto=true]/campo:rotate-90"
+              strokeWidth={1.75}
+            />
+            <div className="relative min-w-0 flex-1">
+              <Textarea
+                id="pregunta"
+                ref={campo}
+                value={texto}
+                onChange={(e) => setTexto(e.target.value)}
+                onFocus={() => setEnfocado(true)}
+                onBlur={() => setEnfocado(false)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    preguntar(texto);
+                  }
+                  if (e.key === "Escape") campo.current?.blur();
+                }}
+                maxLength={MAXIMO}
+                rows={1}
+                aria-describedby="aviso-privacidad"
+                placeholder={abierto ? placeholder : ""}
+                className="max-h-60 min-h-11 resize-none rounded-none border-0 bg-transparent px-1 py-2.5 text-lg transition-[min-height] duration-500 ease-(--ease-brand) focus-visible:ring-0 group-data-[abierto=true]/campo:min-h-28 md:text-lg"
+              />
+              {/* Con la barra cerrada, el texto de ejemplo va rotando. */}
+              {!abierto && (
+                <span
+                  key={sugerida}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-1 top-2.5 truncate text-lg text-(--text-secondary) motion-safe:animate-[aparecer_500ms_var(--ease-brand)_both]"
+                >
+                  {rotatorio[sugerida]}
+                </span>
+              )}
+            </div>
+            <Button
+              type="submit"
+              variant="sunset"
+              size="icon-lg"
+              disabled={cargando || !texto.trim()}
+              aria-label={
+                cargando ? "Consultando" : modo === "verificar" ? "Comprobar" : "Preguntar"
+              }
+              className="size-11 shrink-0 rounded-full"
+            >
+              {cargando ? (
+                <LoaderCircle aria-hidden="true" className="size-5 motion-safe:animate-spin" />
+              ) : (
+                <ArrowUp aria-hidden="true" className="size-5" />
+              )}
+            </Button>
+          </div>
+          {/* Barra de atajos: se despliega con el editor. */}
+          <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-(--ease-brand) group-data-[abierto=true]/campo:grid-rows-[1fr]">
+            <div className="overflow-hidden">
+              <div className="flex items-center justify-between gap-3 border-t border-foreground/10 px-5 py-2.5 font-mono text-xs text-(--text-secondary)">
+                <span className="max-sm:hidden">
+                  <kbd className="font-mono">↵</kbd> enviar ·{" "}
+                  <kbd className="font-mono">⇧ ↵</kbd> salto de línea ·{" "}
+                  <kbd className="font-mono">esc</kbd> cerrar
+                </span>
+                <span className="sm:hidden">↵ enviar</span>
+                <span className="tabular-nums">
+                  {texto.length}/{MAXIMO}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p
+          id="aviso-privacidad"
+          className="mt-3 flex items-start gap-2 px-4 text-sm text-(--text-secondary)"
+        >
+          <ShieldCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
           No escribas datos personales. No guardamos lo que escribes.
         </p>
-        <Button
-          type="submit"
-          variant="sunset"
-          size="lg"
-          disabled={cargando || !texto.trim()}
-          className="max-md:w-full"
-        >
-          {cargando && (
-            <LoaderCircle
-              aria-hidden="true"
-              className="motion-safe:animate-spin"
-            />
-          )}
-          {cargando
-            ? "Consultando…"
-            : modo === "verificar"
-              ? "Comprobar"
-              : "Preguntar"}
-        </Button>
-        <p aria-live="polite" className="text-base text-(--text-secondary)">
+        <p aria-live="polite" className="mt-2 px-4 text-base text-(--text-secondary)">
           {error}
         </p>
       </form>
 
       {turnos.length === 0 && (
         <div>
-          <h2 className="text-sm font-medium text-(--text-secondary)">
+          <h2 className="font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
             Prueba con
           </h2>
           <ul className="mt-3 flex flex-wrap gap-2">
-            {ejemplos.map((ejemplo) => (
-              <li key={ejemplo}>
+            {ejemplos.map((ejemplo, i) => (
+              <li
+                key={ejemplo}
+                className="motion-safe:animate-[aparecer_500ms_var(--ease-brand)_both]"
+                style={{ animationDelay: `${i * 80}ms` }}
+              >
                 <Button
                   type="button"
                   variant="outline"
@@ -326,9 +403,13 @@ export function Chat({ modo }: { modo: Modo }) {
                     setTexto(ejemplo);
                     preguntar(ejemplo);
                   }}
-                  className="h-auto min-h-9 py-2 text-left whitespace-normal"
+                  className="group/ejemplo h-auto min-h-11 gap-2 rounded-full py-2 pr-4 pl-4 text-left text-sm whitespace-normal"
                 >
                   {ejemplo}
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="size-4 shrink-0 text-(--text-secondary) transition-transform group-hover/ejemplo:translate-x-0.5 group-hover/ejemplo:-translate-y-0.5 motion-reduce:transition-none"
+                  />
                 </Button>
               </li>
             ))}

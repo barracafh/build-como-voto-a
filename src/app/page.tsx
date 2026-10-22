@@ -68,11 +68,11 @@ export default function Home() {
       <Flotante
         flotante={
           <Card className="gap-0.5 bg-brand px-4 py-3 text-sm text-white ring-0 shadow-(--shadow-overlay)">
-            <p className="flex items-center gap-2.5 font-heading text-xl leading-[1.1] md:text-2xl">
+            <p className="flex items-center gap-2.5 font-heading text-xl leading-[1.1] opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-150 motion-safe:duration-500 md:text-2xl">
               <span className="size-3 shrink-0 rounded-full bg-brand-yellow ring-4 ring-brand-yellow/30 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]" />
               {fechaLarga(votacion.inicio)}
             </p>
-            <ul className="mt-1 grid gap-0.5 font-mono text-xs">
+            <ul className="mt-1 grid gap-0.5 font-mono text-xs opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-300 motion-safe:duration-500">
               <CuentaAtras
                 corto
                 hasta={abreVotacion}
@@ -87,7 +87,7 @@ export default function Home() {
       >
         <section
           aria-labelledby="titular"
-          className="relative overflow-hidden rounded-[28px] px-6 pt-9 pb-24 text-white [background:var(--brand-gradient)] md:-mx-12 md:px-12 md:pt-14 md:pb-32"
+          className="salida-con-scroll relative overflow-hidden rounded-[28px] px-6 pt-9 pb-24 text-white [background:var(--brand-gradient)] md:-mx-12 md:px-12 md:pt-14 md:pb-32"
         >
           <p className="font-mono text-xs tracking-[0.08em] uppercase">
             Elecciones generales · 29N
@@ -190,11 +190,10 @@ export default function Home() {
               {new URL(mesaIne).hostname}
             </p>
           </div>
-          {/* La acción principal de la pantalla. */}
           <a
             href={mesaIne}
             className={cn(
-              buttonVariants({ variant: "sunset", size: "lg" }),
+              buttonVariants({ variant: "outline", size: "lg" }),
               "max-md:w-full",
             )}
           >

@@ -4,6 +4,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { Color, type InstancedMesh, Object3D, type PerspectiveCamera, Vector3 } from "three";
 import { ESCANOS } from "@/datos/hemiciclo";
+import { type Bloques, enBloques } from "./Hemiciclo";
 
 // Same 350 seats as Hemiciclo.tsx, in 3D: SVG (cx, cy) maps to (x, z) around
 // the sun at (643, 610), and each seat rises with its distance to the sun.
@@ -30,13 +31,13 @@ function resolver(token: string) {
   return new Color(getComputedStyle(document.documentElement).getPropertyValue(token).trim());
 }
 
-function Escanos({ desde, hasta }: { desde: number; hasta: number }) {
+function Escanos({ bloques }: { bloques: Bloques }) {
   const malla = useRef<InstancedMesh>(null);
   const reducido = useMemo(() => matchMedia("(prefers-reduced-motion: reduce)").matches, []);
   const gris = useMemo(() => resolver("--disabled"), []); // light, so the reds stand out on dark
   const rojo = useMemo(() => resolver("--brand"), []);
   const actuales = useMemo(() => ESCANOS.map(() => gris.clone()), [gris]);
-  const destinos = ESCANOS.map((_, i) => (i >= desde && i < hasta ? rojo : gris));
+  const destinos = ESCANOS.map((_, i) => (enBloques(bloques, i) ? rojo : gris));
   const invalidate = useThree((s) => s.invalidate);
   const camara = useThree((s) => s.camera) as PerspectiveCamera;
   const aspecto = useThree((s) => s.size.width / s.size.height);
@@ -49,7 +50,8 @@ function Escanos({ desde, hasta }: { desde: number; hasta: number }) {
   }, [camara, aspecto, invalidate]);
 
   // frameloop="demand" only draws on request: start the transition on every new selection.
-  useEffect(() => invalidate(), [desde, hasta, invalidate]);
+  const clave = bloques.join(";");
+  useEffect(() => invalidate(), [clave, invalidate]);
 
   useLayoutEffect(() => {
     const m = malla.current!;
@@ -84,12 +86,10 @@ function Escanos({ desde, hasta }: { desde: number; hasta: number }) {
 }
 
 export default function Hemiciclo3D({
-  desde,
-  hasta,
+  bloques,
   etiqueta,
 }: {
-  desde: number;
-  hasta: number;
+  bloques: Bloques;
   etiqueta: string;
 }) {
   return (
@@ -97,7 +97,7 @@ export default function Hemiciclo3D({
       <Canvas frameloop="demand" camera={{ position: CAMARA }} dpr={[1, 2]}>
         <ambientLight intensity={2} />
         <directionalLight position={[0, 6, 4]} intensity={1.5} />
-        <Escanos desde={desde} hasta={hasta} />
+        <Escanos bloques={bloques} />
       </Canvas>
     </div>
   );

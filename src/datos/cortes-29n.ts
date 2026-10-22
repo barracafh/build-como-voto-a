@@ -4,7 +4,7 @@
 
 type Circunscripcion = readonly [nombre: string, diputados: number, senadores: number];
 
-const CORTES: Record<string, { nombre: string; circunscripciones: readonly Circunscripcion[] }> = {
+export const CORTES: Record<string, { nombre: string; circunscripciones: readonly Circunscripcion[] }> = {
   "01": {
     nombre: "Andalucía",
     circunscripciones: [

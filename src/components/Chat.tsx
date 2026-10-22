@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Fuentes } from "@/components/Fuentes";
 import { ruta } from "@/config/sitio";
+import { leerParcial } from "@/lib/parcial";
 
 type Turno = { pregunta: string; respuesta: Respuesta };
 
@@ -62,7 +63,12 @@ export function Chat({ modo }: { modo: Modo }) {
   // La pregunta que espera respuesta; mientras no es null, se está consultando.
   const [pendiente, setPendiente] = useState<string | null>(null);
   const cargando = pendiente !== null;
+  // El texto del modelo según llega, antes de validarlo.
+  const [parcial, setParcial] = useState("");
   const [error, setError] = useState("");
+  // En el verificador el veredicto exige cita validada: no se adelanta nada.
+  const vivo =
+    modo === "verificar" ? { respuesta: "", pasos: [] } : leerParcial(parcial);
   const campo = useRef<HTMLTextAreaElement>(null);
   const espera = useRef<HTMLElement>(null);
 
@@ -74,6 +80,7 @@ export function Chat({ modo }: { modo: Modo }) {
     pregunta = pregunta.trim();
     if (!pregunta || cargando) return;
     setPendiente(pregunta);
+    setParcial("");
     setError("");
     const mensajes = [
       ...turnos.flatMap((t) => [
@@ -88,9 +95,29 @@ export function Chat({ modo }: { modo: Modo }) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ modo, mensajes }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      setTurnos((t) => [...t, { pregunta, respuesta: data }]);
+      if (!res.ok || !res.body) throw new Error((await res.json()).error);
+      // NDJSON: {"trozo"} según llega el texto y, al final, {"fin"} o {"error"}.
+      const lector = res.body.pipeThrough(new TextDecoderStream()).getReader();
+      let resto = "";
+      let acumulado = "";
+      let fin: Respuesta | undefined;
+      for (;;) {
+        const { done, value } = await lector.read();
+        if (done) break;
+        resto += value;
+        const lineas = resto.split("\n");
+        resto = lineas.pop() ?? "";
+        for (const linea of lineas) {
+          if (!linea.trim()) continue;
+          const dato = JSON.parse(linea);
+          if (dato.error) throw new Error(dato.error);
+          if (dato.trozo) setParcial((acumulado += dato.trozo));
+          if (dato.fin) fin = dato.fin;
+        }
+      }
+      if (!fin) throw new Error();
+      const respuesta = fin;
+      setTurnos((t) => [...t, { pregunta, respuesta }]);
       setTexto("");
     } catch (e) {
       setError(
@@ -100,6 +127,7 @@ export function Chat({ modo }: { modo: Modo }) {
       );
     } finally {
       setPendiente(null);
+      setParcial("");
       campo.current?.focus();
     }
   }
@@ -190,16 +218,42 @@ export function Chat({ modo }: { modo: Modo }) {
               aria-hidden="true"
               className="size-6 shrink-0 text-brand motion-safe:animate-spin"
             />
-            <span className="brillo">Consultando las fuentes oficiales…</span>
+            <span className="brillo">
+              {vivo.respuesta
+                ? "Redactando con las fuentes oficiales…"
+                : "Consultando las fuentes oficiales…"}
+            </span>
           </p>
-          <div aria-hidden="true" className="grid gap-3">
-            {["w-full", "w-11/12", "w-3/4"].map((ancho) => (
-              <div
-                key={ancho}
-                className={`h-4 rounded-md bg-muted motion-safe:animate-pulse ${ancho}`}
-              />
-            ))}
-          </div>
+          {vivo.respuesta ? (
+            // Borrador en vivo: se sustituye por la respuesta validada.
+            <div aria-hidden="true" className="[&>*+*]:mt-6">
+              <p>{vivo.respuesta}</p>
+              {vivo.pasos.length > 0 && (
+                <ol className="grid gap-5">
+                  {vivo.pasos.map((paso, j) => (
+                    <li
+                      key={j}
+                      className="grid grid-cols-[24px_minmax(0,1fr)] gap-x-3 md:grid-cols-[32px_minmax(0,1fr)] md:gap-x-4"
+                    >
+                      <span className="text-[22px] leading-[1.1] font-light text-brand tabular-nums md:text-[26px]">
+                        {j + 1}
+                      </span>
+                      <p>{paso}</p>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
+          ) : (
+            <div aria-hidden="true" className="grid gap-3">
+              {["w-full", "w-11/12", "w-3/4"].map((ancho) => (
+                <div
+                  key={ancho}
+                  className={`h-4 rounded-md bg-muted motion-safe:animate-pulse ${ancho}`}
+                />
+              ))}
+            </div>
+          )}
         </section>
       )}
 

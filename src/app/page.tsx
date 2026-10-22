@@ -4,16 +4,9 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chat } from "@/components/Chat";
 import { Fuentes } from "@/components/Fuentes";
-import { LineaTiempo } from "@/components/LineaTiempo";
 import { Pagina, Titular } from "@/components/Pagina";
-import {
-  diasHasta,
-  estado,
-  fechaLarga,
-  fuenteCalendario,
-  hoy,
-  plazo,
-} from "@/lib/calendario";
+import { PlazosAbiertos } from "@/components/PlazosAbiertos";
+import { diasHasta, fechaLarga, fuenteCalendario, plazo } from "@/lib/calendario";
 
 // Los plazos se abren y cierran por fecha: se recalcula cada hora.
 export const revalidate = 3600;
@@ -35,22 +28,6 @@ const piezas = [
     texto: "La ley D'Hondt con los resultados oficiales de 2023, provincia a provincia.",
   },
 ];
-
-// Solo plazos que afectan a quien vota; nada de candidaturas ni sondeos.
-// corto: etiqueta en el gráfico; titulo, el paso en la lista. El detalle es
-// el texto del propio calendario.
-const plazosElector = [
-  ["erta_solicitud", "ERTA · pedir", "Pide el voto si estarás fuera (ERTA)"],
-  ["braille_solicitud", "Braille · pedir", "Pide el voto en Braille"],
-  ["voto_correo_solicitud", "Correo · pedir", "Pide el voto por correo"],
-  ["cera_voto_correo", "CERA · enviar", "Envía tu voto si vives fuera (CERA)"],
-  ["voto_correo_remision", "Correo · enviar", "Envía el voto por correo"],
-  ["erta_remision_voto", "ERTA · enviar", "Envía tu voto si estás fuera (ERTA)"],
-  ["cera_deposito_urna", "CERA · urna", "Vota en tu consulado (CERA)"],
-].map(([id, corto, titulo]) => {
-  const p = plazo(id);
-  return { plazo: p, corto, titulo, detalle: p.evento };
-});
 
 const votacion = plazo("votacion");
 // El horario también sale del calendario («Jornada de votación, de 9:00 a 20:00»).
@@ -80,11 +57,6 @@ function cuentasAtras(): string[] {
 }
 
 export default function Home() {
-  const dia = hoy();
-  const vigentes = plazosElector
-    .filter((p) => estado(p.plazo, dia) !== "cerrado")
-    .sort((a, b) => a.plazo.fin.localeCompare(b.plazo.fin));
-
   return (
     <Pagina>
       <Titular
@@ -161,39 +133,7 @@ export default function Home() {
           </div>
         </div>
 
-        {vigentes.length > 0 && (
-          <div>
-            <h2
-              id="plazos"
-              className="font-sans text-[clamp(30px,5vw,44px)] leading-[1.08] tracking-[-0.03em]"
-            >
-              Plazos que siguen abiertos
-            </h2>
-            <div className="mt-6">
-              <LineaTiempo
-                hoy={dia}
-                origen={{
-                  plazo: plazo("convocatoria_boe"),
-                  nombre: "Convocatoria",
-                }}
-                meta={{ plazo: votacion, nombre: "Votación" }}
-                bandas={[
-                  {
-                    plazo: plazo("campana"),
-                    nombre: "Campaña",
-                    estilo: "relleno",
-                  },
-                  {
-                    plazo: plazo("jornada_reflexion"),
-                    nombre: "Reflexión",
-                    estilo: "linea",
-                  },
-                ]}
-                tramos={vigentes}
-              />
-            </div>
-          </div>
-        )}
+        <PlazosAbiertos />
 
         <Card
           render={<section />}
@@ -229,6 +169,14 @@ export default function Home() {
             {
               nombre: "Horario de votación · Art. 84.1 LOREG",
               url: votacion.fuentesAdicionales[0],
+            },
+            {
+              nombre: "Plazos para los electores · INE",
+              url: "https://www.ine.es/dyngs/CEL/index.htm?cid=1702",
+            },
+            {
+              nombre: "Voto accesible · Ministerio del Interior",
+              url: "https://infoelectoral.interior.gob.es/es/proceso-electoral/accesibilidad-y-procesos-electorales/",
             },
             { nombre: "Consulta de mesa y local · INE", url: mesaIne },
             {

@@ -1,7 +1,8 @@
-import { ESCANOS, TONOS } from "@/datos/hemiciclo";
+import { ESCANOS } from "@/datos/hemiciclo";
 
 // Hemiciclo de 350 puntos de Barraca.pen. Los escaños [desde, hasta) se pintan
-// en rojo; el resto conserva sus tonos grises anónimos. El sol es decorativo.
+// en rojo; el resto, en un único gris. Cada punto crece al
+// pasar el ratón por encima.
 export function Hemiciclo({
   desde,
   hasta,
@@ -13,21 +14,19 @@ export function Hemiciclo({
 }) {
   return (
     <svg
-      viewBox="130 90 1020 630"
+      viewBox="130 90 1020 540"
       role="img"
       aria-label={etiqueta}
       className="block h-auto w-full"
     >
-      <circle cx="643" cy="610" r="180" fill="var(--brand-yellow)" opacity="0.35" />
-      <circle cx="643" cy="610" r="150" fill="var(--brand-yellow)" />
-      {ESCANOS.map(([cx, cy, tono], i) => (
+      {ESCANOS.map(([cx, cy], i) => (
         <circle
           key={i}
           cx={cx}
           cy={cy}
           r="10"
-          fill={i >= desde && i < hasta ? "var(--brand)" : TONOS[tono]}
-          className="motion-safe:transition-colors motion-safe:duration-300"
+          fill={i >= desde && i < hasta ? "var(--brand)" : "var(--disabled-foreground)"}
+          className="origin-center [transform-box:fill-box] hover:scale-140 motion-safe:transition-[fill,scale] motion-safe:duration-100"
         />
       ))}
     </svg>

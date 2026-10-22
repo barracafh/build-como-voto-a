@@ -19,16 +19,12 @@ const referencias = [
     "Son las filas de asientos. Solo ordenan los 350 puntos en forma de hemiciclo: no tienen significado propio.",
   ],
   [
-    "Los bloques grises",
-    "Cada cuña es un grupo de escaños y los pasillos los separan. Los tonos son anónimos e ilustrativos: no representan partidos, resultados ni previsiones.",
+    "El gris",
+    "Todos los escaños empiezan en el mismo gris: no representa partidos, resultados ni previsiones.",
   ],
   [
     "El grupo en rojo",
-    "Son los escaños de la provincia que elijas; al abrir, los 16 de València/Valencia. Su posición en el hemiciclo es ilustrativa: no es dónde se sientan sus diputados.",
-  ],
-  [
-    "El sol",
-    "Es decorativo y viene de la identidad visual de Reforma Digital. No mide ni representa ningún dato.",
+    "Son los diputados de la comunidad que señales en el mapa. Su posición en el hemiciclo es ilustrativa: no es dónde se sientan.",
   ],
 ];
 
@@ -72,8 +68,6 @@ export default function EscanosPage() {
         entradilla="Cada punto es un escaño. Esta es la gramática de la ilustración y lo que representa cada elemento."
       />
       <div className="mt-16 text-lg [&>*+*]:mt-16">
-        <Escanos provincias={provincias} />
-
         <section aria-labelledby="comunidades" className="[&>*+*]:mt-6">
           <h2 id="comunidades" className="text-[clamp(28px,4vw,40px)] leading-[1.1]">
             Diputados y senadores por comunidad
@@ -85,6 +79,8 @@ export default function EscanosPage() {
             LOREG); cada parlamento autonómico designa además otros, que no se suman aquí.
           </p>
         </section>
+
+        <Escanos provincias={provincias} />
 
         <section aria-labelledby="referencias">
           <h2

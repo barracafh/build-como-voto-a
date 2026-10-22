@@ -3,7 +3,6 @@
 import { useId, useState } from "react";
 import type { Provincia } from "@/datos/resultados";
 import { dhondt } from "@/lib/dhondt";
-import { Hemiciclo } from "./Hemiciclo";
 import { TablaCocientes, TablaResultados, fmt } from "./Tablas";
 
 const POR_DEFECTO = "46"; // València/Valencia
@@ -14,20 +13,24 @@ const MOSTRAR_SELECTOR = false;
 export function Escanos({ provincias }: { provincias: readonly Provincia[] }) {
   const id = useId();
   const [codigo, setCodigo] = useState(POR_DEFECTO);
-  const indice = provincias.findIndex((p) => p.codigo === codigo);
-  const p = provincias[indice];
-  // Cada provincia ocupa un bloque contiguo de escaños, en orden de código INE.
-  const desde = provincias.slice(0, indice).reduce((s, q) => s + q.escanos, 0);
+  const p = provincias.find((q) => q.codigo === codigo)!;
   const { resultados, cocientes } = dhondt(p.candidaturas, p.votosValidos, p.escanos);
   const coincide = resultados.every((r, i) => r.escanos === p.candidaturas[i].escanosOficiales);
   const conEscano = resultados.filter((r) => r.escanos > 0);
 
   return (
     <>
-      <section aria-labelledby={`${id}-nacional`} className="[&>*+*]:mt-6">
-        <h2 id={`${id}-nacional`} className="text-[clamp(28px,4vw,40px)] leading-[1.1]">
-          Los escaños de cada provincia
-        </h2>
+      <section aria-labelledby={`${id}-provincial`} className="[&>*+*]:mt-6">
+        <div>
+          <h2 id={`${id}-provincial`} className="text-[clamp(28px,4vw,40px)] leading-[1.1]">
+            Cómo se repartieron en {p.nombre}
+          </h2>
+          <p className="mt-3 text-base text-(--text-secondary)">
+            Resultados reales: {fmt.format(p.votosValidos)} votos válidos, de ellos{" "}
+            {fmt.format(p.votosBlanco)} en blanco. El 3 % son{" "}
+            {fmt.format(Math.ceil(p.votosValidos * 0.03))} votos.
+          </p>
+        </div>
         {MOSTRAR_SELECTOR && (
         <div className="grid gap-2">
           <label htmlFor={`${id}-provincia`} className="text-base font-medium">
@@ -47,32 +50,6 @@ export function Escanos({ provincias }: { provincias: readonly Provincia[] }) {
           </select>
         </div>
         )}
-        <Hemiciclo
-          desde={desde}
-          hasta={desde + p.escanos}
-          etiqueta={`Hemiciclo de 350 escaños con los ${p.escanos} de ${p.nombre} en rojo`}
-        />
-        <p aria-live="polite" className="flex flex-wrap items-baseline gap-x-3">
-          <span className="font-heading text-[clamp(48px,8vw,72px)] leading-none tabular-nums">
-            {p.escanos}
-          </span>
-          <span className="text-lg">
-            {p.escanos === 1 ? "escaño" : "escaños"} de 350 · {p.nombre}
-          </span>
-        </p>
-      </section>
-
-      <section aria-labelledby={`${id}-provincial`} className="[&>*+*]:mt-6">
-        <div>
-          <h2 id={`${id}-provincial`} className="text-[clamp(28px,4vw,40px)] leading-[1.1]">
-            Cómo se repartieron en {p.nombre}
-          </h2>
-          <p className="mt-3 text-base text-(--text-secondary)">
-            Resultados reales: {fmt.format(p.votosValidos)} votos válidos, de ellos{" "}
-            {fmt.format(p.votosBlanco)} en blanco. El 3 % son{" "}
-            {fmt.format(Math.ceil(p.votosValidos * 0.03))} votos.
-          </p>
-        </div>
         <TablaResultados
           filas={resultados}
           votosValidos={p.votosValidos}

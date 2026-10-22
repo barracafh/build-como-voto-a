@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { CalendarioEspana } from "@/components/CalendarioEspana";
+import {
+  CalendarioExtranjero,
+  descargaPapeletas,
+} from "@/components/CalendarioExtranjero";
 import { Chat } from "@/components/Chat";
 import { Fuentes, type Source } from "@/components/Fuentes";
 import { Pagina, Titular } from "@/components/Pagina";
@@ -41,6 +45,7 @@ const opciones = {
         nombre: "Art. 75 LOREG · BOE",
         url: "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#asetentaycinco",
       },
+      { nombre: "Descarga de papeletas · INE", url: descargaPapeletas },
     ],
   },
 } as const;
@@ -130,7 +135,11 @@ function Elegida({ opcion }: { opcion: (typeof opciones)[Donde] }) {
         <p>{p.evento}</p>
       </Card>
 
-      {opcion.modo === "correo-aqui" && <CalendarioEspana />}
+      {opcion.modo === "correo-aqui" ? (
+        <CalendarioEspana />
+      ) : (
+        <CalendarioExtranjero />
+      )}
 
       <Fuentes fuentes={fuentes} />
 

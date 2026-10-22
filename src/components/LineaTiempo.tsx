@@ -5,18 +5,23 @@ import { Card } from "@/components/ui/card";
 import { estado, fechaLarga, rango, type Plazo } from "@/lib/calendario";
 import {
   cierraEn,
+  filas,
   marcas,
   posicion,
   tramo,
   type Escala,
+  type Fila,
+  type Tramo,
 } from "@/lib/linea-tiempo";
 
-// corto: etiqueta de la barra en el gráfico; titulo y detalle, el paso en la lista.
+// corto: etiqueta de la barra en el gráfico; titulo y detalle, el paso en la
+// lista. hito: un día suelto dentro del carril (p. ej. papeletas descargables).
 export type Paso = {
   plazo: Plazo;
   corto: string;
   titulo: string;
   detalle: ReactNode;
+  hito?: { fecha: string; nombre: string };
 };
 export type Hito = { plazo: Plazo; nombre: string };
 // «relleno» para periodos largos (campaña), «linea» para días sueltos (reflexión).
@@ -35,22 +40,26 @@ const estiloBanda = {
   linea: "border-x border-dashed border-foreground/30",
 };
 
+const sol =
+  "absolute size-6 -translate-x-1/2 rounded-full bg-brand-yellow ring-4 ring-background motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]";
+
 // Un gráfico de carriles, del origen a la meta, y debajo los mismos pasos como
 // lista numerada. El gráfico es decorativo: todo su contenido está en la lista.
 export function LineaTiempo({
   origen,
   meta,
-  pasos,
+  tramos,
   bandas = [],
   hoy,
 }: {
   origen: Hito; // la convocatoria: primer día del eje
   meta: Hito; // la votación: último día del eje, dibujado como el sol
-  pasos: readonly Paso[];
+  tramos: readonly Tramo<Paso>[];
   bandas?: readonly Banda[];
   hoy: string;
 }) {
   const escala = { desde: origen.plazo.inicio, hasta: meta.plazo.fin };
+  const lista = filas(tramos);
 
   return (
     <div className="[&>*+*]:mt-10">
@@ -58,14 +67,23 @@ export function LineaTiempo({
         escala={escala}
         origen={origen}
         meta={meta}
-        pasos={pasos}
+        filas={lista}
         bandas={bandas}
         hoy={hoy}
       />
       <ol className="grid gap-6">
-        {pasos.map((paso, i) => (
-          <PasoTexto key={paso.plazo.id} numero={i + 1} paso={paso} hoy={hoy} />
-        ))}
+        {lista.map((f) =>
+          f.tipo === "paso" ? (
+            <PasoTexto key={f.paso.plazo.id} numero={f.numero} paso={f.paso} hoy={hoy} />
+          ) : (
+            <li key={f.letra} className={cn(!f.eleccion && "mt-4")}>
+              {f.eleccion && <p className="font-medium">{f.eleccion}</p>}
+              <h3 className="mt-1 font-mono text-sm tracking-[0.06em] uppercase">
+                <span className="text-brand">{f.letra}</span> · {f.nombre}
+              </h3>
+            </li>
+          ),
+        )}
       </ol>
     </div>
   );
@@ -75,18 +93,26 @@ function Grafico({
   escala,
   origen,
   meta,
-  pasos,
+  filas,
   bandas,
   hoy,
 }: {
   escala: Escala;
   origen: Hito;
   meta: Hito;
-  pasos: readonly Paso[];
+  filas: readonly Fila<Paso>[];
   bandas: readonly Banda[];
   hoy: string;
 }) {
   const verHoy = hoy >= escala.desde && hoy <= escala.hasta;
+  const t = tramo(meta.plazo.inicio, meta.plazo.fin, escala);
+  const centroMeta = t.izquierda + t.ancho / 2;
+  const metaEsPaso = filas.some(
+    (f) => f.tipo === "paso" && f.paso.plazo.id === meta.plazo.id,
+  );
+  const hitos = filas.flatMap((f) =>
+    f.tipo === "paso" && f.paso.hito ? [f.paso.hito] : [],
+  );
 
   return (
     <Card aria-hidden="true" className="gap-0 px-4 py-5 md:px-6 md:py-6">
@@ -94,12 +120,12 @@ function Grafico({
       <div className="relative mx-3 pt-7">
         <div className="absolute inset-0">
           {bandas.map((b) => {
-            const t = tramo(b.plazo.inicio, b.plazo.fin, escala);
+            const tb = tramo(b.plazo.inicio, b.plazo.fin, escala);
             return (
               <div
                 key={b.plazo.id}
                 className={cn("absolute inset-y-0 rounded-md", estiloBanda[b.estilo])}
-                style={{ left: `${t.izquierda}%`, width: `${t.ancho}%` }}
+                style={{ left: `${tb.izquierda}%`, width: `${tb.ancho}%` }}
               />
             );
           })}
@@ -116,16 +142,33 @@ function Grafico({
         </div>
 
         <div className="relative grid gap-3 pb-3">
-          {pasos.map((paso, i) => (
-            <Barra
-              key={paso.plazo.id}
-              numero={i + 1}
-              paso={paso}
-              escala={escala}
-              hoy={hoy}
-              esMeta={paso.plazo.id === meta.plazo.id}
-            />
-          ))}
+          {filas.map((f, i) =>
+            f.tipo === "paso" ? (
+              <Barra
+                key={f.paso.plazo.id}
+                orden={i}
+                numero={f.numero}
+                paso={f.paso}
+                escala={escala}
+                hoy={hoy}
+                esMeta={f.paso.plazo.id === meta.plazo.id}
+                centroMeta={centroMeta}
+              />
+            ) : (
+              <p
+                key={f.letra}
+                className="font-mono text-xs tracking-[0.06em] text-(--text-secondary) uppercase"
+              >
+                <span className="text-brand">{f.letra}</span> · {f.nombre}
+              </p>
+            ),
+          )}
+          {/* Si la votación no es un paso, el sol tiene su propia fila. */}
+          {!metaEsPaso && (
+            <div className="relative h-6">
+              <span className={cn(sol, "top-0")} style={{ left: `${centroMeta}%` }} />
+            </div>
+          )}
         </div>
       </div>
 
@@ -141,6 +184,12 @@ function Grafico({
             Hoy, {fechaLarga(hoy)}
           </li>
         )}
+        {hitos.map((h) => (
+          <li key={h.fecha + h.nombre} className="flex items-center gap-2">
+            <span className="size-2.5 rotate-45 bg-foreground" />
+            {h.nombre}, {fechaLarga(h.fecha)}
+          </li>
+        ))}
         {bandas.map((b) => (
           <li key={b.plazo.id} className="flex items-center gap-2">
             <span className={cn("h-4 w-3 rounded-sm", estiloBanda[b.estilo])} />
@@ -157,17 +206,21 @@ function Grafico({
 }
 
 function Barra({
+  orden,
   numero,
   paso,
   escala,
   hoy,
   esMeta,
+  centroMeta,
 }: {
-  numero: number;
+  orden: number;
+  numero: string;
   paso: Paso;
   escala: Escala;
   hoy: string;
   esMeta: boolean;
+  centroMeta: number;
 }) {
   const e = estado(paso.plazo, hoy);
   const t = tramo(paso.plazo.inicio, paso.plazo.fin, escala);
@@ -178,6 +231,8 @@ function Barra({
     e === "abierto"
       ? (tramo(paso.plazo.inicio, hoy, escala).ancho / t.ancho) * 100
       : 0;
+  const h = paso.hito && tramo(paso.hito.fecha, paso.hito.fecha, escala);
+  const centroHito = h ? h.izquierda + h.ancho / 2 : 0;
 
   return (
     <div className="relative h-11">
@@ -194,8 +249,8 @@ function Barra({
       <div className="absolute inset-x-0 bottom-1.5 h-px bg-border" />
       {esMeta ? (
         <span
-          className="absolute bottom-1.5 size-6 -translate-x-1/2 translate-y-1/2 rounded-full bg-brand-yellow ring-4 ring-background motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]"
-          style={{ left: `${t.izquierda + t.ancho / 2}%` }}
+          className={cn(sol, "bottom-1.5 translate-y-1/2")}
+          style={{ left: `${centroMeta}%` }}
         />
       ) : (
         <div
@@ -208,13 +263,19 @@ function Barra({
           style={{
             left: `${t.izquierda}%`,
             width: `${t.ancho}%`,
-            animationDelay: `${numero * 120}ms`,
+            animationDelay: `${orden * 60}ms`,
           }}
         >
           {pasado > 0 && (
             <div className="h-full bg-background/70" style={{ width: `${pasado}%` }} />
           )}
         </div>
+      )}
+      {paso.hito && (
+        <span
+          className="absolute bottom-0.5 size-2.5 -translate-x-1/2 rotate-45 bg-foreground ring-2 ring-background"
+          style={{ left: `${centroHito}%` }}
+        />
       )}
     </div>
   );
@@ -225,7 +286,7 @@ function PasoTexto({
   paso,
   hoy,
 }: {
-  numero: number;
+  numero: string;
   paso: Paso;
   hoy: string;
 }) {
@@ -233,7 +294,7 @@ function PasoTexto({
   const quedan = cierraEn(paso.plazo.fin, hoy);
 
   return (
-    <li className="grid grid-cols-[24px_minmax(0,1fr)] gap-x-3 md:grid-cols-[32px_minmax(0,1fr)] md:gap-x-4">
+    <li className="grid grid-cols-[32px_minmax(0,1fr)] gap-x-3 md:grid-cols-[40px_minmax(0,1fr)] md:gap-x-4">
       <span className="text-[22px] leading-[1.1] font-light text-brand tabular-nums md:text-[26px]">
         {numero}
       </span>

@@ -51,3 +51,41 @@ export function marcas(e: Escala): Marca[] {
 export function cierraEn(fin: string, hoy: string): number {
   return dias(hoy, fin);
 }
+
+// Pasos con bifurcaciones: caminos alternativos (se hace uno u otro). Cada
+// camino numera sus pasos con su letra (2A, 3A… / 2B…) y la cuenta sigue
+// después del camino más largo.
+export type Camino<P> = { letra: string; nombre: string; pasos: readonly P[] };
+export type Bifurcacion<P> = { eleccion: string; caminos: readonly Camino<P>[] };
+export type Tramo<P> = P | Bifurcacion<P>;
+
+export type Fila<P> =
+  | { tipo: "paso"; paso: P; numero: string }
+  | { tipo: "camino"; letra: string; nombre: string; eleccion?: string };
+
+const esBifurcacion = <P extends object>(t: Tramo<P>): t is Bifurcacion<P> =>
+  "caminos" in t;
+
+export function filas<P extends object>(tramos: readonly Tramo<P>[]): Fila<P>[] {
+  const lista: Fila<P>[] = [];
+  let n = 1;
+  for (const t of tramos) {
+    if (!esBifurcacion(t)) {
+      lista.push({ tipo: "paso", paso: t, numero: String(n++) });
+      continue;
+    }
+    t.caminos.forEach((c, i) => {
+      lista.push({
+        tipo: "camino",
+        letra: c.letra,
+        nombre: c.nombre,
+        ...(i === 0 && { eleccion: t.eleccion }),
+      });
+      c.pasos.forEach((paso, j) =>
+        lista.push({ tipo: "paso", paso, numero: `${n + j}${c.letra}` }),
+      );
+    });
+    n += Math.max(...t.caminos.map((c) => c.pasos.length));
+  }
+  return lista;
+}

@@ -1,5 +1,12 @@
 import { describe, expect, test } from "bun:test";
-import { cierraEn, dias, marcas, posicion, tramo } from "./linea-tiempo";
+import {
+  cierraEn,
+  dias,
+  filas,
+  marcas,
+  posicion,
+  tramo,
+} from "./linea-tiempo";
 
 const escala = { desde: "2026-10-06", hasta: "2026-11-29" }; // 55 días
 
@@ -67,5 +74,39 @@ describe("cierraEn", () => {
   test("días que faltan hasta el cierre", () => {
     expect(cierraEn("2026-11-19", "2026-10-22")).toBe(28);
     expect(cierraEn("2026-11-19", "2026-11-19")).toBe(0);
+  });
+});
+
+describe("filas", () => {
+  const p = (id: string) => ({ id });
+
+  test("sin bifurcaciones numera en orden", () => {
+    expect(filas([p("a"), p("b")])).toEqual([
+      { tipo: "paso", paso: p("a"), numero: "1" },
+      { tipo: "paso", paso: p("b"), numero: "2" },
+    ]);
+  });
+
+  test("una bifurcación numera cada camino con su letra y sigue después", () => {
+    const r = filas([
+      p("doc"),
+      {
+        eleccion: "Elige una",
+        caminos: [
+          { letra: "A", nombre: "Por correo", pasos: [p("correo1"), p("correo2")] },
+          { letra: "B", nombre: "En urna", pasos: [p("urna")] },
+        ],
+      },
+      p("votacion"),
+    ]);
+    expect(r).toEqual([
+      { tipo: "paso", paso: p("doc"), numero: "1" },
+      { tipo: "camino", letra: "A", nombre: "Por correo", eleccion: "Elige una" },
+      { tipo: "paso", paso: p("correo1"), numero: "2A" },
+      { tipo: "paso", paso: p("correo2"), numero: "3A" },
+      { tipo: "camino", letra: "B", nombre: "En urna" },
+      { tipo: "paso", paso: p("urna"), numero: "2B" },
+      { tipo: "paso", paso: p("votacion"), numero: "4" },
+    ]);
   });
 });

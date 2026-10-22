@@ -45,16 +45,16 @@ const BLOQUE: Record<string, readonly [number, number]> = Object.fromEntries(
   }),
 );
 
-// Una columna: arriba, el hemiciclo con los diputados de las comunidades señaladas;
-// debajo, el mapa de Barraca.pen; luego, lo que suman en el Congreso y en el Senado el
-// 29N, sus electores frente a la media de España y sus provincias en tarjetas con scroll
-// horizontal. Pulsar una comunidad la deja marcada y se pueden marcar varias; pulsarla
-// otra vez la quita. Pasar por encima añade la comunidad mientras dura. Sin comunidad,
-// todo en gris. Funciona con ratón, teclado y toque. «Ver en 3D» abre el mismo hemiciclo
-// en 3D a pantalla completa, inmersivo, con una barra de control y el mapa flotando
-// encima; allí solo el clic mueve los escaños y la cámara. Bajo el hemiciclo, el
-// reproductor de las narraciones. Al final, el peso de las 52 circunscripciones, con las
-// de las comunidades señaladas en rojo.
+// Arriba, el reproductor de las narraciones; debajo, el mapa de Barraca.pen y, a su
+// derecha, el hemiciclo con los diputados de las comunidades señaladas (en móvil, uno bajo
+// el otro); luego, lo que suman en el Congreso y en el Senado el 29N, sus electores frente
+// a la media de España y sus provincias en tarjetas con scroll horizontal. Pulsar una
+// comunidad la deja marcada y se pueden marcar varias; pulsarla otra vez la quita. Pasar
+// por encima añade la comunidad mientras dura. Sin comunidad, todo en gris. Funciona con
+// ratón, teclado y toque. «Ver en 3D» abre el mismo hemiciclo en 3D a pantalla completa,
+// inmersivo, con una barra de control y el mapa flotando encima; allí solo el clic mueve
+// los escaños y la cámara. Al final, el peso de las 52 circunscripciones, con las de las
+// comunidades señaladas en rojo.
 export function MapaCortes() {
   const { t } = useIdioma();
   const [fijadas, setFijadas] = useState<readonly string[]>([]);
@@ -278,17 +278,21 @@ export function MapaCortes() {
   return (
     <>
       <div className="grid grid-cols-[minmax(0,1fr)] gap-8">
-        <div className="relative flex flex-col items-end gap-3 sm:block">
-          <Hemiciclo bloques={bloques} etiqueta={etiqueta} />
-          <Button variant="sunset" className="-order-1 sm:absolute sm:top-0 sm:right-0" onClick={() => setAbierto(true)}>
-            <Rotate3d data-icon="inline-start" aria-hidden="true" />
-            {t("Ver en 3D")}
-          </Button>
-        </div>
-
         <Reproductor pistas={pistas} />
 
-        {mapa}
+        {/* Mapa y hemiciclo en la misma fila: al pasar por una comunidad se ve su bloque al lado. */}
+        <div className="grid grid-cols-[minmax(0,1fr)] items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          {mapa}
+          <div className="flex flex-col items-end gap-3">
+            <Button variant="sunset" onClick={() => setAbierto(true)}>
+              <Rotate3d data-icon="inline-start" aria-hidden="true" />
+              {t("Ver en 3D")}
+            </Button>
+            <div className="w-full">
+              <Hemiciclo bloques={bloques} etiqueta={etiqueta} />
+            </div>
+          </div>
+        </div>
 
         {leyenda(activas)}
 

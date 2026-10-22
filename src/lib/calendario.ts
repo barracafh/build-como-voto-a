@@ -121,3 +121,20 @@ export const fuenteCalendario = {
   nombre: marcar("Calendario electoral · Junta Electoral Central"),
   url: "https://www.juntaelectoralcentral.es/cs/jec/documentos/eg2026_calendario.pdf",
 };
+
+// Nombre corto del organismo de la fuente de un plazo, para enlazarla. Se
+// traduce con t() al pintarlo.
+const organismos: [string, string][] = [
+  ["juntaelectoralcentral.es", marcar("Junta Electoral Central")],
+  ["boe.es", marcar("BOE")],
+  ["ine.es", marcar("INE")],
+  ["interior.gob.es", marcar("Ministerio del Interior")],
+];
+
+export function nombreFuente(url: string): string {
+  const host = new URL(url).hostname;
+  const organismo = organismos.find(
+    ([dominio]) => host === dominio || host.endsWith(`.${dominio}`),
+  );
+  return organismo?.[1] ?? host.replace(/^www\./, "");
+}

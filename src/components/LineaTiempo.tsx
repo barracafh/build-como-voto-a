@@ -2,10 +2,12 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Atardecer } from "@/components/Atardecer";
 import {
   estado,
   fechaCorta,
   fechaLarga,
+  nombreFuente,
   rango,
   type Plazo,
 } from "@/lib/calendario";
@@ -44,8 +46,9 @@ const estiloBanda = {
   linea: "border-x border-dashed border-foreground/30",
 };
 
+// El sol de la votación: el de cartel (Atardecer), latiendo.
 const sol =
-  "absolute size-6 -translate-x-1/2 rounded-full bg-brand-yellow ring-4 ring-background motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]";
+  "absolute size-6 -translate-x-1/2 rounded-full ring-4 ring-background motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]";
 
 // Un gráfico de carriles, del origen a la meta, y debajo los mismos pasos como
 // lista numerada. El gráfico es decorativo: todo su contenido está en la lista.
@@ -180,7 +183,7 @@ function Grafico({
           {/* Si la votación no es un paso, el sol tiene su propia fila. */}
           {!metaEsPaso && (
             <div className="relative h-6">
-              <span className={cn(sol, "top-0")} style={{ left: `${centroMeta}%` }} />
+              <Atardecer logo className={cn(sol, "top-0")} style={{ left: `${centroMeta}%` }} />
             </div>
           )}
         </div>
@@ -218,7 +221,7 @@ function Grafico({
           </li>
         ))}
         <li className="flex items-center gap-2">
-          <span className="size-3 rounded-full bg-brand-yellow" />
+          <Atardecer logo className="size-4" />
           {meta.nombre}, {fechaLarga(meta.plazo.inicio, idioma)}
         </li>
       </ul>
@@ -269,7 +272,8 @@ function Barra({
       </p>
       <div className="absolute inset-x-0 bottom-1.5 h-px bg-border" />
       {esMeta ? (
-        <span
+        <Atardecer
+          logo
           className={cn(sol, "bottom-1.5 translate-y-1/2")}
           style={{ left: `${centroMeta}%` }}
         />
@@ -338,6 +342,15 @@ function PasoTexto({
                 : t("Cierra en {n} días", { n: quedan })}
           </p>
         )}
+        <p className="mt-1 text-sm text-(--text-secondary)">
+          {t("Fuente:")}{" "}
+          <a
+            href={paso.plazo.fuente}
+            className="rounded-sm underline underline-offset-4 outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {t(nombreFuente(paso.plazo.fuente))}
+          </a>
+        </p>
       </div>
     </li>
   );

@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
 // Franjas que cortan el sol por abajo: [y, alto] en un sol de 200 de diámetro.
@@ -14,13 +14,22 @@ const franjas = [
 // las franjas de abajo, sobre una línea de horizonte. Sube al cargar la página
 // (con motion-safe). Es decorativo. Con `logo`, el sol entero, quieto y sin
 // horizonte (cabecera y pie).
-export function Atardecer({ className, logo = false }: { className?: string; logo?: boolean }) {
+// `style`, para colocarlo (p. ej. sobre el eje de una línea de tiempo).
+export function Atardecer({
+  className,
+  style,
+  logo = false,
+}: {
+  className?: string;
+  style?: CSSProperties;
+  logo?: boolean;
+}) {
   const id = useId();
   const degradado = `atardecer-color-${id}`;
   const recorte = `atardecer-sol-${id}`;
 
   return (
-    <div aria-hidden="true" className={cn("relative", className)}>
+    <div aria-hidden="true" className={cn("relative", className)} style={style}>
       <div className={cn("overflow-hidden", logo && "size-full")}>
         {/* Se corta antes del borde de abajo: el sol está saliendo. */}
         <svg

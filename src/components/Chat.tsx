@@ -16,6 +16,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Fuentes } from "@/components/Fuentes";
 import { Publicadas } from "@/components/Publicadas";
+import { Termometro } from "@/components/Termometro";
 import { ruta } from "@/config/sitio";
 import { useIdioma } from "@/i18n/cliente";
 import { marcar } from "@/i18n/traducir";
@@ -30,7 +31,7 @@ function Firma() {
   const { t } = useIdioma();
   return (
     <p className="flex items-center gap-2 font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
-      <span aria-hidden="true" className="size-2.5 rounded-full bg-brand-yellow ring-4 ring-brand-yellow/25" />
+      <Atardecer logo className="size-4" />
       {t("Con fuentes oficiales")}
     </p>
   );
@@ -253,6 +254,7 @@ export function Chat({ modo }: { modo: Modo }) {
           {!!turno.respuesta.publicadas?.length && (
             <Publicadas publicadas={turno.respuesta.publicadas} />
           )}
+          <Termometro respuesta={turno.respuesta} />
         </section>
       ))}
 

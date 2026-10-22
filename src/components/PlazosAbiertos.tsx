@@ -2,6 +2,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Atardecer } from "@/components/Atardecer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   estado,
@@ -289,8 +290,9 @@ function Grafico({
 
       <div className="relative">
         <Eje escala={escala} i18n={i18n} />
-        <span
-          className="absolute -top-4 left-3 size-8 -translate-x-1/2 rounded-full bg-brand-yellow ring-6 ring-brand-yellow/25 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]"
+        <Atardecer
+          logo
+          className="absolute -top-4 left-3 size-8 -translate-x-1/2 rounded-full ring-4 ring-background motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]"
           style={{ marginLeft: `calc((100% - 1.5rem) * ${centroMeta / 100})` }}
         />
       </div>
@@ -308,7 +310,7 @@ function Grafico({
           {t("Campaña")}
         </li>
         <li className="flex items-center gap-2">
-          <span className="size-3 rounded-full bg-brand-yellow" />{" "}
+          <Atardecer logo className="size-4" />{" "}
           {t("Votación, {fecha}", { fecha: fechaLarga(votacion.inicio, idioma) })}
         </li>
       </ul>

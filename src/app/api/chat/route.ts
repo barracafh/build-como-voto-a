@@ -1,4 +1,4 @@
-import { esModo, leerJson, sistema, validar } from "@/lib/asistente";
+import { conFicha, esModo, leerJson, sistema, validar } from "@/lib/asistente";
 import { buscarPublicadas } from "@/lib/factcheck";
 import { completarEnVivo, type Mensaje } from "@/lib/ia";
 import { traductorDe } from "@/i18n/diccionarios";
@@ -91,7 +91,9 @@ export async function POST(req: Request) {
           // la salida en bruto del modelo, solo la respuesta ya resuelta.
           if (modo !== "verificar") enviar({ trozo });
         }
-        const fin = validar(leerJson(texto), modo, ultima, t);
+        const validada = validar(leerJson(texto), modo, ultima, t, idioma);
+        const fin =
+          modo === "verificar" ? validada : conFicha(validada, ultima, t);
         if (fin.verificacion)
           fin.publicadas = await buscarPublicadas(fin.verificacion.afirmacion);
         enviar({ fin });

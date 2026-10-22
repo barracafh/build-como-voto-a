@@ -63,7 +63,7 @@ export async function Pagina({ children }: { children: ReactNode }) {
                 <Atardecer logo className="size-8 shrink-0" />
                 {ficha.nombre}
               </p>
-              <p className="mt-5 max-w-[16ch] font-heading text-[clamp(28px,3.5vw,40px)] leading-[1.08]">
+              <p className="mt-5 max-w-[16ch] text-[clamp(22px,2.6vw,28px)] font-medium leading-[1.2]">
                 {t(ficha.frase)}
               </p>
               <BotonAviso className="mt-8 bg-background text-foreground" />

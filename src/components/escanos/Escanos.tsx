@@ -2,11 +2,10 @@
 
 import { useId, useState } from "react";
 import type { Provincia } from "@/datos/resultados";
+import { PROVINCIA_POR_DEFECTO } from "@/datos/provincia";
 import { dhondt } from "@/lib/dhondt";
 import { TablaCocientes, TablaResultados, fmt } from "./Tablas";
 import { useIdioma } from "@/i18n/cliente";
-
-const POR_DEFECTO = "46"; // València/Valencia
 
 // ponytail: selector oculto por ahora; se muestra la provincia por defecto. Poner a true para reactivarlo.
 const MOSTRAR_SELECTOR = false;
@@ -14,7 +13,7 @@ const MOSTRAR_SELECTOR = false;
 export function Escanos({ provincias }: { provincias: readonly Provincia[] }) {
   const id = useId();
   const { t } = useIdioma();
-  const [codigo, setCodigo] = useState(POR_DEFECTO);
+  const [codigo, setCodigo] = useState(PROVINCIA_POR_DEFECTO);
   const p = provincias.find((q) => q.codigo === codigo)!;
   const { resultados, cocientes } = dhondt(p.candidaturas, p.votosValidos, p.escanos);
   const coincide = resultados.every((r, i) => r.escanos === p.candidaturas[i].escanosOficiales);

@@ -34,11 +34,11 @@ Una guía para votar el 29/11/2026 (aquí, por correo y desde el extranjero) y u
 
 Base: `contexto.md` §2.2 (España), §2.3 (CERA), §2.4 (ERTA), calendario.
 
-- [ ] Selector de perfil con controles nativos: resido en España y no estaré / resido fuera (CERA) / estaré fuera temporalmente (ERTA)
-- [ ] Mapear cada perfil a sus `id` del calendario → pasos numerados con fecha y enlace (BOE, JEC, Correos, INE)
-- [ ] Marcar plazos cerrados según la fecha de hoy (p. ej. ERTA termina el 31/10)
-- [ ] Tarjeta sol para el plazo más urgente del perfil
-- [ ] «Dónde se hace»: Correos, consulado, consulta de mesa del INE (`sede.ine.gob.es/ce-mesas`)
+- [x] [Implementador] Selector de perfil con controles nativos: resido en España y no estaré / resido fuera (CERA) / estaré fuera temporalmente (ERTA, `?donde=erta`)
+- [x] [Implementador] Mapear cada perfil a sus `id` del calendario → pasos numerados con fecha y enlace a la fuente de cada plazo
+- [x] [Implementador] Marcar plazos cerrados según la fecha de hoy y «cierra en N días» en los abiertos
+- [x] [Implementador] Tarjeta sol para el plazo más urgente del perfil (`urgente()` en `src/lib/plazos-abiertos.ts`)
+- [x] [Implementador] «Dónde se hace»: Correos, consulado, consulta de mesa del INE (`sede.ine.gob.es/ce-mesas`)
 - [ ] Opcional: texto libre → IA clasifica en un perfil (sin guardar el texto) y se muestra la misma respuesta determinista
 - [x] [Javier] Selector «Vivo en España / Vivo fuera de España» en `/correo` (`?donde=aqui|fuera`) con tarjeta sol del plazo clave
 - [x] [Javier] Chatbot por perfil (`modo` `correo-aqui` / `correo-fuera` en `src/lib/asistente.ts`), sin guardar el texto

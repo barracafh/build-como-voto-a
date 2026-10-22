@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import afirmaciones from "@/datos/afirmaciones.json";
 import { plazos, type Plazo } from "@/lib/calendario";
 
 // Base del chatbot: apartados 1 a 3 de contexto.md (convocatoria, cómo votar y
@@ -34,12 +35,17 @@ const linea = (p: Plazo) =>
 
 export const calendarioTexto = plazos.map(linea).join("\n");
 
+// Fichas del verificador (src/datos/afirmaciones.json): su cita y su URL
+// también forman parte de la base.
+const fichas: { cita: string; url: string }[] = afirmaciones;
+
 // Solo se muestran enlaces que estén literalmente en la base: el modelo no
 // puede inventar una fuente.
 const urls = new Set(
   [
     ...(conocimiento.match(/https?:\/\/[^\s<>()]+/g) ?? []),
     ...plazos.flatMap((p) => [p.fuente, ...p.fuentesAdicionales]),
+    ...fichas.map((f) => f.url),
   ]
     .map((u) => u.replace(/[.,;:»]+$/, ""))
     // La página sin el #ancla también vale (p. ej., la LOREG entera).
@@ -58,7 +64,9 @@ const normalizar = (t: string) =>
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
-const baseNormalizada = normalizar(`${conocimiento}\n${calendarioTexto}`);
+const baseNormalizada = normalizar(
+  [conocimiento, calendarioTexto, ...fichas.map((f) => f.cita)].join("\n"),
+);
 
 export function citaLiteral(cita: unknown): cita is string {
   return (

@@ -120,13 +120,14 @@ export function Chat({ modo }: { modo: Modo }) {
     setPendiente(pregunta);
     setParcial("");
     setError("");
+    // La ruta solo admite los 6 últimos mensajes.
     const mensajes = [
       ...turnos.flatMap((turno) => [
         { role: "user", content: turno.pregunta },
         { role: "assistant", content: turno.respuesta.respuesta },
       ]),
       { role: "user", content: pregunta },
-    ];
+    ].slice(-6);
     try {
       const res = await fetch(ruta("/api/chat"), {
         method: "POST",
@@ -206,6 +207,20 @@ export function Chat({ modo }: { modo: Modo }) {
                   {t(turno.respuesta.verificacion.resultado)}
                 </Badge>
               </p>
+              {turno.respuesta.verificacion.articulo && (
+                <p className="text-sm text-(--text-secondary)">
+                  {t("Fuente: {articulo}", {
+                    articulo: turno.respuesta.verificacion.articulo,
+                  })}
+                  {turno.respuesta.verificacion.fechaConsulta &&
+                    t(" · consultada el {fecha}", {
+                      fecha: turno.respuesta.verificacion.fechaConsulta
+                        .split("-")
+                        .reverse()
+                        .join("/"),
+                    })}
+                </p>
+              )}
               {turno.respuesta.verificacion.cita && (
                 <blockquote className="border-l-2 border-foreground/20 pl-4">
                   {turno.respuesta.verificacion.cita}

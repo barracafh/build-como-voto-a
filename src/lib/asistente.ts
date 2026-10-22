@@ -1,17 +1,27 @@
 // Instrucciones y validación de los chatbots. El modelo clasifica y redacta,
 // pero solo se muestra lo que se apoya en la base oficial: fuentes que existen
-// en ella y, en el verificador, una cita literal.
+// en ella. El verificador va aparte (src/lib/verificador.ts): allí el modelo
+// solo elige la ficha y el veredicto sale de ella.
 import type { Source } from "@/components/Fuentes";
 import type { Publicada } from "@/lib/factcheck";
 import { fuenteCalendario, hoy } from "@/lib/calendario";
 import {
   calendarioTexto,
-  citaLiteral,
   conocimiento,
   fuentePermitida,
 } from "@/lib/conocimiento";
 import type { Idioma } from "@/i18n/idiomas";
 import { marcar, traductor, type T } from "@/i18n/traducir";
+import {
+  fueraDeAlcance,
+  leerClasificacion,
+  resolver,
+  sistemaVerificador,
+  verificarLocal,
+  type Verificacion,
+} from "@/lib/verificador";
+
+export type { Resultado, Verificacion } from "@/lib/verificador";
 
 // correo-aqui: vive en España (también si estará fuera unos días, ERTA).
 // correo-fuera: vive en el extranjero (CERA). verificar: fact check.
@@ -26,16 +36,6 @@ export type Modo = (typeof MODOS)[number];
 
 export const esModo = (m: unknown): m is Modo => MODOS.includes(m as Modo);
 
-export type Resultado = "COINCIDE" | "NO COINCIDE" | "NO VERIFICABLE";
-
-// Formato del verificador: contexto.md, apartado 6.2.
-export type Verificacion = {
-  afirmacion: string;
-  resultado: Resultado;
-  cita?: string;
-  matiz?: string;
-};
-
 export type Respuesta = {
   tipo: "pregunta" | "afirmacion" | "fuera_de_alcance";
   respuesta: string;
@@ -45,8 +45,6 @@ export type Respuesta = {
   // Solo en el verificador: verificaciones profesionales ya publicadas.
   publicadas?: Publicada[];
 };
-
-const RESULTADOS: Resultado[] = ["COINCIDE", "NO COINCIDE", "NO VERIFICABLE"];
 
 // Las respuestas fijas se escriben en castellano y se traducen con `t` al
 // devolverlas; los nombres de las fuentes los traduce <Fuentes />.
@@ -58,24 +56,6 @@ const sedeOficial: Source[] = [
   fuenteCalendario,
 ];
 
-const fueraDeAlcance = (t: T): Respuesta => ({
-  tipo: "fuera_de_alcance",
-  respuesta: t(
-    "Fuera de alcance: aquí solo comprobamos y explicamos cómo se vota. No hablamos de partidos, candidaturas, programas ni encuestas, ni recomendamos el voto.",
-  ),
-  pasos: [],
-  fuentes: [fuenteCalendario],
-});
-
-const sinAfirmacion = (t: T): Respuesta => ({
-  tipo: "fuera_de_alcance",
-  respuesta: t(
-    "Escribe lo que te han dicho sobre cómo se vota y lo contrasto con la fuente oficial. Para saber cómo votar por correo, entra en «Voto por correo».",
-  ),
-  pasos: [],
-  fuentes: [fuenteCalendario],
-});
-
 const noConfirmable = (t: T): Respuesta => ({
   tipo: "pregunta",
   respuesta: t(
@@ -83,16 +63,6 @@ const noConfirmable = (t: T): Respuesta => ({
   ),
   pasos: [],
   fuentes: sedeOficial,
-});
-
-const noVerificable = (afirmacion: string, t: T): Respuesta => ({
-  tipo: "afirmacion",
-  respuesta: t(
-    "No encuentro una fuente oficial que lo confirme o lo desmienta. Consúltalo en la sede oficial.",
-  ),
-  pasos: [],
-  fuentes: sedeOficial,
-  verificacion: { afirmacion, resultado: "NO VERIFICABLE" },
 });
 
 // Cómo se llama cada lengua en las instrucciones al modelo.
@@ -103,7 +73,9 @@ const lengua: Record<Idioma, string> = {
   gl: "gallego",
 };
 
-const tarea: Record<Modo, string> = {
+type ModoGuia = Exclude<Modo, "verificar">;
+
+const tarea: Record<ModoGuia, string> = {
   general: `Resuelves cualquier duda sobre cómo se vota: el día de la votación, la mesa, la documentación, el voto por correo desde España (apartado 2.2), desde el extranjero (CERA, apartado 2.3, o ERTA, apartado 2.4) y el sistema electoral.
 - Si la respuesta tiene trámites, da pasos numerados, en orden, cada uno con su fecha del CALENDARIO si la tiene.
 - Si el usuario cuenta algo que le han dicho para saber si es cierto, responde con lo que dice la base y sugiérele la sección «¿Es verdad lo que me han dicho?» para contrastarlo con cita literal.
@@ -118,24 +90,20 @@ Da pasos numerados, en orden, cada uno con su fecha del CALENDARIO, y recuerda q
 - Explica sus dos opciones: votar por correo enviándolo al consulado, o votar en urna en el consulado o en los lugares habilitados. Ya no hace falta pedir el voto: la documentación llega de oficio.
 - Si en realidad vive en España y solo estará fuera unos días o meses, dile que elija «Vivo en España» (voto ERTA).
 Da pasos numerados, en orden, cada uno con su fecha del CALENDARIO.`,
-  verificar: `Eres un verificador: el usuario escribe algo que ha oído o leído sobre cómo se vota y lo contrastas con la fuente oficial (apartados 6.2 y 6.3).
-- Si lo formula como pregunta («¿es verdad que X?»), la afirmación es X.
-- Si no hay ninguna afirmación que contrastar (por ejemplo, una pregunta abierta como «¿cómo voto?»), tipo "sin_afirmacion".
-- resultado "COINCIDE" o "NO COINCIDE" solo si puedes copiar en "cita" un fragmento literal, palabra por palabra, de CONOCIMIENTO o CALENDARIO que lo sostenga. Si no, "NO VERIFICABLE".
-- «Coincide» significa que la afirmación y la fuente dicen lo mismo, nada más. Nunca uses las palabras verdadero, falso, bulo ni engañoso, ni juzgues la intención de quien lo dijo.
-- "respuesta" explica el resultado en 1 a 3 frases sin añadir nada que no esté en la cita o en CONOCIMIENTO. "matiz": lo que el resultado no dice (ámbito, fecha, excepciones).`,
 };
 
-const formato: Record<Modo, string> = {
+const formato: Record<ModoGuia, string> = {
   general: `{"tipo": "pregunta" | "fuera_de_alcance", "respuesta": "1 a 3 frases", "pasos": ["paso, con su fecha si la tiene"], "fuentes": [{"nombre": "nombre corto", "url": "url"}]}`,
   "correo-aqui": `{"tipo": "pregunta" | "fuera_de_alcance", "respuesta": "1 a 3 frases", "pasos": ["paso con su fecha"], "fuentes": [{"nombre": "nombre corto", "url": "url"}]}`,
   "correo-fuera": `{"tipo": "pregunta" | "fuera_de_alcance", "respuesta": "1 a 3 frases", "pasos": ["paso con su fecha"], "fuentes": [{"nombre": "nombre corto", "url": "url"}]}`,
-  verificar: `{"tipo": "afirmacion" | "sin_afirmacion" | "fuera_de_alcance", "afirmacion": "la afirmación del usuario", "resultado": "COINCIDE" | "NO COINCIDE" | "NO VERIFICABLE", "cita": "fragmento literal", "respuesta": "1 a 3 frases", "matiz": "lo que el resultado no dice", "pasos": [], "fuentes": [{"nombre": "nombre corto", "url": "url"}]}`,
 };
 
-export const sistema = (
-  modo: Modo,
-  idioma: Idioma = "es",
+export const sistema = (modo: Modo, idioma: Idioma = "es") =>
+  modo === "verificar" ? sistemaVerificador(hoy()) : sistemaGuia(modo, idioma);
+
+const sistemaGuia = (
+  modo: ModoGuia,
+  idioma: Idioma,
 ) => `Eres un asistente de «¿Cómo voto? (29N)», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del 29 de noviembre de 2026. Hoy es ${hoy()}.
 
 ${tarea[modo]}
@@ -179,6 +147,14 @@ export function validar(
   ultimaPregunta: string,
   t: T = traductor({}),
 ): Respuesta {
+  // Verificador: si la salida del modelo no se entiende, decide la comparación
+  // local, que exige casi la misma frase.
+  if (modo === "verificar") {
+    const clasificacion = leerClasificacion(bruto);
+    return clasificacion
+      ? resolver(clasificacion, ultimaPregunta, undefined, t)
+      : verificarLocal(ultimaPregunta, t);
+  }
   const r = (bruto && typeof bruto === "object" ? bruto : {}) as Record<
     string,
     unknown
@@ -202,33 +178,6 @@ export function validar(
     )
     .map((f) => ({ nombre: f.nombre, url: f.url.trim() }))
     .slice(0, 3);
-
-  if (modo === "verificar") {
-    if (r.tipo === "sin_afirmacion") return sinAfirmacion(t);
-    const afirmacion = textoOpcional(r.afirmacion) ?? ultimaPregunta;
-    const resultado = RESULTADOS.find((x) => x === r.resultado);
-    // «Coincide» o «no coincide» exigen cita literal y fuente; si no, no hay veredicto.
-    if (
-      !respuesta ||
-      !resultado ||
-      resultado === "NO VERIFICABLE" ||
-      !citaLiteral(r.cita) ||
-      fuentes.length === 0
-    )
-      return noVerificable(afirmacion, t);
-    return {
-      tipo: "afirmacion",
-      respuesta,
-      pasos: [],
-      fuentes,
-      verificacion: {
-        afirmacion,
-        resultado,
-        cita: r.cita.trim(),
-        matiz: textoOpcional(r.matiz),
-      },
-    };
-  }
 
   // Sin una fuente que exista en la base, no hay respuesta.
   if (!respuesta || fuentes.length === 0) return noConfirmable(t);

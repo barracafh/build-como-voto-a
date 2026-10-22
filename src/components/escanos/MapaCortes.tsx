@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { CORTES_POR_CCAA } from "@/datos/cortes-29n";
 import { MAPA_ALTO, MAPA_ANCHO, REGIONES } from "@/datos/mapa-espana";
 import { Hemiciclo } from "./Hemiciclo";
+import { useIdioma } from "@/i18n/cliente";
 
 const Hemiciclo3D = dynamic(() => import("./Hemiciclo3D"), { ssr: false });
 
@@ -23,6 +24,7 @@ const CODIGOS = Object.keys(CORTES_POR_CCAA).sort();
 // comunidad, todo en gris. Funciona con ratón, teclado y toque. «Ver en 3D» abre el
 // mismo hemiciclo en 3D a pantalla completa, con el mapa flotando a la derecha.
 export function MapaCortes() {
+  const { t } = useIdioma();
   const [fijada, setFijada] = useState<string | null>(null);
   const [encima, setEncima] = useState<string | null>(null);
   const [abierto, setAbierto] = useState(false);
@@ -34,8 +36,11 @@ export function MapaCortes() {
     : 0;
   const hasta = activa ? desde + datos.diputados : 0;
   const etiqueta = activa
-    ? `Hemiciclo de 350 escaños con los ${datos.diputados} de ${datos.nombre} en rojo`
-    : "Hemiciclo de 350 escaños";
+    ? t("Hemiciclo de 350 escaños con los {n} de {nombre} en rojo", {
+        n: datos.diputados,
+        nombre: datos.nombre,
+      })
+    : t("Hemiciclo de 350 escaños");
 
   useEffect(() => {
     if (abierto) dialogo.current?.showModal();
@@ -51,7 +56,7 @@ export function MapaCortes() {
       <svg
         viewBox={`0 0 ${MAPA_ANCHO} ${MAPA_ALTO}`}
         role="group"
-        aria-label="Mapa de España por comunidades autónomas"
+        aria-label={t("Mapa de España por comunidades autónomas")}
         className="block h-auto w-full"
         onMouseLeave={() => setEncima(null)}
       >
@@ -91,14 +96,14 @@ export function MapaCortes() {
 
       <div aria-live="polite" className="mt-6 border-t border-border pt-4">
         <p className="font-mono text-xs tracking-[0.06em] text-(--text-secondary) uppercase">
-          {activa ? "Comunidad autónoma" : "Total · pulsa una comunidad"}
+          {activa ? t("Comunidad autónoma") : t("Total · pulsa una comunidad")}
         </p>
         <p className="mt-1 text-lg leading-tight font-medium">{datos.nombre}</p>
         <dl className="mt-4 grid grid-cols-2 gap-4">
           {(
             [
-              ["Diputados", datos.diputados],
-              ["Senadores", datos.senadores],
+              [t("Diputados"), datos.diputados],
+              [t("Senadores"), datos.senadores],
             ] as const
           ).map(([nombre, valor]) => (
             <div key={nombre}>
@@ -118,13 +123,13 @@ export function MapaCortes() {
       <div className="relative">
         <Hemiciclo desde={desde} hasta={hasta} etiqueta={etiqueta} />
         <Button variant="outline" className="absolute top-0 right-0" onClick={() => setAbierto(true)}>
-          Ver en 3D
+          {t("Ver en 3D")}
         </Button>
       </div>
 
       <dialog
         ref={dialogo}
-        aria-label="Hemiciclo en 3D"
+        aria-label={t("Hemiciclo en 3D")}
         onClose={() => setAbierto(false)}
         className="fixed inset-0 m-0 h-dvh max-h-none w-dvw max-w-none bg-primary p-0 text-primary-foreground backdrop:bg-primary"
       >
@@ -141,7 +146,7 @@ export function MapaCortes() {
               className="absolute top-4 left-4 text-foreground"
               onClick={() => dialogo.current?.close()}
             >
-              Cerrar
+              {t("Cerrar")}
             </Button>
           </div>
         )}

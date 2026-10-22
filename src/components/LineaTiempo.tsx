@@ -2,7 +2,16 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { estado, fechaLarga, rango, type Plazo } from "@/lib/calendario";
+import {
+  estado,
+  fechaCorta,
+  fechaLarga,
+  rango,
+  type Plazo,
+} from "@/lib/calendario";
+import type { Idioma } from "@/i18n/idiomas";
+import { getT } from "@/i18n/servidor";
+import type { T } from "@/i18n/traducir";
 import {
   cierraEn,
   filas,
@@ -27,13 +36,8 @@ export type Hito = { plazo: Plazo; nombre: string };
 // «relleno» para periodos largos (campaña), «linea» para días sueltos (reflexión).
 export type Banda = Hito & { estilo: "relleno" | "linea" };
 
-const corta = new Intl.DateTimeFormat("es-ES", {
-  day: "numeric",
-  month: "short",
-  timeZone: "UTC",
-});
-const fechaCorta = (iso: string) =>
-  corta.format(new Date(`${iso}T00:00:00Z`)).replace(".", "");
+// La lengua de la página, para los subcomponentes.
+type I18n = { t: T; idioma: Idioma };
 
 const estiloBanda = {
   relleno: "bg-secondary",
@@ -45,7 +49,7 @@ const sol =
 
 // Un gráfico de carriles, del origen a la meta, y debajo los mismos pasos como
 // lista numerada. El gráfico es decorativo: todo su contenido está en la lista.
-export function LineaTiempo({
+export async function LineaTiempo({
   origen,
   meta,
   tramos,
@@ -58,6 +62,7 @@ export function LineaTiempo({
   bandas?: readonly Banda[];
   hoy: string;
 }) {
+  const i18n = await getT();
   const escala = { desde: origen.plazo.inicio, hasta: meta.plazo.fin };
   const lista = filas(tramos);
 
@@ -70,11 +75,18 @@ export function LineaTiempo({
         filas={lista}
         bandas={bandas}
         hoy={hoy}
+        i18n={i18n}
       />
       <ol className="grid gap-6">
         {lista.map((f) =>
           f.tipo === "paso" ? (
-            <PasoTexto key={f.paso.plazo.id} numero={f.numero} paso={f.paso} hoy={hoy} />
+            <PasoTexto
+              key={f.paso.plazo.id}
+              numero={f.numero}
+              paso={f.paso}
+              hoy={hoy}
+              i18n={i18n}
+            />
           ) : (
             <li key={f.letra} className={cn(!f.eleccion && "mt-4")}>
               {f.eleccion && <p className="font-medium">{f.eleccion}</p>}
@@ -96,6 +108,7 @@ function Grafico({
   filas,
   bandas,
   hoy,
+  i18n: { t, idioma },
 }: {
   escala: Escala;
   origen: Hito;
@@ -103,10 +116,11 @@ function Grafico({
   filas: readonly Fila<Paso>[];
   bandas: readonly Banda[];
   hoy: string;
+  i18n: I18n;
 }) {
   const verHoy = hoy >= escala.desde && hoy <= escala.hasta;
-  const t = tramo(meta.plazo.inicio, meta.plazo.fin, escala);
-  const centroMeta = t.izquierda + t.ancho / 2;
+  const tm = tramo(meta.plazo.inicio, meta.plazo.fin, escala);
+  const centroMeta = tm.izquierda + tm.ancho / 2;
   const metaEsPaso = filas.some(
     (f) => f.tipo === "paso" && f.paso.plazo.id === meta.plazo.id,
   );
@@ -135,7 +149,7 @@ function Grafico({
               style={{ left: `${posicion(hoy, escala)}%` }}
             >
               <span className="absolute top-0 left-1.5 font-mono text-xs tracking-[0.06em] text-brand uppercase">
-                Hoy
+                {t("Hoy")}
               </span>
             </div>
           )}
@@ -172,40 +186,40 @@ function Grafico({
         </div>
       </div>
 
-      <Eje escala={escala} />
+      <Eje escala={escala} idioma={idioma} />
 
       <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-sm text-(--text-secondary)">
         <li className="flex items-center gap-2">
-          <span className="h-3 w-6 rounded-full bg-brand" /> Abierto
+          <span className="h-3 w-6 rounded-full bg-brand" /> {t("Abierto")}
         </li>
         <li className="flex items-center gap-2">
           <span className="h-3 w-6 rounded-full border border-dashed border-foreground/60" />{" "}
-          Aún no empieza
+          {t("Aún no empieza")}
         </li>
         <li>
-          {origen.nombre}, {fechaLarga(origen.plazo.inicio)}
+          {origen.nombre}, {fechaLarga(origen.plazo.inicio, idioma)}
         </li>
         {verHoy && (
           <li className="flex items-center gap-2">
             <span className="h-4 w-px bg-brand" />
-            Hoy, {fechaLarga(hoy)}
+            {t("Hoy")}, {fechaLarga(hoy, idioma)}
           </li>
         )}
         {hitos.map((h) => (
           <li key={h.fecha + h.nombre} className="flex items-center gap-2">
             <span className="size-2.5 rotate-45 bg-foreground" />
-            {h.nombre}, {fechaLarga(h.fecha)}
+            {h.nombre}, {fechaLarga(h.fecha, idioma)}
           </li>
         ))}
         {bandas.map((b) => (
           <li key={b.plazo.id} className="flex items-center gap-2">
             <span className={cn("h-4 w-3 rounded-sm", estiloBanda[b.estilo])} />
-            {b.nombre}, {rango(b.plazo)}
+            {b.nombre}, {rango(b.plazo, idioma, t)}
           </li>
         ))}
         <li className="flex items-center gap-2">
           <span className="size-3 rounded-full bg-brand-yellow" />
-          {meta.nombre}, {fechaLarga(meta.plazo.inicio)}
+          {meta.nombre}, {fechaLarga(meta.plazo.inicio, idioma)}
         </li>
       </ul>
     </Card>
@@ -292,10 +306,12 @@ function PasoTexto({
   numero,
   paso,
   hoy,
+  i18n: { t, idioma },
 }: {
   numero: string;
   paso: Paso;
   hoy: string;
+  i18n: I18n;
 }) {
   const e = estado(paso.plazo, hoy);
   const quedan = cierraEn(paso.plazo.fin, hoy);
@@ -307,17 +323,19 @@ function PasoTexto({
       </span>
       <div>
         <p className="flex flex-wrap items-center gap-2 font-mono text-sm text-(--text-secondary) uppercase">
-          {rango(paso.plazo)}
-          {e === "abierto" && <Badge variant="outline">Abierto</Badge>}
-          {e === "cerrado" && <Badge variant="secondary">Cerrado</Badge>}
+          {rango(paso.plazo, idioma, t)}
+          {e === "abierto" && <Badge variant="outline">{t("Abierto")}</Badge>}
+          {e === "cerrado" && <Badge variant="secondary">{t("Cerrado")}</Badge>}
         </p>
         <h3 className="mt-1 text-lg leading-[1.35] font-medium">{paso.titulo}</h3>
         <div className="mt-1 text-(--text-secondary)">{paso.detalle}</div>
         {e === "abierto" && (
           <p className="mt-1 font-medium">
             {quedan === 0
-              ? "Cierra hoy"
-              : `Cierra en ${quedan} ${quedan === 1 ? "día" : "días"}`}
+              ? t("Cierra hoy")
+              : quedan === 1
+                ? t("Cierra en 1 día")
+                : t("Cierra en {n} días", { n: quedan })}
           </p>
         )}
       </div>
@@ -325,10 +343,10 @@ function PasoTexto({
   );
 }
 
-function Eje({ escala }: { escala: Escala }) {
+function Eje({ escala, idioma }: { escala: Escala; idioma: Idioma }) {
   return (
     <div className="relative mx-3 h-8 border-t border-foreground/20 font-mono text-xs text-(--text-secondary) uppercase">
-      {marcas(escala).map((m) => (
+      {marcas(escala, idioma).map((m) => (
         <span
           key={m.iso}
           className="absolute top-0 -translate-x-1/2 text-center"
@@ -341,10 +359,10 @@ function Eje({ escala }: { escala: Escala }) {
         </span>
       ))}
       <span className="absolute top-2 left-0 -translate-x-3">
-        {fechaCorta(escala.desde)}
+        {fechaCorta(escala.desde, idioma)}
       </span>
       <span className="absolute top-2 right-0 translate-x-3 text-foreground">
-        {fechaCorta(escala.hasta)}
+        {fechaCorta(escala.hasta, idioma)}
       </span>
     </div>
   );

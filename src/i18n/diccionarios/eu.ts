@@ -1,0 +1,391 @@
+import type { Diccionario } from "../traducir";
+
+const diccionario: Diccionario = {
+  "% válidos": "% baliodunak",
+  ", el {fecha}": ", {fecha}",
+  ", escaño ": ", eserlekua ",
+  ": se publican como tarde el {fecha} y siguen disponibles después.":
+    ": beranduenez data honetan argitaratzen dira: {fecha}. Gero ere eskuragarri jarraitzen dute.",
+  "A la dirección con la que estás inscrito en el consulado: certificados de inscripción, sobres e instrucciones.":
+    "Kontsulatuan erregistratuta zauden helbidera: inskripzio-ziurtagiriak, gutun-azalak eta jarraibideak.",
+  "Abierto": "Irekita",
+  "Abrir la sede del INE": "Ireki INEren egoitza",
+  "Afirmación: «{afirmacion}»": "Baieztapena: «{afirmacion}»",
+  "Art. 73 LOREG · BOE": "LOREG, 73. art. · BOE",
+  "Art. 75 LOREG · BOE": "LOREG, 75. art. · BOE",
+  "Aunque el día 29 no estés o vayas a pasar una temporada en el extranjero.":
+    "Nahiz eta 29an kanpoan egon edo denboraldi bat atzerrian igaro behar duzun.",
+  "Aún no empieza": "Oraindik ez da hasi",
+  "Braille": "Braillea",
+  "COINCIDE": "BAT DATOR",
+  "CORREO": "POSTA",
+  "Cada provincia recibe 2 escaños; Ceuta y Melilla, 1 cada una (LOREG, art. 162.2).":
+    "Probintzia bakoitzak 2 eserleku jasotzen ditu; Ceutak eta Melillak, 1 bana (LOREG, 162.2 art.).",
+  "Cada punto es un escaño. Esta es la gramática de la ilustración y lo que representa cada elemento.":
+    "Puntu bakoitza eserleku bat da. Hau da irudiaren gramatika eta elementu bakoitzak zer adierazten duen.",
+  "Calendario electoral · Junta Electoral Central": "Hauteskunde-egutegia · Hauteskunde Batzar Nagusia",
+  "Cambiar": "Aldatu",
+  "Campaña": "Kanpaina",
+  "Campaña electoral: desde las 00:00 del viernes 13 hasta las 24:00 del viernes 27 de noviembre":
+    "Hauteskunde-kanpaina: azaroaren 13an, ostiralean, 00:00etan hasi eta azaroaren 27an, ostiralean, 24:00etan amaitzen da",
+  "Candidatura": "Hautagaitza",
+  "Candidatura {letra}": "{letra} hautagaitza",
+  "Candidaturas de {provincia} en 2023": "2023ko hautagaitzak: {provincia}",
+  "Candidaturas inventadas (A, B, C y D). Cambia los votos o los escaños y el reparto se recalcula al momento. No son resultados reales.":
+    "Asmatutako hautagaitzak (A, B, C eta D). Aldatu botoak edo eserlekuak, eta banaketa berehala kalkulatzen da berriro. Ez dira benetako emaitzak.",
+  "Cerrado": "Itxita",
+  "Cerrar": "Itxi",
+  "Cierra en 1 día": "Egun 1 barru ixten da",
+  "Cierra en {n} días": "{n} egun barru ixten da",
+  "Cierra hoy": "Gaur ixten da",
+  "Cocientes de {provincia}": "Zatidurak: {provincia}",
+  "Comprobar": "Egiaztatu",
+  "Comunicación a la Junta Electoral de las coaliciones electorales":
+    "Hauteskunde-koalizioen berri ematea Hauteskunde Batzarrari",
+  "Comunidad autónoma": "Autonomia-erkidegoa",
+  "Con fuentes oficiales": "Iturri ofizialekin",
+  "Con tu pasaporte o DNI españoles.": "Zure pasaporte edo NAN espainiarrarekin.",
+  "Con un solo escaño se proclama la candidatura más votada: {nombre}.":
+    "Eserleku bakarra dagoenean, boto gehien jaso dituen hautagaitza aldarrikatzen da: {nombre}.",
+  "Consulta de mesa y local · INE": "Mahaia eta lokala kontsultatzea · INE",
+  "Consulta del censo electoral en ayuntamientos y consulados, y reclamaciones por inclusión o exclusión":
+    "Hauteskunde-errolda udaletan eta kontsulatuetan kontsultatzea, eta sartzeagatiko edo kanpoan uzteagatiko erreklamazioak",
+  "Consulta tu mesa y tu local electoral en el INE": "Kontsultatu zure mahaia eta hauteskunde-lokala INEn",
+  "Consultando": "Kontsultatzen",
+  "Consultando las fuentes oficiales…": "Iturri ofizialak kontsultatzen…",
+  "Contrasta lo que circula sobre cómo se vota con la fuente oficial.":
+    "Alderatu nola bozkatzen den buruz zabaltzen dena iturri ofizialarekin.",
+  "Convocatoria": "Deialdia",
+  "Cuéntanos tu caso": "Kontatu zure kasua",
+  "Cómo se lee el hemiciclo del Congreso": "Nola irakurri Kongresuaren hemizikloa",
+  "Cómo se reparten los 350 escaños": "Nola banatzen diren 350 eserlekuak",
+  "Cómo se reparten los escaños": "Nola banatzen diren eserlekuak",
+  "Cómo se repartieron en {provincia}": "Nola banatu ziren: {provincia}",
+  "Cómo, dónde y hasta cuándo, con la fuente oficial de cada dato. Solo cómo se vota: nada de candidaturas, programas ni encuestas.":
+    "Nola, non eta noiz arte, datu bakoitzaren iturri ofizialarekin. Nola bozkatzen den bakarrik: ez hautagaitzarik, ez programarik, ez inkestarik.",
+  "Datos públicos": "Datu publikoak",
+  "Datos simulados": "Datu simulatuak",
+  "Dentro de cada provincia": "Probintzia bakoitzaren barruan",
+  "Descarga de papeletas · INE": "Boto-txartelak deskargatzea · INE",
+  "Diputados": "Diputatuak",
+  "Diputados y senadores por comunidad": "Diputatuak eta senatariak, erkidegoka",
+  "Dónde se hace": "Non egiten da",
+  "El Congreso de los Diputados tiene 350 escaños. Todos los puntos son idénticos: cada uno es un diputado.":
+    "Diputatuen Kongresuak 350 eserleku ditu. Puntu guztiak berdinak dira: bakoitza diputatu bat da.",
+  "El asistente no responde ahora. Prueba en un momento.":
+    "Laguntzaileak ez du orain erantzuten. Saiatu berriro une batean.",
+  "El cálculo coincide con los escaños oficiales de 2023.":
+    "Kalkulua 2023ko eserleku ofizialekin bat dator.",
+  "El cálculo no coincide con los escaños oficiales: consulta Infoelectoral.":
+    "Kalkulua ez dator bat eserleku ofizialekin: kontsultatu Infoelectoral.",
+  "El gris": "Grisa",
+  "El grupo en rojo": "Talde gorria",
+  "El resto, según población": "Gainerakoak, biztanleriaren arabera",
+  "Elecciones generales · 29N": "Hauteskunde orokorrak · 29N",
+  "Elige cómo votar": "Aukeratu nola bozkatu",
+  "Elige si vives en España o fuera y pregunta por tu caso: pasos y fechas oficiales.":
+    "Aukeratu Espainian edo kanpoan bizi zaren, eta galdetu zure kasuaz: urratsak eta data ofizialak.",
+  "Elige tu caso: cada barra es el tiempo que tienes para hacer ese paso.":
+    "Aukeratu zure kasua: barra bakoitza urrats hori egiteko duzun denbora da.",
+  "Empieza el {fecha}": "Hasiera: {fecha}",
+  "En Correos, en persona y con tu DNI, o en su web con DNI electrónico o certificado digital.":
+    "Correosen, aurrez aurre eta zure NANarekin, edo haren webgunean, NAN elektronikoarekin edo ziurtagiri digitalarekin.",
+  "En España": "Espainian",
+  "En cualquier oficina de Correos, en persona y con tu DNI, o en la web de Correos con DNI electrónico o certificado digital.":
+    "Correosen edozein bulegotan, aurrez aurre eta zure NANarekin, edo Correosen webgunean, NAN elektronikoarekin edo ziurtagiri digitalarekin.",
+  "En el consulado": "Kontsulatuan",
+  "En el extranjero (ERTA)": "Atzerrian (ERTA)",
+  "En persona, en la oficina consular más cercana. Antes tienes que estar inscrito en el Registro de Matrícula Consular como no residente. No sirve pedir el voto en Correos.":
+    "Aurrez aurre, kontsulatu-bulego hurbilenean. Aurretik, Kontsulatuko Matrikula Erregistroan inskribatuta egon behar duzu egoiliar ez gisa. Ez du balio botoa Correosen eskatzeak.",
+  "En persona, en la oficina consular más cercana. Tienes que estar inscrito en el consulado como no residente. En Correos no se puede pedir.":
+    "Aurrez aurre, kontsulatu-bulego hurbilenean. Kontsulatuan inskribatuta egon behar duzu egoiliar ez gisa. Correosen ezin da eskatu.",
+  "En tu consulado o en los lugares habilitados, con tu pasaporte o DNI españoles, o un certificado de nacionalidad o de inscripción consular.":
+    "Zure kontsulatuan edo gaitutako lekuetan, zure pasaporte edo NAN espainiarrarekin, edo naziotasun-ziurtagiri edo kontsulatuko inskripzio-ziurtagiri batekin.",
+  "En urna": "Hautestontzian",
+  "Envía tu voto a tu mesa en España": "Bidali zure botoa Espainiako zure mahaira",
+  "Envía tu voto desde Correos": "Bidali zure botoa Correosetik",
+  "Envía tu voto por correo a tu consulado": "Bidali zure botoa postaz zure kontsulatura",
+  "Envía tu voto por correo al consulado": "Bidali zure botoa postaz kontsulatura",
+  "Envías tu voto": "Botoa bidaltzen duzu",
+  "Envío de la documentación de voto a los temporalmente ausentes (ERTA) si no hay recursos contra la proclamación; si los hay, desde su resolución (el INE da del 10 al 17 de noviembre)":
+    "Boto-dokumentazioa bidaltzea aldi baterako kanpoan daudenei (ERTA), aldarrikapenaren aurkako errekurtsorik ez badago; baldin badago, errekurtsoak ebazten direnetik (INEren arabera, azaroaren 10etik 17ra)",
+  "Envío de las papeletas oficiales a los residentes en el extranjero (CERA); si hay recursos contra la proclamación, del 6 al 14 de noviembre según la JEC (del 9 al 14 según el INE)":
+    "Boto-txartel ofizialak bidaltzea atzerrian bizi direnei (CERA); aldarrikapenaren aurkako errekurtsorik badago, azaroaren 6tik 14ra JECen arabera (9tik 14ra INEren arabera)",
+  "Envío de oficio de la documentación de voto a los residentes en el extranjero (CERA); no hace falta solicitarla":
+    "Boto-dokumentazioa ofizioz bidaltzea atzerrian bizi direnei (CERA); ez da eskatu behar",
+  "Envío del voto de los temporalmente ausentes (ERTA) por correo certificado a su mesa en España, desde que reciben la documentación y hasta antes del tercer día previo a la elección":
+    "Aldi baterako kanpoan daudenek (ERTA) botoa posta ziurtatuz bidaltzea Espainiako beren mahaira, dokumentazioa jasotzen dutenetik hauteskundeen aurreko hirugarren eguna baino lehen arte",
+  "Envío del voto por correo certificado, sin franqueo, desde que se recibe la documentación hasta antes del tercer día previo a la elección (residentes en España y residentes en el extranjero que están temporalmente en España). El INE da como inicio el 9 de noviembre":
+    "Botoa posta ziurtatuz bidaltzea, frankeorik gabe, dokumentazioa jasotzen denetik hauteskundeen aurreko hirugarren eguna baino lehen arte (Espainian bizi direnak eta aldi baterako Espainian dauden atzerriko egoiliarrak). INEren arabera, hasiera azaroaren 9a da",
+  "Envío del voto por correo de los residentes en el extranjero (CERA) a la oficina consular en la que están inscritos":
+    "Atzerrian bizi direnek (CERA) botoa postaz bidaltzea inskribatuta dauden kontsulatu-bulegora",
+  "Envío del voto por correo · Art. 73.3 LOREG": "Botoa postaz bidaltzea · LOREG, 73.3 art.",
+  "Envío por la Oficina del Censo Electoral de la documentación del voto por correo (residentes en España)":
+    "Hauteskunde Erroldaren Bulegoak posta bidezko botoaren dokumentazioa bidaltzea (Espainian bizi direnak)",
+  "Escaños": "Eserlekuak",
+  "Escaños (1 a 37)": "Eserlekuak (1etik 37ra)",
+  "Escaños por candidatura": "Eserlekuak hautagaitzako",
+  "Escaños que se eligen el 29 de noviembre de 2026. Los diputados salen del anexo del Real Decreto 806/2026. Los senadores son los de elección directa (art. 165 LOREG); cada parlamento autonómico designa además otros, que no se suman aquí.":
+    "2026ko azaroaren 29an aukeratzen diren eserlekuak. Diputatuak 806/2026 Errege Dekretuaren eranskinetik ateratzen dira. Senatariak hautaketa zuzenekoak dira (LOREG, 165. art.); autonomia-parlamentu bakoitzak beste batzuk ere izendatzen ditu, baina hemen ez dira gehitzen.",
+  "Escribe lo que has oído o leído sobre cómo se vota y lo contrastamos con la fuente oficial: coincide, no coincide o no se puede verificar. Nada de partidos, candidaturas, programas ni encuestas.":
+    "Idatzi nola bozkatzen den buruz entzun edo irakurri duzuna, eta iturri ofizialarekin alderatuko dugu: bat dator, ez dator bat edo ezin da egiaztatu. Ez alderdirik, ez hautagaitzarik, ez programarik, ez inkestarik.",
+  "Escribe lo que te han dicho sobre cómo se vota y lo contrasto con la fuente oficial. Para saber cómo votar por correo, entra en «Voto por correo».":
+    "Idatzi nola bozkatzen den buruz esan dizutena, eta iturri ofizialarekin alderatuko dut. Postaz nola bozkatu jakiteko, sartu «Posta bidezko botoa» atalean.",
+  "Escribe tu pregunta": "Idatzi zure galdera",
+  "Escribe un mensaje de hasta 1.000 caracteres.": "Idatzi gehienez 1.000 karaktereko mezu bat.",
+  "Escrutinio general por las Juntas Electorales Provinciales":
+    "Probintziako Hauteskunde Batzarrek egindako zenbaketa orokorra",
+  "Estaré de Erasmus en noviembre, ¿qué hago?": "Azaroan Erasmus egiten egongo naiz, zer egin behar dut?",
+  "Estás fuera unos meses": "Hilabete batzuk kanpoan zaude",
+  "Estás inscrito en el consulado como residente en el extranjero.":
+    "Kontsulatuan inskribatuta zaude atzerriko egoiliar gisa.",
+  "Fact check · 29N": "Fact check · 29N",
+  "Falta 1 día {para}.": "{para} egun 1 falta da.",
+  "Faltan {n} días {para}.": "{para} {n} egun falta dira.",
+  "Faltan {para}": "{para} falta da",
+  "Fuente: Ley Orgánica 5/1985 (LOREG), arts. 161 a 163, versión consolidada del BOE (texto informativo, sin valor jurídico). Origen de los datos: Ministerio del Interior.":
+    "Iturria: 5/1985 Lege Organikoa (LOREG), 161.etik 163.era arteko art., BOEren bertsio bateratua (informazio-testua, balio juridikorik gabe). Datuen jatorria: Barne Ministerioa.",
+  "Fuentes oficiales": "Iturri ofizialak",
+  "Fuera de alcance: aquí solo comprobamos y explicamos cómo se vota. No hablamos de partidos, candidaturas, programas ni encuestas, ni recomendamos el voto.":
+    "Esparrutik kanpo: hemen nola bozkatzen den bakarrik egiaztatzen eta azaltzen dugu. Ez dugu alderdiez, hautagaitzez, programez edo inkestez hitz egiten, eta ez dugu botorik gomendatzen.",
+  "Fuera unos meses": "Hilabete batzuk kanpoan",
+  "Hemiciclo de 350 escaños": "350 eserlekuko hemizikloa",
+  "Hemiciclo de 350 escaños con los {n} de {nombre} en rojo":
+    "350 eserlekuko hemizikloa; gorriz, {nombre} erkidegoko {n} eserlekuak",
+  "Hemiciclo en 3D": "Hemizikloa 3Dn",
+  "Herramienta experimental. No es un servicio oficial.":
+    "Tresna esperimentala. Ez da zerbitzu ofiziala.",
+  "Horario de votación · Art. 84.1 LOREG": "Bozketa-ordutegia · LOREG, 84.1 art.",
+  "Hoy": "Gaur",
+  "Hoy se vota, hasta las {hora}.": "Gaur bozkatzen da (itxiera: {hora}).",
+  "Hoy se vota.": "Gaur bozkatzen da.",
+  "Idioma": "Hizkuntza",
+  "Infoelectoral · Ministerio del Interior": "Infoelectoral · Barne Ministerioa",
+  "Jornada de reflexión": "Hausnarketa eguna",
+  "Jornada de votación, de 9:00 a 20:00": "Bozketa eguna, 9:00etatik 20:00etara",
+  "LOREG · BOE consolidado": "LOREG · BOE bateratua",
+  "La calificación es de cada verificador, no de esta herramienta.":
+    "Kalifikazioa egiaztatzaile bakoitzarena da, ez tresna honena.",
+  "La ley D'Hondt con los resultados oficiales de 2023, provincia a provincia.":
+    "D'Hondt legea 2023ko emaitza ofizialekin, probintziaz probintzia.",
+  "La votación del {fecha} ha terminado.": "Bozketa amaitu da ({fecha}).",
+  "Lees en braille": "Braillez irakurtzen duzu",
+  "Ley Orgánica 5/1985 (LOREG), arts. 161 a 165 · BOE":
+    "5/1985 Lege Organikoa (LOREG), 161.etik 165.era arteko art. · BOE",
+  "Llega al 3 %": "% 3ra iristen da",
+  "Los anillos": "Eraztunak",
+  "Los escaños se asignan en proporción a los votos de cada candidatura (método de cocientes, conocido como regla D'Hondt). No entran en el reparto las que no lleguen al 3 % de los votos válidos. En Ceuta y Melilla se proclama al candidato más votado (art. 163).":
+    "Eserlekuak hautagaitza bakoitzaren botoen proportzioan esleitzen dira (zatiduren metodoa, D'Hondt araua izenez ezaguna). Baliozko botoen % 3ra iristen ez direnak ez dira banaketan sartzen. Ceutan eta Melillan boto gehien jaso dituen hautagaia aldarrikatzen da (163. art.).",
+  "Los otros 248 escaños se reparten en proporción a la población de derecho de cada provincia (arts. 162.2 y 162.3).":
+    "Beste 248 eserlekuak probintzia bakoitzeko zuzenbidezko biztanleriaren proportzioan banatzen dira (162.2 eta 162.3 art.).",
+  "Los votos de cada candidatura que llega al 3 %, divididos entre 1, 2, 3… Los {n} cocientes más altos, en rojo y numerados, son los escaños.":
+    "% 3ra iristen den hautagaitza bakoitzaren botoak, 1, 2, 3… zenbakiez zatituta. {n} zatidura handienak, gorriz eta zenbakituta, eserlekuak dira.",
+  "Los votos por correo se entregan en las mesas durante la votación, {horario}. Lo que llegue después no se cuenta.":
+    "Posta bidezko botoak bozketan zehar ematen dira mahaietan ({horario}). Geroago iristen dena ez da zenbatzen.",
+  "Los votos por correo se entregan en las mesas durante la votación. Lo que llegue después no se cuenta.":
+    "Posta bidezko botoak bozketan zehar ematen dira mahaietan. Geroago iristen dena ez da zenbatzen.",
+  "Mapa de España por comunidades autónomas": "Espainiako mapa, autonomia-erkidegoka",
+  "Matiz: {matiz}": "Ñabardura: {matiz}",
+  "Me han dicho que si pido el voto por correo también puedo votar en la mesa":
+    "Esan didate posta bidezko botoa eskatzen badut mahaian ere bozka dezakedala",
+  "Mínimo por provincia": "Gutxienekoa probintziako",
+  "NO COINCIDE": "EZ DATOR BAT",
+  "NO VERIFICABLE": "EZIN DA EGIAZTATU",
+  "No": "Ez",
+  "No encuentro una fuente oficial que lo confirme o lo desmienta. Consúltalo en la sede oficial.":
+    "Ez dut aurkitzen hori baieztatzen edo ezeztatzen duen iturri ofizialik. Kontsultatu egoitza ofizialean.",
+  "No escribas datos personales. No guardamos lo que escribes.":
+    "Ez idatzi datu pertsonalik. Ez dugu gordetzen idazten duzuna.",
+  "No hace falta pedirlo: la documentación te llega a casa. El envío es gratis. Si lo mandas directo a España, no vale.":
+    "Ez duzu eskatu behar: dokumentazioa etxera iristen zaizu. Bidalketa doakoa da. Zuzenean Espainiara bidaltzen baduzu, ez du balio.",
+  "No puedo confirmarlo con las fuentes oficiales que manejo. Consúltalo en la sede oficial.":
+    "Ezin dut hori baieztatu erabiltzen ditudan iturri ofizialekin. Kontsultatu egoitza ofizialean.",
+  "No se ha podido responder. Prueba de nuevo.": "Ezin izan da erantzun. Saiatu berriro.",
+  "O pregúntalo directamente": "Edo galdetu zuzenean",
+  "O vota en urna en el consulado": "Edo bozkatu hautestontzian kontsulatuan",
+  "Oficina del Censo Electoral · INE": "Hauteskunde Erroldaren Bulegoa · INE",
+  "Origen de los datos: Ministerio del Interior. Elecciones al Congreso, 23 de julio de 2023.":
+    "Datuen jatorria: Barne Ministerioa. Kongresurako hauteskundeak, 2023ko uztailaren 23a.",
+  "Papeletas descargables, como tarde": "Boto-txartel deskargagarriak, beranduenez",
+  "Papeletas, sobres y certificado, por correo certificado. Firmas tú el recibo con tu DNI; si no estás, lo recoges en Correos.":
+    "Boto-txartelak, gutun-azalak eta ziurtagiria, posta ziurtatuz. Zuk sinatzen duzu agiria zure NANarekin; etxean ez bazaude, Correosen jasotzen duzu.",
+  "Pide el kit de voto en braille": "Eskatu braille bidezko boto-kita",
+  "Pide el voto por correo": "Eskatu posta bidezko botoa",
+  "Pide la documentación en el consulado": "Eskatu dokumentazioa kontsulatuan",
+  "Pides el kit": "Kita eskatzen duzu",
+  "Pides el voto": "Botoa eskatzen duzu",
+  "Pides la documentación": "Dokumentazioa eskatzen duzu",
+  "Plazo abierto": "Epea irekita",
+  "Plazo cerrado": "Epea itxita",
+  "Plazos para los electores · INE": "Hautesleentzako epeak · INE",
+  "Plazos que siguen abiertos": "Oraindik irekita dauden epeak",
+  "Por correo": "Postaz",
+  "Por correo certificado y sin franqueo, desde que recibes la documentación. El INE da como inicio el {fecha}.":
+    "Posta ziurtatuz eta frankeorik gabe, dokumentazioa jasotzen duzunetik. INEren arabera, hasiera-data: {fecha}.",
+  "Por correo certificado y sin franqueo, desde que te llega la documentación.":
+    "Posta ziurtatuz eta frankeorik gabe, dokumentazioa iristen zaizunetik.",
+  "Por correo certificado, a tu dirección en el extranjero. Si hay recursos contra las candidaturas, puede llegar más tarde.":
+    "Posta ziurtatuz, atzerriko zure helbidera. Hautagaitzen aurkako errekurtsorik badago, beranduago iritsi daiteke.",
+  "Por correo certificado, desde que recibes la documentación.":
+    "Posta ziurtatuz, dokumentazioa jasotzen duzunetik.",
+  "Por correo certificado, desde que te llega la documentación.":
+    "Posta ziurtatuz, dokumentazioa iristen zaizunetik.",
+  "Por ejemplo: el día 29 estaré de viaje, ¿cómo voto?": "Adibidez: 29an bidaian egongo naiz, nola bozkatu?",
+  "Por ejemplo: me han dicho que votar es obligatorio": "Adibidez: esan didate bozkatzea derrigorrezkoa dela",
+  "Por ejemplo: vivo en Lisboa, ¿cómo voto?": "Adibidez: Lisboan bizi naiz, nola bozkatu?",
+  "Por ejemplo: ¿hasta qué hora puedo votar?": "Adibidez: zer ordutara arte bozka dezaket?",
+  "Pregunta": "Galdera",
+  "Preguntar": "Galdetu",
+  "Preguntas frecuentes sobre la votación · Interior": "Bozketari buruzko ohiko galderak · Barne",
+  "Presentación de candidaturas ante las Juntas Electorales Provinciales":
+    "Hautagaitzak Probintziako Hauteskunde Batzarren aurrean aurkeztea",
+  "Proclamación de candidaturas por las Juntas Electorales Provinciales":
+    "Probintziako Hauteskunde Batzarrek hautagaitzak aldarrikatzea",
+  "Prohibido publicar, difundir o reproducir sondeos electorales":
+    "Debekatuta dago hauteskunde-inkestak argitaratzea, zabaltzea edo erreproduzitzea",
+  "Provincia": "Probintzia",
+  "Prueba con": "Probatu hau",
+  "Prueba la regla con tus números": "Probatu araua zure zenbakiekin",
+  "Práctica · datos ficticios": "Praktika · datu fiktizioak",
+  "Práctica: candidaturas": "Praktika: hautagaitzak",
+  "Práctica: cocientes": "Praktika: zatidurak",
+  "Publicación en el BOE de las candidaturas presentadas": "Aurkeztutako hautagaitzak BOEn argitaratzea",
+  "Publicación en el BOE de las candidaturas proclamadas": "Aldarrikatutako hautagaitzak BOEn argitaratzea",
+  "Publicación en el BOE del Real Decreto 806/2026 de disolución y convocatoria; entra en vigor el mismo día":
+    "Desegiteko eta deitzeko 806/2026 Errege Dekretua BOEn argitaratzea; egun berean sartzen da indarrean",
+  "Puedo votar con una fotocopia del DNI": "NANaren fotokopia batekin bozka dezaket",
+  "Puesta a disposición de las papeletas descargables para los residentes en el extranjero (CERA); el 7/11 es el límite para publicarlas, no el cierre de la descarga":
+    "Boto-txartel deskargagarriak atzerrian bizi direnen (CERA) eskura jartzea; azaroaren 7a da argitaratzeko muga, ez deskarga ixteko data",
+  "Real Decreto 806/2026 de convocatoria · BOE": "Deialdiaren 806/2026 Errege Dekretua · BOE",
+  "Real Decreto 806/2026 de convocatoria, anexo · BOE": "Deialdiaren 806/2026 Errege Dekretua, eranskina · BOE",
+  "Recibes las papeletas": "Boto-txartelak jasotzen dituzu",
+  "Recibes los sobres": "Gutun-azalak jasotzen dituzu",
+  "Redactando con las fuentes oficiales…": "Iturri ofizialekin idazten…",
+  "Referencias": "Erreferentziak",
+  "Reflexión": "Hausnarketa",
+  "Responde con las fuentes oficiales de cada dato.": "Datu bakoitzaren iturri ofizialekin erantzuten du.",
+  "Resultado de la comprobación": "Egiaztapenaren emaitza",
+  "Resultados reales: {validos} votos válidos, de ellos {blanco} en blanco. El 3 % son {umbral} votos.":
+    "Benetako emaitzak: {validos} baliozko boto, horietatik {blanco} zuri. % 3: {umbral} boto.",
+  "Saltar al contenido": "Joan edukira",
+  "Senadores": "Senatariak",
+  "Sesiones constitutivas del Congreso y del Senado (10:00)": "Kongresuaren eta Senatuaren eratze-saioak (10:00)",
+  "Si hay recursos contra las candidaturas, llegan más tarde. También puedes":
+    "Hautagaitzen aurkako errekurtsorik badago, beranduago iristen dira. Halaber, aukera duzu",
+  "Solicitud de la documentación del voto Braille": "Braille bidezko botoaren dokumentazioa eskatzea",
+  "Solicitud del voto de los residentes en España que están temporalmente en el extranjero (ERTA)":
+    "Aldi baterako atzerrian dauden Espainiako egoiliarrek (ERTA) botoa eskatzea",
+  "Solicitud del voto por correo (residentes en España y residentes en el extranjero que están temporalmente en España)":
+    "Posta bidezko botoa eskatzea (Espainian bizi direnak eta aldi baterako Espainian dauden atzerriko egoiliarrak)",
+  "Son las filas de asientos. Solo ordenan los 350 puntos en forma de hemiciclo: no tienen significado propio.":
+    "Eserleku-ilarak dira. 350 puntuak hemiziklo itxuran ordenatzeko baino ez dira: ez dute esanahi berezirik.",
+  "Son los diputados de la comunidad que señales en el mapa. Su posición en el hemiciclo es ilustrativa: no es dónde se sientan.":
+    "Mapan hautatzen duzun erkidegoko diputatuak dira. Hemizikloan duten kokapena adierazgarria da: ez da benetan esertzen diren lekua.",
+  "Sorteo de los miembros de las mesas electorales en los ayuntamientos":
+    "Hauteskunde-mahaietako kideen zozketa udaletan",
+  "Sí": "Bai",
+  "Tabla de cocientes": "Zatiduren taula",
+  "Te explicamos los pasos y las fechas de tu caso, con la fuente oficial de cada uno.":
+    "Zure kasuko urratsak eta datak azaltzen dizkizugu, bakoitzaren iturri ofizialarekin.",
+  "Te llega la documentación a casa": "Dokumentazioa etxera iristen zaizu",
+  "Te llega la documentación al extranjero": "Dokumentazioa atzerrira iristen zaizu",
+  "Te llega la documentación, sin pedirla": "Dokumentazioa iristen zaizu, eskatu gabe",
+  "Te llegan las papeletas": "Boto-txartelak iristen zaizkizu",
+  "Te lo dan en tu mesa el día de la votación. Si lo pides, no puedes votar por correo.":
+    "Bozketa egunean ematen dizute zure mahaian. Eskatzen baduzu, ezin duzu postaz bozkatu.",
+  "Todo para votar el {fecha}.": "Bozkatzeko behar duzun guztia ({fecha}).",
+  "Todos los escaños empiezan en el mismo gris: no representa partidos, resultados ni previsiones.":
+    "Eserleku guztiak gris berean hasten dira: ez ditu alderdiak, emaitzak edo aurreikuspenak adierazten.",
+  "Total · pulsa una comunidad": "Guztira · sakatu erkidego bat",
+  "Traducción automática: ante la duda, vale la versión en castellano.":
+    "Itzulpen automatikoa: zalantzarik izanez gero, gaztelaniazko bertsioak balio du.",
+  "Tu caso": "Zure kasua",
+  "Tu voto llega a la mesa": "Zure botoa mahaira iristen da",
+  "Tú en persona, por correo postal (certificado si se puede) y sin coste. Nunca directamente a la Junta Electoral en España: ese voto es nulo.":
+    "Zuk zeuk, posta arruntez (ziurtatua, ahal bada) eta kosturik gabe. Inoiz ez zuzenean Espainiako Hauteskunde Batzarrera: boto hori baliogabea da.",
+  "Un punto, un escaño": "Puntu bat, eserleku bat",
+  "Una pieza del squad": "Squad-eko pieza bat",
+  "VOTAR": "BOZKATU",
+  "Ver en 3D": "Ikusi 3Dn",
+  "Ver los pasos en detalle": "Ikusi urratsak xehetasunez",
+  "Ver tu caso paso a paso": "Ikusi zure kasua urratsez urrats",
+  "Verificaciones publicadas": "Argitaratutako egiaztapenak",
+  "Vives en España": "Espainian bizi zara",
+  "Vives fuera de España": "Espainiatik kanpo bizi zara",
+  "Vivo en Berlín, ¿cómo voto?": "Berlinen bizi naiz, nola bozkatu?",
+  "Vivo en España": "Espainian bizi naiz",
+  "Vivo en València y el día 29 no estoy, ¿cómo voto?": "Valentzian bizi naiz eta 29an ez nago, nola bozkatu?",
+  "Vivo fuera": "Kanpoan bizi naiz",
+  "Vivo fuera de España": "Espainiatik kanpo bizi naiz",
+  "Vota en la urna de tu consulado": "Bozkatu zure kontsulatuko hautestontzian",
+  "Vota por correo, aquí o desde fuera.": "Bozkatu postaz, hemen edo kanpotik.",
+  "Votación": "Bozketa",
+  "Votación en España": "Bozketa Espainian",
+  "Votación, {fecha}": "Bozketa, {fecha}",
+  "Votas en urna": "Hautestontzian bozkatzen duzu",
+  "Voto accesible · Ministerio del Interior": "Boto irisgarria · Barne Ministerioa",
+  "Voto en urna de los residentes en el extranjero (CERA) en su consulado o en los lugares habilitados":
+    "Atzerrian bizi direnen (CERA) hautestontzi bidezko botoa, beren kontsulatuan edo gaitutako lekuetan",
+  "Voto por correo · 29N": "Posta bidezko botoa · 29N",
+  "Voto por correo · Correos": "Posta bidezko botoa · Correos",
+  "Voto por correo, aquí o desde fuera": "Posta bidezko botoa, hemen edo kanpotik",
+  "Voto por correo, hasta el {fecha}:": "Posta bidezko botoa (azken eguna: {fecha}):",
+  "Votos": "Botoak",
+  "Votos de {letra}": "{letra} hautagaitzaren botoak",
+  "Votos en blanco": "Boto zuriak",
+  "cerrar": "itxi",
+  "cierra hoy": "gaur ixten da",
+  "de {abre} a {cierra}": "{abre}–{cierra}",
+  "del {desde} al {hasta}": "{desde} – {hasta}",
+  "descargarlas en la web del INE": "INEren webgunetik deskargatzeko",
+  "desde el {fecha}": "hasiera: {fecha}",
+  "día": "egun",
+  "días": "egun",
+  "enviar": "bidali",
+  "horas": "ordu",
+  "inscrito en el consulado": "kontsulatuan inskribatuta",
+  "min": "min",
+  "para votar": "bozkatzeko",
+  "pero vives en España": "baina Espainian bizi zara",
+  "queda 1 día": "egun 1 geratzen da",
+  "quedan {n} días": "{n} egun geratzen dira",
+  "salto de línea": "lerro-jauzia",
+  "seg": "seg",
+  "y quieres votar sin ayuda": "eta laguntzarik gabe bozkatu nahi duzu",
+  "y votas por correo": "eta postaz bozkatzen duzu",
+  "{d} d {h} h {m} min {s} s": "{d} e {h} h {m} min {s} s",
+  "{d}d {h}h {m}m {s}s": "{d}e {h}h {m}m {s}s",
+  "{fecha}, de {abre} a {cierra}, en tu mesa electoral.": "{fecha}, {abre}–{cierra}, zure hauteskunde-mahaian.",
+  "{n} escaños": "{n} eserleku",
+  "{verificador} califica «{afirmacion}» como": "{verificador} erakundeak honela kalifikatzen du «{afirmacion}»:",
+  "¿Algo está mal? Avísanos": "Zerbait gaizki dago? Jakinarazi iezaguzu",
+  "¿Algo más?": "Beste zerbait?",
+  "¿Cómo voto? · Escaños": "Nola bozkatu? · Eserlekuak",
+  "¿Dónde estarás durante las elecciones?": "Non egongo zara hauteskundeetan?",
+  "¿Dónde vives?": "Non bizi zara?",
+  "¿Es verdad lo que me han dicho?": "Egia al da esan didatena?",
+  "¿Es verdad que el voto en blanco se reparte entre los más votados?":
+    "Egia al da boto zuria boto gehien dituztenen artean banatzen dela?",
+  "¿Hasta cuándo puedo pedir el voto por correo?": "Noiz arte eska dezaket posta bidezko botoa?",
+  "¿Hasta cuándo puedo votar en el consulado?": "Noiz arte bozka dezaket kontsulatuan?",
+  "¿Qué documento tengo que llevar para votar?": "Zer agiri eraman behar dut bozkatzeko?",
+  "¿Qué necesitas?": "Zer behar duzu?",
+  "¿Qué te han dicho?": "Zer esan dizute?",
+  "¿Tengo horas libres en el trabajo para ir a votar?": "Lanean ordu libreak ditut bozkatzera joateko?",
+  "¿Tengo que pedir el voto si vivo fuera?": "Botoa eskatu behar dut kanpoan bizi banaiz?",
+  "Cuéntanos qué has oído": "Kontatu zer entzun duzun",
+  "La fuente oficial dice lo mismo. Te enseñamos la cita literal que lo sostiene.":
+    "Iturri ofizialak gauza bera dio. Hori oinarritzen duen aipu literala erakusten dizugu.",
+  "La fuente oficial dice otra cosa. Te enseñamos la cita literal que lo contradice.":
+    "Iturri ofizialak beste gauza bat dio. Horren aurka doan aipu literala erakusten dizugu.",
+  "No hay una cita oficial que lo confirme ni lo contradiga, así que no damos veredicto.":
+    "Ez dago hori baieztatzen edo horren aurka doan aipu ofizialik; beraz, ez dugu ebazpenik ematen.",
+  "Pregunta por tu caso": "Galdetu zure kasuaz",
+  "Qué puede salir": "Zer atera daiteke",
+  "Solo comprobamos cómo se vota: plazos, documentos, mesas y voto por correo.":
+    "Nola bozkatzen den bakarrik egiaztatzen dugu: epeak, agiriak, mahaiak eta posta bidezko botoa.",
+  "Tus fechas, paso a paso": "Zure datak, urratsez urrats",
+  "Inicio": "Hasiera",
+};
+
+export default diccionario;

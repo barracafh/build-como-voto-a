@@ -19,6 +19,8 @@ import {
   instanteMadrid,
   plazo,
 } from "@/lib/calendario";
+import { getT } from "@/i18n/servidor";
+import { marcar } from "@/i18n/traducir";
 
 // Los plazos se abren y cierran por fecha y hora: se calcula en cada visita,
 // para que nunca se sirva una versión guardada de antes de un cierre.
@@ -27,20 +29,20 @@ export const dynamic = "force-dynamic";
 const piezas = [
   {
     href: "/correo",
-    titulo: "Voto por correo, aquí o desde fuera",
-    texto: "Elige si vives en España o fuera y pregunta por tu caso: pasos y fechas oficiales.",
+    titulo: marcar("Voto por correo, aquí o desde fuera"),
+    texto: marcar("Elige si vives en España o fuera y pregunta por tu caso: pasos y fechas oficiales."),
     icono: Mail,
   },
   {
     href: "/verificar",
-    titulo: "¿Es verdad lo que me han dicho?",
-    texto: "Contrasta lo que circula sobre cómo se vota con la fuente oficial.",
+    titulo: marcar("¿Es verdad lo que me han dicho?"),
+    texto: marcar("Contrasta lo que circula sobre cómo se vota con la fuente oficial."),
     icono: Search,
   },
   {
     href: "/escanos",
-    titulo: "Cómo se reparten los escaños",
-    texto: "La ley D'Hondt con los resultados oficiales de 2023, provincia a provincia.",
+    titulo: marcar("Cómo se reparten los escaños"),
+    texto: marcar("La ley D'Hondt con los resultados oficiales de 2023, provincia a provincia."),
     icono: MapaEspana,
   },
 ];
@@ -60,7 +62,12 @@ const abreVotacion = instanteMadrid(votacion.inicio, abre);
 const cierraVotacion = instanteMadrid(votacion.inicio, cierra ?? "24:00");
 const cierraCorreo = instanteMadrid(remision.fin, "24:00");
 
-export default function Home() {
+export default async function Home() {
+  const { t, idioma } = await getT();
+  const fecha = (iso: string) => fechaLarga(iso, idioma);
+  const hoySeVota = cierra
+    ? t("Hoy se vota, hasta las {hora}.", { hora: cierra })
+    : t("Hoy se vota.");
   // Pasadas las 20:00 del día de la votación ya no hay nada que contar.
   const terminada = Date.now() >= cierraVotacion;
 
@@ -76,17 +83,17 @@ export default function Home() {
             <Card className="gap-0.5 bg-brand px-4 py-3 text-sm text-white ring-0 shadow-(--shadow-overlay)">
               <p className="flex items-center gap-2.5 font-heading text-xl leading-[1.1] opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-150 motion-safe:duration-500 md:text-2xl">
                 <span className="size-3 shrink-0 rounded-full bg-brand-yellow ring-4 ring-brand-yellow/30 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]" />
-                {fechaLarga(votacion.inicio)}
+                {fecha(votacion.inicio)}
               </p>
               <ul className="mt-1 grid gap-0.5 font-mono text-xs opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-300 motion-safe:duration-500">
                 <CuentaAtras
                   corto
                   hasta={abreVotacion}
-                  antes="VOTAR"
-                  despues={cierra ? `Hoy se vota, hasta las ${cierra}.` : "Hoy se vota."}
+                  antes={t("VOTAR")}
+                  despues={hoySeVota}
                   finDespues={cierraVotacion}
                 />
-                <CuentaAtras corto hasta={cierraCorreo} antes="CORREO" />
+                <CuentaAtras corto hasta={cierraCorreo} antes={t("CORREO")} />
               </ul>
             </Card>
           )
@@ -97,24 +104,28 @@ export default function Home() {
           className="salida-con-scroll relative overflow-hidden rounded-[28px] px-6 pt-9 pb-24 text-white [background:var(--brand-gradient)] md:-mx-12 md:px-12 md:pt-14 md:pb-32"
         >
           <p className="font-mono text-xs tracking-[0.08em] uppercase">
-            Elecciones generales · 29N
+            {t("Elecciones generales · 29N")}
           </p>
           <h1
             id="titular"
             className="mt-4 max-w-[14ch] text-[clamp(38px,6vw,68px)] leading-[1.04] tracking-[-0.02em]"
           >
             {terminada
-              ? `La votación del ${fechaLarga(votacion.inicio)} ha terminado.`
-              : `Todo para votar el ${fechaLarga(votacion.inicio)}.`}
+              ? t("La votación del {fecha} ha terminado.", { fecha: fecha(votacion.inicio) })
+              : t("Todo para votar el {fecha}.", { fecha: fecha(votacion.inicio) })}
           </h1>
           <p className="mt-5 max-w-[52ch] text-lg">
-            Cómo, dónde y hasta cuándo, con la fuente oficial de cada dato. Solo
-            cómo se vota: nada de candidaturas, programas ni encuestas.
+            {t(
+              "Cómo, dónde y hasta cuándo, con la fuente oficial de cada dato. Solo cómo se vota: nada de candidaturas, programas ni encuestas.",
+            )}
           </p>
           {horario && !terminada && (
             <p className="mt-6 font-medium">
-              {fechaLarga(votacion.inicio)}, {horario}, en tu
-              mesa electoral.
+              {t("{fecha}, de {abre} a {cierra}, en tu mesa electoral.", {
+                fecha: fecha(votacion.inicio),
+                abre: abre ?? "",
+                cierra: cierra ?? "",
+              })}
             </p>
           )}
 
@@ -122,8 +133,8 @@ export default function Home() {
             <div className="mt-8 max-w-[520px]">
               <Contador
                 hasta={abreVotacion}
-                para="para votar"
-                despues={cierra ? `Hoy se vota, hasta las ${cierra}.` : "Hoy se vota."}
+                para={t("para votar")}
+                despues={hoySeVota}
                 finDespues={cierraVotacion}
               />
               {/* Sin hijos cuando ya no queda plazo: entonces no se ve la caja. */}
@@ -131,7 +142,9 @@ export default function Home() {
                 <CuentaAtras
                   corto
                   hasta={cierraCorreo}
-                  antes={`Voto por correo, hasta el ${fechaLarga(remision.fin)}:`}
+                  antes={t("Voto por correo, hasta el {fecha}:", {
+                    fecha: fecha(remision.fin),
+                  })}
                 />
               </ul>
             </div>
@@ -141,7 +154,7 @@ export default function Home() {
 
       <div className="mt-20 text-lg [&>*+*]:mt-20">
         <section aria-labelledby="que-necesitas">
-          <Encabezado numero="01" id="que-necesitas" titulo="¿Qué necesitas?" />
+          <Encabezado numero="01" id="que-necesitas" titulo={t("¿Qué necesitas?")} />
           <ul className="mt-8 grid gap-3 sm:grid-cols-3">
             {piezas.map(({ href, titulo, texto, icono: Icono }) => (
               <li key={href} className="flex">
@@ -150,9 +163,9 @@ export default function Home() {
                   className="group flex w-full flex-col rounded-xl p-5 ring-1 ring-foreground/10 transition-colors outline-none hover:bg-muted focus-visible:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
                 >
                   <Icono aria-hidden="true" className="size-7 text-brand" />
-                  <span className="mt-4 block font-medium leading-[1.3] sm:mt-6">{titulo}</span>
+                  <span className="mt-4 block font-medium leading-[1.3] sm:mt-6">{t(titulo)}</span>
                   <span className="mt-2 block text-base text-(--text-secondary)">
-                    {texto}
+                    {t(texto)}
                   </span>
                   <span
                     aria-hidden="true"
@@ -173,10 +186,10 @@ export default function Home() {
           <Encabezado
             numero="02"
             id="pregunta-directa"
-            titulo="O pregúntalo directamente"
+            titulo={t("O pregúntalo directamente")}
           />
           <p className="mt-3 text-(--text-secondary)">
-            Responde con las fuentes oficiales de cada dato.
+            {t("Responde con las fuentes oficiales de cada dato.")}
           </p>
           {/* Sobre el gris del bloque, el campo de texto en blanco. */}
           <div className="mt-6 [&_textarea]:bg-background">
@@ -193,10 +206,10 @@ export default function Home() {
         >
           <div className="min-w-0 flex-[1_1_260px]">
             <p className="font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
-              Dónde se hace
+              {t("Dónde se hace")}
             </p>
             <h2 className="mt-2 font-sans text-xl leading-[1.3] font-medium">
-              Consulta tu mesa y tu local electoral en el INE
+              {t("Consulta tu mesa y tu local electoral en el INE")}
             </h2>
             <p className="mt-1 font-mono text-sm text-(--text-secondary)">
               {new URL(mesaIne).hostname}
@@ -209,32 +222,32 @@ export default function Home() {
               "max-md:w-full",
             )}
           >
-            Abrir la sede del INE <span aria-hidden="true">↗</span>
+            {t("Abrir la sede del INE")} <span aria-hidden="true">↗</span>
           </a>
         </Card>
 
         <Fuentes
           fuentes={[
-            fuenteCalendario,
+            { ...fuenteCalendario, nombre: t(fuenteCalendario.nombre) },
             {
-              nombre: "Real Decreto 806/2026 de convocatoria · BOE",
+              nombre: t("Real Decreto 806/2026 de convocatoria · BOE"),
               url: votacion.fuente,
             },
             {
-              nombre: "Horario de votación · Art. 84.1 LOREG",
+              nombre: t("Horario de votación · Art. 84.1 LOREG"),
               url: votacion.fuentesAdicionales[0],
             },
             {
-              nombre: "Plazos para los electores · INE",
+              nombre: t("Plazos para los electores · INE"),
               url: "https://www.ine.es/dyngs/CEL/index.htm?cid=1702",
             },
             {
-              nombre: "Voto accesible · Ministerio del Interior",
+              nombre: t("Voto accesible · Ministerio del Interior"),
               url: "https://infoelectoral.interior.gob.es/es/proceso-electoral/accesibilidad-y-procesos-electorales/",
             },
-            { nombre: "Consulta de mesa y local · INE", url: mesaIne },
+            { nombre: t("Consulta de mesa y local · INE"), url: mesaIne },
             {
-              nombre: "Envío del voto por correo · Art. 73.3 LOREG",
+              nombre: t("Envío del voto por correo · Art. 73.3 LOREG"),
               url: remision.fuentesAdicionales[0],
             },
           ]}

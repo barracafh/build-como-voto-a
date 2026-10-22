@@ -4,6 +4,7 @@ import { useId, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { dhondt } from "@/lib/dhondt";
 import { TablaCocientes, TablaResultados } from "./Tablas";
+import { useIdioma } from "@/i18n/cliente";
 
 const INICIO = { A: "340000", B: "280000", C: "160000", D: "60000", blanco: "15000" };
 type Campo = keyof typeof INICIO;
@@ -12,10 +13,11 @@ const num = (s: string) => Math.max(0, Math.floor(Number(s)) || 0);
 
 export function Practica() {
   const id = useId();
+  const { t } = useIdioma();
   const [votos, setVotos] = useState(INICIO);
   const [escanosTexto, setEscanosTexto] = useState("7");
   const escanos = Math.min(37, Math.max(1, num(escanosTexto)));
-  const candidaturas = NOMBRES.map((n) => ({ nombre: `Candidatura ${n}`, votos: num(votos[n]) }));
+  const candidaturas = NOMBRES.map((n) => ({ nombre: t("Candidatura {letra}", { letra: n }), votos: num(votos[n]) }));
   const validos = candidaturas.reduce((s, c) => s + c.votos, 0) + num(votos.blanco);
   const { resultados, cocientes } = dhondt(candidaturas, validos, escanos);
 
@@ -41,22 +43,23 @@ export function Practica() {
     <section aria-labelledby={`${id}-titulo`} className="[&>*+*]:mt-6">
       <div>
         <p className="font-mono text-xs tracking-[0.06em] text-(--text-secondary) uppercase">
-          Práctica · datos ficticios
+          {t("Práctica · datos ficticios")}
         </p>
         <h2 id={`${id}-titulo`} className="mt-3 text-[clamp(28px,4vw,40px)] leading-[1.1]">
-          Prueba la regla con tus números
+          {t("Prueba la regla con tus números")}
         </h2>
         <p className="mt-3 text-base text-(--text-secondary)">
-          Candidaturas inventadas (A, B, C y D). Cambia los votos o los escaños y el
-          reparto se recalcula al momento. No son resultados reales.
+          {t(
+            "Candidaturas inventadas (A, B, C y D). Cambia los votos o los escaños y el reparto se recalcula al momento. No son resultados reales.",
+          )}
         </p>
       </div>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-4">
-        {NOMBRES.map((n) => campo(n, `Votos de ${n}`))}
-        {campo("blanco", "Votos en blanco")}
+        {NOMBRES.map((n) => campo(n, t("Votos de {letra}", { letra: n })))}
+        {campo("blanco", t("Votos en blanco"))}
         <div className="grid gap-2">
           <label htmlFor={`${id}-escanos`} className="text-base font-medium">
-            Escaños (1 a 37)
+            {t("Escaños (1 a 37)")}
           </label>
           <Input
             id={`${id}-escanos`}
@@ -70,12 +73,12 @@ export function Practica() {
           />
         </div>
       </div>
-      <ul aria-label="Escaños por candidatura" className="grid gap-2">
+      <ul aria-label={t("Escaños por candidatura")} className="grid gap-2">
         {resultados.map((r) => (
           <li key={r.nombre} className="grid grid-cols-[120px_minmax(0,1fr)] items-center gap-3">
             <span className="text-base">{r.nombre}</span>
             <span className="flex flex-wrap gap-1">
-              <span className="sr-only">{r.escanos} escaños</span>
+              <span className="sr-only">{t("{n} escaños", { n: r.escanos })}</span>
               {Array.from({ length: r.escanos }, (_, i) => (
                 <span key={i} aria-hidden="true" className="size-4 rounded-full bg-foreground" />
               ))}
@@ -86,8 +89,8 @@ export function Practica() {
           </li>
         ))}
       </ul>
-      <TablaResultados filas={resultados} votosValidos={validos} titulo="Práctica: candidaturas" />
-      <TablaCocientes cocientes={cocientes} escanos={escanos} titulo="Práctica: cocientes" />
+      <TablaResultados filas={resultados} votosValidos={validos} titulo={t("Práctica: candidaturas")} />
+      <TablaCocientes cocientes={cocientes} escanos={escanos} titulo={t("Práctica: cocientes")} />
     </section>
   );
 }

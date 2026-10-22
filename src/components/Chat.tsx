@@ -16,6 +16,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Fuentes } from "@/components/Fuentes";
 import { Publicadas } from "@/components/Publicadas";
 import { ruta } from "@/config/sitio";
+import { useIdioma } from "@/i18n/cliente";
+import { marcar } from "@/i18n/traducir";
 import { leerParcial } from "@/lib/parcial";
 
 type Turno = { pregunta: string; respuesta: Respuesta };
@@ -24,10 +26,11 @@ const MAXIMO = 1000;
 
 // Encabeza cada respuesta: el sol de Sol y de dónde sale.
 function Firma() {
+  const { t } = useIdioma();
   return (
     <p className="flex items-center gap-2 font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
       <span aria-hidden="true" className="size-2.5 rounded-full bg-brand-yellow ring-4 ring-brand-yellow/25" />
-      Con fuentes oficiales
+      {t("Con fuentes oficiales")}
     </p>
   );
 }
@@ -37,46 +40,49 @@ const textos: Record<
   { etiqueta: string; placeholder: string; ejemplos: string[] }
 > = {
   general: {
-    etiqueta: "Escribe tu pregunta",
-    placeholder: "Por ejemplo: ¿hasta qué hora puedo votar?",
+    etiqueta: marcar("Escribe tu pregunta"),
+    placeholder: marcar("Por ejemplo: ¿hasta qué hora puedo votar?"),
     ejemplos: [
-      "Vivo en València y el día 29 no estoy, ¿cómo voto?",
-      "¿Qué documento tengo que llevar para votar?",
-      "¿Tengo horas libres en el trabajo para ir a votar?",
+      marcar("Vivo en València y el día 29 no estoy, ¿cómo voto?"),
+      marcar("¿Qué documento tengo que llevar para votar?"),
+      marcar("¿Tengo horas libres en el trabajo para ir a votar?"),
     ],
   },
   "correo-aqui": {
-    etiqueta: "Cuéntanos tu caso",
-    placeholder: "Por ejemplo: el día 29 estaré de viaje, ¿cómo voto?",
+    etiqueta: marcar("Cuéntanos tu caso"),
+    placeholder: marcar("Por ejemplo: el día 29 estaré de viaje, ¿cómo voto?"),
     ejemplos: [
-      "Vivo en València y el día 29 no estoy, ¿cómo voto?",
-      "¿Hasta cuándo puedo pedir el voto por correo?",
-      "Estaré de Erasmus en noviembre, ¿qué hago?",
+      marcar("Vivo en València y el día 29 no estoy, ¿cómo voto?"),
+      marcar("¿Hasta cuándo puedo pedir el voto por correo?"),
+      marcar("Estaré de Erasmus en noviembre, ¿qué hago?"),
     ],
   },
   "correo-fuera": {
-    etiqueta: "Cuéntanos tu caso",
-    placeholder: "Por ejemplo: vivo en Lisboa, ¿cómo voto?",
+    etiqueta: marcar("Cuéntanos tu caso"),
+    placeholder: marcar("Por ejemplo: vivo en Lisboa, ¿cómo voto?"),
     ejemplos: [
-      "Vivo en Berlín, ¿cómo voto?",
-      "¿Tengo que pedir el voto si vivo fuera?",
-      "¿Hasta cuándo puedo votar en el consulado?",
+      marcar("Vivo en Berlín, ¿cómo voto?"),
+      marcar("¿Tengo que pedir el voto si vivo fuera?"),
+      marcar("¿Hasta cuándo puedo votar en el consulado?"),
     ],
   },
   verificar: {
-    etiqueta: "¿Qué te han dicho?",
-    placeholder: "Por ejemplo: me han dicho que votar es obligatorio",
+    etiqueta: marcar("¿Qué te han dicho?"),
+    placeholder: marcar("Por ejemplo: me han dicho que votar es obligatorio"),
     ejemplos: [
-      "Me han dicho que si pido el voto por correo también puedo votar en la mesa",
-      "¿Es verdad que el voto en blanco se reparte entre los más votados?",
-      "Puedo votar con una fotocopia del DNI",
+      marcar("Me han dicho que si pido el voto por correo también puedo votar en la mesa"),
+      marcar("¿Es verdad que el voto en blanco se reparte entre los más votados?"),
+      marcar("Puedo votar con una fotocopia del DNI"),
     ],
   },
 };
 
 // La conversación vive solo en esta pestaña: no se guarda en ningún sitio.
 export function Chat({ modo }: { modo: Modo }) {
-  const { etiqueta, placeholder, ejemplos } = textos[modo];
+  const { t, idioma } = useIdioma();
+  const etiqueta = t(textos[modo].etiqueta);
+  const placeholder = t(textos[modo].placeholder);
+  const ejemplos = textos[modo].ejemplos.map((e) => t(e));
   const [turnos, setTurnos] = useState<Turno[]>([]);
   const [texto, setTexto] = useState("");
   // La pregunta que espera respuesta; mientras no es null, se está consultando.
@@ -114,9 +120,9 @@ export function Chat({ modo }: { modo: Modo }) {
     setParcial("");
     setError("");
     const mensajes = [
-      ...turnos.flatMap((t) => [
-        { role: "user", content: t.pregunta },
-        { role: "assistant", content: t.respuesta.respuesta },
+      ...turnos.flatMap((turno) => [
+        { role: "user", content: turno.pregunta },
+        { role: "assistant", content: turno.respuesta.respuesta },
       ]),
       { role: "user", content: pregunta },
     ];
@@ -124,7 +130,7 @@ export function Chat({ modo }: { modo: Modo }) {
       const res = await fetch(ruta("/api/chat"), {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ modo, mensajes }),
+        body: JSON.stringify({ modo, mensajes, idioma }),
       });
       if (!res.ok || !res.body) throw new Error((await res.json()).error);
       // NDJSON: {"trozo"} según llega el texto y, al final, {"fin"} o {"error"}.
@@ -154,7 +160,7 @@ export function Chat({ modo }: { modo: Modo }) {
       setError(
         e instanceof Error && e.message
           ? e.message
-          : "No se ha podido responder. Prueba de nuevo.",
+          : t("No se ha podido responder. Prueba de nuevo."),
       );
     } finally {
       setPendiente(null);
@@ -170,49 +176,51 @@ export function Chat({ modo }: { modo: Modo }) {
 
   return (
     <div className="text-lg [&>*+*]:mt-12">
-      {turnos.map((t, i) => (
+      {turnos.map((turno, i) => (
         <section
           key={i}
           aria-labelledby={`pregunta-${i}`}
           className="[&>*+*]:mt-6 motion-safe:animate-[aparecer_500ms_var(--ease-brand)_both]"
         >
           <h2 id={`pregunta-${i}`} className="ml-auto w-fit max-w-[85%] rounded-3xl rounded-br-lg bg-secondary px-5 py-3 font-sans text-lg leading-[1.4] font-medium tracking-normal">
-            {t.pregunta}
+            {turno.pregunta}
           </h2>
           <Firma />
-          {t.respuesta.verificacion && (
+          {turno.respuesta.verificacion && (
             <Card
               render={<section />}
-              aria-label="Resultado de la comprobación"
+              aria-label={t("Resultado de la comprobación")}
               className="gap-3 bg-muted px-6 py-6 text-base ring-0"
             >
               <p className="text-sm text-(--text-secondary)">
-                Afirmación: «{t.respuesta.verificacion.afirmacion}»
+                {t("Afirmación: «{afirmacion}»", {
+                  afirmacion: turno.respuesta.verificacion.afirmacion,
+                })}
               </p>
               <p>
                 <Badge
                   variant="outline"
                   className="h-auto bg-background px-3 py-1 font-mono text-sm tracking-[0.06em]"
                 >
-                  {t.respuesta.verificacion.resultado}
+                  {t(turno.respuesta.verificacion.resultado)}
                 </Badge>
               </p>
-              {t.respuesta.verificacion.cita && (
+              {turno.respuesta.verificacion.cita && (
                 <blockquote className="border-l-2 border-foreground/20 pl-4">
-                  {t.respuesta.verificacion.cita}
+                  {turno.respuesta.verificacion.cita}
                 </blockquote>
               )}
-              {t.respuesta.verificacion.matiz && (
+              {turno.respuesta.verificacion.matiz && (
                 <p className="text-(--text-secondary)">
-                  Matiz: {t.respuesta.verificacion.matiz}
+                  {t("Matiz: {matiz}", { matiz: turno.respuesta.verificacion.matiz })}
                 </p>
               )}
             </Card>
           )}
-          <p>{t.respuesta.respuesta}</p>
-          {t.respuesta.pasos.length > 0 && (
+          <p>{turno.respuesta.respuesta}</p>
+          {turno.respuesta.pasos.length > 0 && (
             <ol className="grid gap-5">
-              {t.respuesta.pasos.map((paso, j) => (
+              {turno.respuesta.pasos.map((paso, j) => (
                 <li
                   key={j}
                   className="grid grid-cols-[24px_minmax(0,1fr)] gap-x-3 md:grid-cols-[32px_minmax(0,1fr)] md:gap-x-4"
@@ -225,9 +233,9 @@ export function Chat({ modo }: { modo: Modo }) {
               ))}
             </ol>
           )}
-          <Fuentes fuentes={t.respuesta.fuentes} />
-          {!!t.respuesta.publicadas?.length && (
-            <Publicadas publicadas={t.respuesta.publicadas} />
+          <Fuentes fuentes={turno.respuesta.fuentes} />
+          {!!turno.respuesta.publicadas?.length && (
+            <Publicadas publicadas={turno.respuesta.publicadas} />
           )}
         </section>
       ))}
@@ -249,8 +257,8 @@ export function Chat({ modo }: { modo: Modo }) {
             />
             <span className="brillo">
               {vivo.respuesta
-                ? "Redactando con las fuentes oficiales…"
-                : "Consultando las fuentes oficiales…"}
+                ? t("Redactando con las fuentes oficiales…")
+                : t("Consultando las fuentes oficiales…")}
             </span>
           </p>
           {vivo.respuesta ? (
@@ -288,7 +296,7 @@ export function Chat({ modo }: { modo: Modo }) {
 
       <form onSubmit={enviar}>
         <label htmlFor="pregunta" className="sr-only">
-          {turnos.length ? "¿Algo más?" : etiqueta}
+          {turnos.length ? t("¿Algo más?") : etiqueta}
         </label>
         {/* El campo empieza como una barra de una línea y, al pulsarlo, se
             abre en un editor con atajos y contador. Si se queda vacío al
@@ -342,7 +350,11 @@ export function Chat({ modo }: { modo: Modo }) {
               size="icon-lg"
               disabled={cargando || !texto.trim()}
               aria-label={
-                cargando ? "Consultando" : modo === "verificar" ? "Comprobar" : "Preguntar"
+                cargando
+                  ? t("Consultando")
+                  : modo === "verificar"
+                    ? t("Comprobar")
+                    : t("Preguntar")
               }
               className="size-11 shrink-0 rounded-full"
             >
@@ -358,11 +370,11 @@ export function Chat({ modo }: { modo: Modo }) {
             <div className="overflow-hidden">
               <div className="flex items-center justify-between gap-3 border-t border-foreground/10 px-5 py-2.5 font-mono text-xs text-(--text-secondary)">
                 <span className="max-sm:hidden">
-                  <kbd className="font-mono">↵</kbd> enviar ·{" "}
-                  <kbd className="font-mono">⇧ ↵</kbd> salto de línea ·{" "}
-                  <kbd className="font-mono">esc</kbd> cerrar
+                  <kbd className="font-mono">↵</kbd> {t("enviar")} ·{" "}
+                  <kbd className="font-mono">⇧ ↵</kbd> {t("salto de línea")} ·{" "}
+                  <kbd className="font-mono">esc</kbd> {t("cerrar")}
                 </span>
-                <span className="sm:hidden">↵ enviar</span>
+                <span className="sm:hidden">↵ {t("enviar")}</span>
                 <span className="tabular-nums">
                   {texto.length}/{MAXIMO}
                 </span>
@@ -375,7 +387,7 @@ export function Chat({ modo }: { modo: Modo }) {
           className="mt-3 flex items-start gap-2 px-4 text-sm text-(--text-secondary)"
         >
           <ShieldCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
-          No escribas datos personales. No guardamos lo que escribes.
+          {t("No escribas datos personales. No guardamos lo que escribes.")}
         </p>
         <p aria-live="polite" className="mt-2 px-4 text-base text-(--text-secondary)">
           {error}
@@ -385,7 +397,7 @@ export function Chat({ modo }: { modo: Modo }) {
       {turnos.length === 0 && (
         <div>
           <h2 className="font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
-            Prueba con
+            {t("Prueba con")}
           </h2>
           <ul className="mt-3 flex flex-wrap gap-2">
             {ejemplos.map((ejemplo, i) => (

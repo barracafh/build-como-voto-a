@@ -1,6 +1,8 @@
 import { esModo, leerJson, sistema, validar } from "@/lib/asistente";
 import { buscarPublicadas } from "@/lib/factcheck";
 import { completarEnVivo, type Mensaje } from "@/lib/ia";
+import { traductorDe } from "@/i18n/diccionarios";
+import { esIdioma } from "@/i18n/idiomas";
 
 const MAX_TURNOS = 6;
 const MAX_CARACTERES = 1000;
@@ -8,13 +10,16 @@ const MAX_CARACTERES = 1000;
 const MODELO = "glm5.3";
 
 // POST {"modo": "correo-aqui" | "correo-fuera" | "verificar",
-//       "mensajes": [{"role": "user" | "assistant", "content": "…"}]}.
+//       "mensajes": [{"role": "user" | "assistant", "content": "…"}],
+//       "idioma": "es" | "ca" | "eu" | "gl"}.
 // Responde en NDJSON: líneas {"trozo": "…"} con el texto del modelo según llega
 // y una última {"fin": Respuesta} ya validada, o {"error": "…"}.
 // Las instrucciones dependen solo del modo. No se guarda ni se registra nada
 // de lo que escribe el ciudadano.
 export async function POST(req: Request) {
-  const { modo, mensajes } = await req.json().catch(() => ({}));
+  const { modo, mensajes, idioma: pedido } = await req.json().catch(() => ({}));
+  const idioma = esIdioma(pedido) ? pedido : "es";
+  const t = traductorDe(idioma);
   const validos =
     esModo(modo) &&
     Array.isArray(mensajes) &&
@@ -29,7 +34,7 @@ export async function POST(req: Request) {
     mensajes.at(-1).role === "user";
   if (!validos)
     return Response.json(
-      { error: "Escribe un mensaje de hasta 1.000 caracteres." },
+      { error: t("Escribe un mensaje de hasta 1.000 caracteres.") },
       { status: 400 },
     );
 
@@ -46,19 +51,19 @@ export async function POST(req: Request) {
       let texto = "";
       try {
         for await (const trozo of completarEnVivo(
-          [{ role: "system", content: sistema(modo) }, ...historial],
+          [{ role: "system", content: sistema(modo, idioma) }, ...historial],
           MODELO,
         )) {
           texto += trozo;
           enviar({ trozo });
         }
-        const fin = validar(leerJson(texto), modo, ultima);
+        const fin = validar(leerJson(texto), modo, ultima, t);
         if (fin.verificacion)
           fin.publicadas = await buscarPublicadas(fin.verificacion.afirmacion);
         enviar({ fin });
       } catch {
         enviar({
-          error: "El asistente no responde ahora. Prueba en un momento.",
+          error: t("El asistente no responde ahora. Prueba en un momento."),
         });
       }
       control.close();

@@ -1,3 +1,6 @@
+"use client";
+
+import { useIdioma } from "@/i18n/cliente";
 import type { Cociente } from "@/lib/dhondt";
 
 export const fmt = new Intl.NumberFormat("es-ES");
@@ -19,17 +22,18 @@ export function TablaResultados({
   votosValidos: number;
   titulo: string;
 }) {
+  const { t } = useIdioma();
   return (
     <div className="overflow-x-auto rounded-xl ring-1 ring-foreground/10">
       <table className="w-full min-w-[520px] text-left text-base tabular-nums">
         <caption className="sr-only">{titulo}</caption>
         <thead className="bg-muted text-sm text-(--text-secondary)">
           <tr>
-            <th scope="col" className="px-4 py-3 font-medium">Candidatura</th>
-            <th scope="col" className="px-4 py-3 text-right font-medium">Votos</th>
-            <th scope="col" className="px-4 py-3 text-right font-medium">% válidos</th>
-            <th scope="col" className="px-4 py-3 font-medium">Llega al 3 %</th>
-            <th scope="col" className="px-4 py-3 text-right font-medium">Escaños</th>
+            <th scope="col" className="px-4 py-3 font-medium">{t("Candidatura")}</th>
+            <th scope="col" className="px-4 py-3 text-right font-medium">{t("Votos")}</th>
+            <th scope="col" className="px-4 py-3 text-right font-medium">{t("% válidos")}</th>
+            <th scope="col" className="px-4 py-3 font-medium">{t("Llega al 3 %")}</th>
+            <th scope="col" className="px-4 py-3 text-right font-medium">{t("Escaños")}</th>
           </tr>
         </thead>
         <tbody className="divide-y">
@@ -40,7 +44,7 @@ export function TablaResultados({
               <td className="px-4 py-3 text-right">
                 {votosValidos ? pct.format(f.votos / votosValidos) : "—"}
               </td>
-              <td className="px-4 py-3">{f.superaUmbral ? "Sí" : "No"}</td>
+              <td className="px-4 py-3">{f.superaUmbral ? t("Sí") : t("No")}</td>
               <td className="px-4 py-3 text-right font-medium">{f.escanos}</td>
             </tr>
           ))}
@@ -59,6 +63,7 @@ export function TablaCocientes({
   escanos: number;
   titulo: string;
 }) {
+  const { t } = useIdioma();
   const nombres = [...new Set(cocientes.map((c) => c.nombre))];
   const divisores = Array.from({ length: escanos }, (_, i) => i + 1);
   const celda = new Map(cocientes.map((c) => [`${c.nombre}|${c.divisor}`, c]));
@@ -69,7 +74,7 @@ export function TablaCocientes({
         <thead className="bg-muted text-sm text-(--text-secondary)">
           <tr>
             <th scope="col" className="sticky left-0 bg-muted px-4 py-3 text-left font-medium">
-              Candidatura
+              {t("Candidatura")}
             </th>
             {divisores.map((d) => (
               <th key={d} scope="col" className="px-3 py-3 font-mono font-medium">
@@ -93,7 +98,7 @@ export function TablaCocientes({
                   <td key={d} className="px-3 py-3 font-semibold text-brand">
                     {fmt.format(Math.round(c.valor))}
                     <span className="ml-1 font-mono text-xs">
-                      <span className="sr-only">, escaño </span>#{c.orden}
+                      <span className="sr-only">{t(", escaño ")}</span>#{c.orden}
                     </span>
                   </td>
                 ) : (

@@ -2,10 +2,13 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { BotonAviso } from "@/components/BotonAviso";
+import { SelectorIdioma } from "@/components/SelectorIdioma";
+import { getT } from "@/i18n/servidor";
 import ficha from "../../ficha.json";
 
 // Cabecera, contenido y pie comunes a todas las pantallas de la herramienta.
-export function Pagina({ children }: { children: ReactNode }) {
+export async function Pagina({ children }: { children: ReactNode }) {
+  const { t } = await getT();
   return (
     <>
       <header className="mx-auto flex min-h-20 max-w-(--container-content) flex-wrap items-center justify-between gap-4 px-(--page-gutter) py-4">
@@ -21,9 +24,12 @@ export function Pagina({ children }: { children: ReactNode }) {
           </span>
           {ficha.nombre}
         </Link>
-        <Badge variant="outline">
-          {ficha.datos === "reales" ? "Datos públicos" : "Datos simulados"}
-        </Badge>
+        <div className="flex items-center gap-3">
+          <SelectorIdioma />
+          <Badge variant="outline">
+            {ficha.datos === "reales" ? t("Datos públicos") : t("Datos simulados")}
+          </Badge>
+        </div>
       </header>
 
       <main
@@ -37,7 +43,7 @@ export function Pagina({ children }: { children: ReactNode }) {
       <footer className="p-2">
         <div className="flex flex-wrap items-center justify-between gap-6 rounded-[28px] px-(--page-gutter) py-12 [background:radial-gradient(80%_70%_at_50%_-12%,#ffe58f_0%,rgba(255,229,143,0)_70%),linear-gradient(180deg,#ffd34d_0%,var(--brand-yellow)_46%,var(--brand-orange)_100%)] md:px-12">
           <p className="text-[15px]">
-            Una pieza del squad{" "}
+            {t("Una pieza del squad")}{" "}
             <span className="font-mono">{ficha.equipo}</span> · Build night
           </p>
           <BotonAviso />
@@ -51,7 +57,7 @@ export function Pagina({ children }: { children: ReactNode }) {
 // portada, con el atardecer de Sol. Es la pieza con el sol de la vista.
 // `children` va dentro, al pie, para el dato que más importa (en fichas
 // blancas, como la cuenta atrás de la portada).
-export function Titular({
+export async function Titular({
   etiqueta,
   titulo,
   entradilla,
@@ -62,6 +68,7 @@ export function Titular({
   entradilla: ReactNode;
   children?: ReactNode;
 }) {
+  const { t } = await getT();
   return (
     <section
       aria-labelledby="titular"
@@ -71,7 +78,7 @@ export function Titular({
         href="/"
         className="inline-flex min-h-11 items-center gap-2 rounded-sm font-mono text-xs tracking-[0.08em] uppercase underline-offset-4 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-white/70"
       >
-        <span aria-hidden="true">←</span> Inicio
+        <span aria-hidden="true">←</span> {t("Inicio")}
       </Link>
       <p className="mt-6 font-mono text-xs tracking-[0.08em] uppercase">{etiqueta}</p>
       <h1

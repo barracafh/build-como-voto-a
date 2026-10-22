@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useIdioma } from "@/i18n/cliente";
+import type { T } from "@/i18n/traducir";
 
 const dos = (n: number) => String(n).padStart(2, "0");
 
-function restante(ms: number, corto: boolean) {
+function restante(ms: number, corto: boolean, t: T) {
   const s = Math.floor(ms / 1000);
   const [d, h, m, seg] = [
     Math.floor(s / 86400),
@@ -13,8 +15,8 @@ function restante(ms: number, corto: boolean) {
     dos(s % 60),
   ];
   return corto
-    ? `${d}d ${h}h ${m}m ${seg}s`
-    : `${d} d ${h} h ${m} min ${seg} s`;
+    ? t("{d}d {h}h {m}m {s}s", { d, h, m, s: seg })
+    : t("{d} d {h} h {m} min {s} s", { d, h, m, s: seg });
 }
 
 // Cuenta atrás hasta un instante, segundo a segundo. Después muestra `despues`
@@ -33,6 +35,7 @@ export function CuentaAtras({
   finDespues?: number;
   corto?: boolean;
 }) {
+  const { t } = useIdioma();
   const [ahora, setAhora] = useState(() => Date.now());
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export function CuentaAtras({
         suppressHydrationWarning
         className="font-medium whitespace-nowrap tabular-nums"
       >
-        {restante(ms, corto)}
+        {restante(ms, corto, t)}
       </time>
     </li>
   );

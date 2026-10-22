@@ -4,6 +4,7 @@ import { useId, useState } from "react";
 import type { Provincia } from "@/datos/resultados";
 import { dhondt } from "@/lib/dhondt";
 import { TablaCocientes, TablaResultados, fmt } from "./Tablas";
+import { useIdioma } from "@/i18n/cliente";
 
 const POR_DEFECTO = "46"; // València/Valencia
 
@@ -12,6 +13,7 @@ const MOSTRAR_SELECTOR = false;
 
 export function Escanos({ provincias }: { provincias: readonly Provincia[] }) {
   const id = useId();
+  const { t } = useIdioma();
   const [codigo, setCodigo] = useState(POR_DEFECTO);
   const p = provincias.find((q) => q.codigo === codigo)!;
   const { resultados, cocientes } = dhondt(p.candidaturas, p.votosValidos, p.escanos);
@@ -23,18 +25,23 @@ export function Escanos({ provincias }: { provincias: readonly Provincia[] }) {
       <section aria-labelledby={`${id}-provincial`} className="[&>*+*]:mt-6">
         <div>
           <h2 id={`${id}-provincial`} className="text-[clamp(28px,4vw,40px)] leading-[1.1]">
-            Cómo se repartieron en {p.nombre}
+            {t("Cómo se repartieron en {provincia}", { provincia: p.nombre })}
           </h2>
           <p className="mt-3 text-base text-(--text-secondary)">
-            Resultados reales: {fmt.format(p.votosValidos)} votos válidos, de ellos{" "}
-            {fmt.format(p.votosBlanco)} en blanco. El 3 % son{" "}
-            {fmt.format(Math.ceil(p.votosValidos * 0.03))} votos.
+            {t(
+              "Resultados reales: {validos} votos válidos, de ellos {blanco} en blanco. El 3 % son {umbral} votos.",
+              {
+                validos: fmt.format(p.votosValidos),
+                blanco: fmt.format(p.votosBlanco),
+                umbral: fmt.format(Math.ceil(p.votosValidos * 0.03)),
+              },
+            )}
           </p>
         </div>
         {MOSTRAR_SELECTOR && (
         <div className="grid gap-2">
           <label htmlFor={`${id}-provincia`} className="text-base font-medium">
-            Provincia
+            {t("Provincia")}
           </label>
           <select
             id={`${id}-provincia`}
@@ -53,37 +60,41 @@ export function Escanos({ provincias }: { provincias: readonly Provincia[] }) {
         <TablaResultados
           filas={resultados}
           votosValidos={p.votosValidos}
-          titulo={`Candidaturas de ${p.nombre} en 2023`}
+          titulo={t("Candidaturas de {provincia} en 2023", { provincia: p.nombre })}
         />
         {p.escanos > 1 ? (
           <>
             <div>
-              <h3 className="text-lg font-medium">Tabla de cocientes</h3>
+              <h3 className="text-lg font-medium">{t("Tabla de cocientes")}</h3>
               <p className="mt-1 text-base text-(--text-secondary)">
-                Los votos de cada candidatura que llega al 3 %, divididos entre 1, 2, 3…
-                Los {p.escanos} cocientes más altos, en rojo y numerados, son los escaños.
+                {t(
+                  "Los votos de cada candidatura que llega al 3 %, divididos entre 1, 2, 3… Los {n} cocientes más altos, en rojo y numerados, son los escaños.",
+                  { n: p.escanos },
+                )}
               </p>
             </div>
             <TablaCocientes
               cocientes={cocientes}
               escanos={p.escanos}
-              titulo={`Cocientes de ${p.nombre}`}
+              titulo={t("Cocientes de {provincia}", { provincia: p.nombre })}
             />
           </>
         ) : (
           <p className="text-base">
-            Con un solo escaño se proclama la candidatura más votada:{" "}
-            {conEscano[0]?.nombre}.
+            {t("Con un solo escaño se proclama la candidatura más votada: {nombre}.", {
+              nombre: conEscano[0]?.nombre,
+            })}
           </p>
         )}
         <p className="text-base">
           {coincide
-            ? "El cálculo coincide con los escaños oficiales de 2023."
-            : "El cálculo no coincide con los escaños oficiales: consulta Infoelectoral."}
+            ? t("El cálculo coincide con los escaños oficiales de 2023.")
+            : t("El cálculo no coincide con los escaños oficiales: consulta Infoelectoral.")}
         </p>
         <p className="text-sm text-(--text-secondary)">
-          Origen de los datos: Ministerio del Interior. Elecciones al Congreso, 23 de julio de
-          2023.
+          {t(
+            "Origen de los datos: Ministerio del Interior. Elecciones al Congreso, 23 de julio de 2023.",
+          )}
         </p>
       </section>
     </>

@@ -1,4 +1,6 @@
 import datos from "../../datos/calendario_29N_2026.json";
+import { LOCALES, type Idioma } from "@/i18n/idiomas";
+import { marcar, traductor, type T } from "@/i18n/traducir";
 
 // Todas las fechas de la herramienta salen de aquí, nunca del modelo.
 export type Plazo = {
@@ -76,27 +78,46 @@ export function instanteMadrid(iso: string, hora = "0:00"): number {
   return local - minutos * 60_000;
 }
 
-const formato = new Intl.DateTimeFormat("es-ES", {
-  day: "numeric",
-  month: "long",
-  timeZone: "UTC",
-});
-
-export function fechaLarga(iso: string): string {
-  return formato.format(new Date(`${iso}T00:00:00Z`));
+// «29 de noviembre», en la lengua de la página.
+export function fechaLarga(iso: string, idioma: Idioma = "es"): string {
+  return new Intl.DateTimeFormat(LOCALES[idioma], {
+    day: "numeric",
+    month: "long",
+    timeZone: "UTC",
+  })
+    .format(new Date(`${iso}T00:00:00Z`))
+    .replace("(a)", ""); // euskera: «azaroaren 29(a)» → «azaroaren 29»
 }
 
-// «29 de noviembre» o «del 4 al 24 de noviembre».
-export function rango(p: Plazo): string {
-  if (p.inicio === p.fin) return fechaLarga(p.inicio);
+// «29 nov», para ejes y etiquetas.
+export function fechaCorta(iso: string, idioma: Idioma = "es"): string {
+  return new Intl.DateTimeFormat(LOCALES[idioma], {
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  })
+    .format(new Date(`${iso}T00:00:00Z`))
+    .replace("(a)", "")
+    .replaceAll(".", "");
+}
+
+// «29 de noviembre» o «del 4 al 24 de noviembre». `t` traduce la plantilla.
+export function rango(
+  p: Plazo,
+  idioma: Idioma = "es",
+  t: T = traductor({}),
+): string {
+  if (p.inicio === p.fin) return fechaLarga(p.inicio, idioma);
   const [, mi] = p.inicio.split("-");
   const [, mf] = p.fin.split("-");
   const desde =
-    mi === mf ? String(Number(p.inicio.slice(8))) : fechaLarga(p.inicio);
-  return `del ${desde} al ${fechaLarga(p.fin)}`;
+    mi === mf
+      ? String(Number(p.inicio.slice(8)))
+      : fechaLarga(p.inicio, idioma);
+  return t("del {desde} al {hasta}", { desde, hasta: fechaLarga(p.fin, idioma) });
 }
 
 export const fuenteCalendario = {
-  nombre: "Calendario electoral · Junta Electoral Central",
+  nombre: marcar("Calendario electoral · Junta Electoral Central"),
   url: "https://www.juntaelectoralcentral.es/cs/jec/documentos/eg2026_calendario.pdf",
 };

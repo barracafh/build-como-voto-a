@@ -1,5 +1,7 @@
 // Geometría de las líneas de tiempo: fechas YYYY-MM-DD a porcentajes de ancho.
 // Todo en UTC para que el cambio de hora no desplace ningún día.
+import { LOCALES, type Idioma } from "@/i18n/idiomas";
+
 export type Escala = { desde: string; hasta: string }; // ambos días incluidos
 
 export type Marca = { iso: string; dia: number; izquierda: number; mes?: string };
@@ -27,11 +29,15 @@ export function tramo(inicio: string, fin: string, e: Escala) {
   return { izquierda, ancho: derecha - izquierda };
 }
 
-const mes = new Intl.DateTimeFormat("es-ES", { month: "short", timeZone: "UTC" });
+
 
 // Lunes e inicios de mes dentro de la escala, sin el primer ni el último día.
 // Un lunes a dos días o menos de un inicio de mes se omite para no pisarlo.
-export function marcas(e: Escala): Marca[] {
+export function marcas(e: Escala, idioma: Idioma = "es"): Marca[] {
+  const mes = new Intl.DateTimeFormat(LOCALES[idioma], {
+    month: "short",
+    timeZone: "UTC",
+  });
   const lista: Marca[] = [];
   for (let t = ms(e.desde) + DIA; t < ms(e.hasta); t += DIA) {
     const d = new Date(t);

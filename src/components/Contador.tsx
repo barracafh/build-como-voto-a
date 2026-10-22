@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useIdioma } from "@/i18n/cliente";
 import { partes } from "@/lib/cuenta-atras";
 
 const dos = (n: number) => String(n).padStart(2, "0");
@@ -20,6 +21,7 @@ export function Contador({
   despues?: string;
   finDespues?: number;
 }) {
+  const { t } = useIdioma();
   const [ahora, setAhora] = useState(() => Date.now());
 
   useEffect(() => {
@@ -36,19 +38,21 @@ export function Contador({
 
   const p = partes(ms);
   const fichas = [
-    [String(p.dias), p.dias === 1 ? "día" : "días"],
-    [dos(p.horas), "horas"],
-    [dos(p.minutos), "min"],
-    [dos(p.segundos), "seg"],
+    [String(p.dias), p.dias === 1 ? t("día") : t("días")],
+    [dos(p.horas), t("horas")],
+    [dos(p.minutos), t("min")],
+    [dos(p.segundos), t("seg")],
   ];
 
   return (
     <div>
       <p className="sr-only" suppressHydrationWarning>
-        Faltan {p.dias} {p.dias === 1 ? "día" : "días"} {para}.
+        {p.dias === 1
+          ? t("Falta 1 día {para}.", { para })
+          : t("Faltan {n} días {para}.", { n: p.dias, para })}
       </p>
       <p aria-hidden="true" className="mb-3 font-mono text-xs tracking-[0.08em] uppercase">
-        Faltan {para}
+        {t("Faltan {para}", { para })}
       </p>
       <div aria-hidden="true" className="grid grid-cols-4 gap-2 sm:gap-3">
         {fichas.map(([n, etiqueta]) => (

@@ -19,8 +19,8 @@ export const revalidate = 3600;
 const piezas = [
   {
     href: "/correo",
-    titulo: "Votar por correo, aquí o desde fuera",
-    texto: "Si vives en España y no estarás, si vives en el extranjero o si estarás fuera unos días.",
+    titulo: "Voto por correo, aquí o desde fuera",
+    texto: "Elige si vives en España o fuera y pregunta por tu caso: pasos y fechas oficiales.",
   },
   {
     href: "/verificar",

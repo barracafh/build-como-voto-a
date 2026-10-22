@@ -40,6 +40,9 @@ Base: `contexto.md` §2.2 (España), §2.3 (CERA), §2.4 (ERTA), calendario.
 - [ ] Tarjeta sol para el plazo más urgente del perfil
 - [ ] «Dónde se hace»: Correos, consulado, consulta de mesa del INE (`sede.ine.gob.es/ce-mesas`)
 - [ ] Opcional: texto libre → IA clasifica en un perfil (sin guardar el texto) y se muestra la misma respuesta determinista
+- [x] [Javier] Selector «Vivo en España / Vivo fuera de España» en `/correo` (`?donde=aqui|fuera`) con tarjeta sol del plazo clave
+- [x] [Javier] Chatbot por perfil (`modo` `correo-aqui` / `correo-fuera` en `src/lib/asistente.ts`), sin guardar el texto
+- [ ] Revisar con más casos reales que los pasos y fechas coinciden con el calendario
 
 ## Pieza B · ¿Es verdad lo que me han dicho?
 
@@ -47,9 +50,10 @@ Base: `contexto.md` §6 (alcance, formato §6.2, ejemplos §6.3, plan §6.8).
 
 - [ ] Corpus `src/datos/afirmaciones.json`: 30–40 fichas `{id, afirmacion, variantes, resultado, articulo, cita, url, fecha_consulta}` (empezar por las 8 de §6.3)
 - [ ] Revisión humana de cada ficha contra la fuente
-- [ ] Ruta `src/app/api/verificar/route.ts`: IA clasifica tipo (a)/(b)/(c)/(d) y elige ficha; si no hay ficha o hay duda → «No verificable»
-- [ ] Tipos (b)–(d) → respuesta fija «fuera de alcance: aquí solo comprobamos cómo se vota»
-- [ ] UI con el formato de §6.2: Afirmación · Resultado (COINCIDE / NO COINCIDE / NO VERIFICABLE) · Fuente · Cita · Matiz. Sin «verdadero/falso/bulo»
+- [x] [Javier] Chatbot verificador en `/verificar` (`modo` `verificar`, ruta común `src/app/api/chat/route.ts`): COINCIDE / NO COINCIDE solo con cita literal de `contexto.md` y fuente permitida; si no, «No verificable»
+- [ ] Sustituir la base de `contexto.md` por las fichas revisadas de `src/datos/afirmaciones.json` cuando estén
+- [x] Tipos (b)–(d) → respuesta fija «fuera de alcance: aquí solo comprobamos cómo se vota»
+- [x] UI con el formato de §6.2: Afirmación · Resultado (COINCIDE / NO COINCIDE / NO VERIFICABLE) · Fuente · Cita · Matiz. Sin «verdadero/falso/bulo»
 - [ ] Batería de prueba: 15 afirmaciones (§6.3 + fuera de alcance + fuera de corpus)
 - [ ] Opcional: Google Fact Check (`FACTCHECK_API_KEY`) para enlazar verificaciones publicadas, atribuidas
 

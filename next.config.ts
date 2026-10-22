@@ -8,5 +8,7 @@ const basePath = `/${ficha.equipo}`;
 const config: NextConfig = {
   basePath,
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
+  // El chatbot lee contexto.md en tiempo de ejecución.
+  outputFileTracingIncludes: { "/api/chat": ["./contexto.md"] },
 };
 export default config;

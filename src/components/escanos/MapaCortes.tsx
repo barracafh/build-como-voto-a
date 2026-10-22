@@ -46,7 +46,7 @@ const BLOQUE: Record<string, readonly [number, number]> = Object.fromEntries(
 );
 
 // Arriba, el reproductor de las narraciones; debajo, el mapa de Barraca.pen y, a su
-// derecha, el hemiciclo con los diputados de las comunidades señaladas (en móvil, uno bajo
+// derecha, el hemiciclo con los diputados de las comunidades señaladas (por debajo de 640 px, uno bajo
 // el otro); luego, lo que suman en el Congreso y en el Senado el 29N, sus electores frente
 // a la media de España y sus provincias en tarjetas con scroll horizontal. Pulsar una
 // comunidad la deja marcada y se pueden marcar varias; pulsarla otra vez la quita. Pasar
@@ -281,7 +281,7 @@ export function MapaCortes() {
         <Reproductor pistas={pistas} />
 
         {/* Mapa y hemiciclo en la misma fila: al pasar por una comunidad se ve su bloque al lado. */}
-        <div className="grid grid-cols-[minmax(0,1fr)] items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="grid grid-cols-[minmax(0,1fr)] items-center gap-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-8">
           {mapa}
           <div className="flex flex-col items-end gap-3">
             <Button variant="sunset" onClick={() => setAbierto(true)}>

@@ -2,6 +2,7 @@
 // pero solo se muestra lo que se apoya en la base oficial: fuentes que existen
 // en ella y, en el verificador, una cita literal.
 import type { Source } from "@/components/Fuentes";
+import type { Publicada } from "@/lib/factcheck";
 import { fuenteCalendario, hoy } from "@/lib/calendario";
 import {
   calendarioTexto,
@@ -39,6 +40,8 @@ export type Respuesta = {
   pasos: string[];
   fuentes: Source[];
   verificacion?: Verificacion;
+  // Solo en el verificador: verificaciones profesionales ya publicadas.
+  publicadas?: Publicada[];
 };
 
 const RESULTADOS: Resultado[] = ["COINCIDE", "NO COINCIDE", "NO VERIFICABLE"];

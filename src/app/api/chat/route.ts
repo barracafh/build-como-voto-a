@@ -1,4 +1,5 @@
 import { esModo, leerJson, sistema, validar } from "@/lib/asistente";
+import { buscarPublicadas } from "@/lib/factcheck";
 import { completarEnVivo, type Mensaje } from "@/lib/ia";
 
 const MAX_TURNOS = 6;
@@ -51,7 +52,10 @@ export async function POST(req: Request) {
           texto += trozo;
           enviar({ trozo });
         }
-        enviar({ fin: validar(leerJson(texto), modo, ultima) });
+        const fin = validar(leerJson(texto), modo, ultima);
+        if (fin.verificacion)
+          fin.publicadas = await buscarPublicadas(fin.verificacion.afirmacion);
+        enviar({ fin });
       } catch {
         enviar({
           error: "El asistente no responde ahora. Prueba en un momento.",

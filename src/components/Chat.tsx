@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Fuentes } from "@/components/Fuentes";
+import { Publicadas } from "@/components/Publicadas";
 import { ruta } from "@/config/sitio";
 import { leerParcial } from "@/lib/parcial";
 
@@ -197,6 +198,9 @@ export function Chat({ modo }: { modo: Modo }) {
             </ol>
           )}
           <Fuentes fuentes={t.respuesta.fuentes} />
+          {!!t.respuesta.publicadas?.length && (
+            <Publicadas publicadas={t.respuesta.publicadas} />
+          )}
         </section>
       ))}
 

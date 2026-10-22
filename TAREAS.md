@@ -63,12 +63,12 @@ Base: `contexto.md` §6 (alcance, formato §6.2, ejemplos §6.3, plan §6.8).
 
 Base: `datos/resultados_congreso_2023_provincias.csv`, `contexto.md` §3.1–3.3.
 
-- [ ] Función pura `dhondt(votos, escaños, válidos)` con umbral del 3 % sobre válidos (blancos incluidos)
-- [ ] Test: reproduce los 350 escaños de 2023 en las 52 circunscripciones
-- [ ] Selector de provincia (`<select>`) → tabla de cocientes y escaños, sin campos editables
-- [ ] Modo «juega con cifras» solo con candidaturas genéricas A, B, C…
+- [x] Función pura `dhondt(votos, escaños, válidos)` con umbral del 3 % sobre válidos (blancos incluidos)
+- [x] Test: reproduce los 350 escaños de 2023 en las 52 circunscripciones
+- [x] Selector de provincia (`<select>`) → tabla de cocientes y escaños, sin campos editables
+- [x] Modo «juega con cifras» solo con candidaturas genéricas A, B, C…
 - [ ] Explicación de voto en blanco, nulo y abstención (§3.3)
-- [ ] Citar «Origen de los datos: Ministerio del Interior»
+- [x] Citar «Origen de los datos: Ministerio del Interior»
 
 ## Cierre y demo
 

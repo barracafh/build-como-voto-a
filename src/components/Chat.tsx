@@ -20,7 +20,6 @@ import { Termometro } from "@/components/Termometro";
 import { ruta } from "@/config/sitio";
 import { useIdioma } from "@/i18n/cliente";
 import { marcar } from "@/i18n/traducir";
-import { leerParcial } from "@/lib/parcial";
 
 type Turno = { pregunta: string; respuesta: Respuesta };
 
@@ -90,12 +89,9 @@ export function Chat({ modo }: { modo: Modo }) {
   // La pregunta que espera respuesta; mientras no es null, se está consultando.
   const [pendiente, setPendiente] = useState<string | null>(null);
   const cargando = pendiente !== null;
-  // El texto del modelo según llega, antes de validarlo.
-  const [parcial, setParcial] = useState("");
+  // El modelo ya está escribiendo. Su texto no llega hasta que está validado.
+  const [redactando, setRedactando] = useState(false);
   const [error, setError] = useState("");
-  // En el verificador el veredicto exige cita validada: no se adelanta nada.
-  const vivo =
-    modo === "verificar" ? { respuesta: "", pasos: [] } : leerParcial(parcial);
   const campo = useRef<HTMLTextAreaElement>(null);
   const [enfocado, setEnfocado] = useState(false);
   const abierto = enfocado || texto.length > 0 || cargando;
@@ -119,7 +115,7 @@ export function Chat({ modo }: { modo: Modo }) {
     pregunta = pregunta.trim();
     if (!pregunta || cargando) return;
     setPendiente(pregunta);
-    setParcial("");
+    setRedactando(false);
     setError("");
     // La ruta solo admite los 6 últimos mensajes.
     const mensajes = [
@@ -136,10 +132,9 @@ export function Chat({ modo }: { modo: Modo }) {
         body: JSON.stringify({ modo, mensajes, idioma }),
       });
       if (!res.ok || !res.body) throw new Error((await res.json()).error);
-      // NDJSON: {"trozo"} según llega el texto y, al final, {"fin"} o {"error"}.
+      // NDJSON: {"progreso"} sin texto y, al final, {"fin"} o {"error"}.
       const lector = res.body.pipeThrough(new TextDecoderStream()).getReader();
       let resto = "";
-      let acumulado = "";
       let fin: Respuesta | undefined;
       for (;;) {
         const { done, value } = await lector.read();
@@ -151,7 +146,7 @@ export function Chat({ modo }: { modo: Modo }) {
           if (!linea.trim()) continue;
           const dato = JSON.parse(linea);
           if (dato.error) throw new Error(dato.error);
-          if (dato.trozo) setParcial((acumulado += dato.trozo));
+          if (dato.progreso) setRedactando(true);
           if (dato.fin) fin = dato.fin;
         }
       }
@@ -167,7 +162,7 @@ export function Chat({ modo }: { modo: Modo }) {
       );
     } finally {
       setPendiente(null);
-      setParcial("");
+      setRedactando(false);
       campo.current?.focus();
     }
   }
@@ -274,41 +269,20 @@ export function Chat({ modo }: { modo: Modo }) {
               className="size-6 shrink-0 text-brand motion-safe:animate-spin"
             />
             <span className="brillo">
-              {vivo.respuesta
+              {redactando
                 ? t("Redactando con las fuentes oficiales…")
                 : t("Consultando las fuentes oficiales…")}
             </span>
           </p>
-          {vivo.respuesta ? (
-            // Borrador en vivo: se sustituye por la respuesta validada.
-            <div aria-hidden="true" className="[&>*+*]:mt-6">
-              <p>{vivo.respuesta}</p>
-              {vivo.pasos.length > 0 && (
-                <ol className="grid gap-5">
-                  {vivo.pasos.map((paso, j) => (
-                    <li
-                      key={j}
-                      className="grid grid-cols-[24px_minmax(0,1fr)] gap-x-3 md:grid-cols-[32px_minmax(0,1fr)] md:gap-x-4"
-                    >
-                      <span className="text-[22px] leading-[1.1] font-light text-brand tabular-nums md:text-[26px]">
-                        {j + 1}
-                      </span>
-                      <p>{paso}</p>
-                    </li>
-                  ))}
-                </ol>
-              )}
-            </div>
-          ) : (
-            <div aria-hidden="true" className="grid gap-3">
-              {["w-full", "w-11/12", "w-3/4"].map((ancho) => (
-                <div
-                  key={ancho}
-                  className={`h-4 rounded-md bg-muted motion-safe:animate-pulse ${ancho}`}
-                />
-              ))}
-            </div>
-          )}
+          {/* Esqueleto hasta que llega la respuesta ya validada. */}
+          <div aria-hidden="true" className="grid gap-3">
+            {["w-full", "w-11/12", "w-3/4"].map((ancho) => (
+              <div
+                key={ancho}
+                className={`h-4 rounded-md bg-muted motion-safe:animate-pulse ${ancho}`}
+              />
+            ))}
+          </div>
         </section>
       )}
 

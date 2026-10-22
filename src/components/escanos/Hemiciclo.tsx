@@ -17,7 +17,7 @@ export function Hemiciclo({
 }) {
   return (
     <svg
-      viewBox="130 90 1020 540"
+      viewBox="130,90,1020,540"
       role="img"
       aria-label={etiqueta}
       className="block h-auto w-full"

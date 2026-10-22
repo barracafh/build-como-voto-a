@@ -1,18 +1,18 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chat } from "@/components/Chat";
 import { Fuentes } from "@/components/Fuentes";
+import { LineaTiempo } from "@/components/LineaTiempo";
 import { Pagina, Titular } from "@/components/Pagina";
 import {
   diasHasta,
   estado,
   fechaLarga,
   fuenteCalendario,
+  hoy,
   plazo,
-  rango,
 } from "@/lib/calendario";
 
 // Los plazos se abren y cierran por fecha: se recalcula cada hora.
@@ -37,15 +37,20 @@ const piezas = [
 ];
 
 // Solo plazos que afectan a quien vota; nada de candidaturas ni sondeos.
+// corto: etiqueta en el gráfico; titulo, el paso en la lista. El detalle es
+// el texto del propio calendario.
 const plazosElector = [
-  "erta_solicitud",
-  "braille_solicitud",
-  "voto_correo_solicitud",
-  "cera_voto_correo",
-  "voto_correo_remision",
-  "erta_remision_voto",
-  "cera_deposito_urna",
-].map(plazo);
+  ["erta_solicitud", "ERTA · pedir", "Pide el voto si estarás fuera (ERTA)"],
+  ["braille_solicitud", "Braille · pedir", "Pide el voto en Braille"],
+  ["voto_correo_solicitud", "Correo · pedir", "Pide el voto por correo"],
+  ["cera_voto_correo", "CERA · enviar", "Envía tu voto si vives fuera (CERA)"],
+  ["voto_correo_remision", "Correo · enviar", "Envía el voto por correo"],
+  ["erta_remision_voto", "ERTA · enviar", "Envía tu voto si estás fuera (ERTA)"],
+  ["cera_deposito_urna", "CERA · urna", "Vota en tu consulado (CERA)"],
+].map(([id, corto, titulo]) => {
+  const p = plazo(id);
+  return { plazo: p, corto, titulo, detalle: p.evento };
+});
 
 const votacion = plazo("votacion");
 // El horario también sale del calendario («Jornada de votación, de 9:00 a 20:00»).
@@ -75,9 +80,10 @@ function cuentasAtras(): string[] {
 }
 
 export default function Home() {
+  const dia = hoy();
   const vigentes = plazosElector
-    .filter((p) => estado(p) !== "cerrado")
-    .sort((a, b) => a.fin.localeCompare(b.fin));
+    .filter((p) => estado(p.plazo, dia) !== "cerrado")
+    .sort((a, b) => a.plazo.fin.localeCompare(b.plazo.fin));
 
   return (
     <Pagina>
@@ -163,27 +169,29 @@ export default function Home() {
             >
               Plazos que siguen abiertos
             </h2>
-            <ol aria-labelledby="plazos" className="mt-6 grid gap-5">
-              {vigentes.map((p, i) => (
-                <li
-                  key={p.id}
-                  className="grid grid-cols-[24px_minmax(0,1fr)] gap-x-3 md:grid-cols-[32px_minmax(0,1fr)] md:gap-x-4"
-                >
-                  <span className="text-[22px] leading-[1.1] font-light text-brand tabular-nums md:text-[26px]">
-                    {i + 1}
-                  </span>
-                  <div>
-                    <p className="flex flex-wrap items-center gap-2 font-mono text-sm text-(--text-secondary) uppercase">
-                      {rango(p)}
-                      {estado(p) === "abierto" && (
-                        <Badge variant="outline">Abierto</Badge>
-                      )}
-                    </p>
-                    <p className="mt-1">{p.evento}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+            <div className="mt-6">
+              <LineaTiempo
+                hoy={dia}
+                origen={{
+                  plazo: plazo("convocatoria_boe"),
+                  nombre: "Convocatoria",
+                }}
+                meta={{ plazo: votacion, nombre: "Votación" }}
+                bandas={[
+                  {
+                    plazo: plazo("campana"),
+                    nombre: "Campaña",
+                    estilo: "relleno",
+                  },
+                  {
+                    plazo: plazo("jornada_reflexion"),
+                    nombre: "Reflexión",
+                    estilo: "linea",
+                  },
+                ]}
+                tramos={vigentes}
+              />
+            </div>
           </div>
         )}
 

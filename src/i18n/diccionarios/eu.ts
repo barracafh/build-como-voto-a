@@ -389,6 +389,10 @@ const diccionario: Diccionario = {
     "Nola bozkatzen den bakarrik egiaztatzen dugu: epeak, agiriak, mahaiak eta posta bidezko botoa.",
   "Tus fechas, paso a paso": "Zure datak, urratsez urrats",
   "Inicio": "Hasiera",
+  "Fuente: {articulo}": "Iturria: {articulo}",
+  " · consultada el {fecha}": " · kontsulta-data: {fecha}",
+  "Lo que te han dicho coincide con lo que dice la fuente oficial ({articulo}).": "Esan dizutena bat dator iturri ofizialak dioenarekin ({articulo}).",
+  "Lo que te han dicho no coincide con lo que dice la fuente oficial ({articulo}).": "Esan dizutena ez dator bat iturri ofizialak dioenarekin ({articulo}).",
 };
 
 export default diccionario;

@@ -307,6 +307,10 @@ const diccionario: Diccionario = {
   "¿Tengo horas libres en el trabajo para ir a votar?": "Teño horas libres no traballo para ir votar?",
   "¿Tengo que pedir el voto si vivo fuera?": "Teño que pedir o voto se vivo fóra?",
   "Inicio": "Inicio",
+  "Fuente: {articulo}": "Fonte: {articulo}",
+  " · consultada el {fecha}": " · consultada o {fecha}",
+  "Lo que te han dicho coincide con lo que dice la fuente oficial ({articulo}).": "O que che dixeron coincide co que di a fonte oficial ({articulo}).",
+  "Lo que te han dicho no coincide con lo que dice la fuente oficial ({articulo}).": "O que che dixeron non coincide co que di a fonte oficial ({articulo}).",
 };
 
 export default diccionario;

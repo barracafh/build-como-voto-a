@@ -307,6 +307,10 @@ const diccionario: Diccionario = {
   "Solo comprobamos cómo se vota: plazos, documentos, mesas y voto por correo.": "Només comprovem com es vota: terminis, documents, meses i vot per correu.",
   "Tus fechas, paso a paso": "Les teves dates, pas a pas",
   "Inicio": "Inici",
+  "Fuente: {articulo}": "Font: {articulo}",
+  " · consultada el {fecha}": " · consultada el {fecha}",
+  "Lo que te han dicho coincide con lo que dice la fuente oficial ({articulo}).": "El que t’han dit coincideix amb el que diu la font oficial ({articulo}).",
+  "Lo que te han dicho no coincide con lo que dice la fuente oficial ({articulo}).": "El que t’han dit no coincideix amb el que diu la font oficial ({articulo}).",
 };
 
 export default diccionario;

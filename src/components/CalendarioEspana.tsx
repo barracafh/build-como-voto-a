@@ -1,12 +1,10 @@
+import { pasosErta, pasoVotacion } from "@/components/CalendarioErta";
 import { LineaTiempo } from "@/components/LineaTiempo";
 import { getT } from "@/i18n/servidor";
 import { fechaLarga, hoy as hoyMadrid, plazo } from "@/lib/calendario";
 
 const documentacion = plazo("voto_correo_envio_documentacion");
 const votacion = plazo("votacion");
-// El horario también sale del calendario («Jornada de votación, de 9:00 a 20:00»).
-const horario = votacion.evento.match(/de \d{1,2}:\d{2} a \d{1,2}:\d{2}/)?.[0];
-const [abre, cierra] = horario?.match(/\d{1,2}:\d{2}/g) ?? [];
 
 // Quien reside en España: voto por correo si estará en España (contexto.md
 // §2.2) o voto ERTA si estará en el extranjero (§2.4). Fechas de
@@ -62,45 +60,11 @@ export async function CalendarioEspana({
             {
               letra: "B",
               nombre: t("En el extranjero (ERTA)"),
-              pasos: [
-                {
-                  plazo: plazo("erta_solicitud"),
-                  corto: t("Pides la documentación"),
-                  titulo: t("Pide la documentación en el consulado"),
-                  detalle:
-                    t("En persona, en la oficina consular más cercana. Antes tienes que estar inscrito en el Registro de Matrícula Consular como no residente. No sirve pedir el voto en Correos."),
-                },
-                {
-                  plazo: plazo("erta_envio_documentacion"),
-                  corto: t("Recibes los sobres"),
-                  titulo: t("Te llega la documentación al extranjero"),
-                  detalle:
-                    t("Por correo certificado, a tu dirección en el extranjero. Si hay recursos contra las candidaturas, puede llegar más tarde."),
-                },
-                {
-                  plazo: plazo("erta_remision_voto"),
-                  corto: t("Envías tu voto"),
-                  titulo: t("Envía tu voto a tu mesa en España"),
-                  detalle:
-                    t("Por correo certificado, desde que recibes la documentación."),
-                },
-              ],
+              pasos: pasosErta(t),
             },
           ],
         },
-        {
-          plazo: votacion,
-          corto: t("Votación"),
-          titulo: t("Tu voto llega a la mesa"),
-          detalle: horario
-            ? t(
-                "Los votos por correo se entregan en las mesas durante la votación, {horario}. Lo que llegue después no se cuenta.",
-                { horario: t("de {abre} a {cierra}", { abre, cierra }) },
-              )
-            : t(
-                "Los votos por correo se entregan en las mesas durante la votación. Lo que llegue después no se cuenta.",
-              ),
-        },
+        pasoVotacion(t),
       ]}
     />
   );

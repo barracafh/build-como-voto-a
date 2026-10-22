@@ -1,9 +1,7 @@
 import type { Diccionario } from "../traducir";
 
 const diccionario: Diccionario = {
-  "% válidos": "% baliodunak",
   ", el {fecha}": ", {fecha}",
-  ", escaño ": ", eserlekua ",
   ": se publican como tarde el {fecha} y siguen disponibles después.":
     ": beranduenez data honetan argitaratzen dira: {fecha}. Gero ere eskuragarri jarraitzen dute.",
   "A la dirección con la que estás inscrito en el consulado: certificados de inscripción, sobres e instrucciones.":
@@ -17,20 +15,11 @@ const diccionario: Diccionario = {
   "Braille": "Braillea",
   "COINCIDE": "BAT DATOR",
   "CORREO": "POSTA",
-  "Cada provincia recibe 2 escaños; Ceuta y Melilla, 1 cada una (LOREG, art. 162.2).":
-    "Probintzia bakoitzak 2 eserleku jasotzen ditu; Ceutak eta Melillak, 1 bana (LOREG, 162.2 art.).",
-  "Cada punto es un escaño. Esta es la gramática de la ilustración y lo que representa cada elemento.":
-    "Puntu bakoitza eserleku bat da. Hau da irudiaren gramatika eta elementu bakoitzak zer adierazten duen.",
   "Calendario electoral · Junta Electoral Central": "Hauteskunde-egutegia · Hauteskunde Batzar Nagusia",
   "Cambiar": "Aldatu",
   "Campaña": "Kanpaina",
   "Campaña electoral: desde las 00:00 del viernes 13 hasta las 24:00 del viernes 27 de noviembre":
     "Hauteskunde-kanpaina: azaroaren 13an, ostiralean, 00:00etan hasi eta azaroaren 27an, ostiralean, 24:00etan amaitzen da",
-  "Candidatura": "Hautagaitza",
-  "Candidatura {letra}": "{letra} hautagaitza",
-  "Candidaturas de {provincia} en 2023": "2023ko hautagaitzak: {provincia}",
-  "Candidaturas inventadas (A, B, C y D). Cambia los votos o los escaños y el reparto se recalcula al momento. No son resultados reales.":
-    "Asmatutako hautagaitzak (A, B, C eta D). Aldatu botoak edo eserlekuak, eta banaketa berehala kalkulatzen da berriro. Ez dira benetako emaitzak.",
   "Cerrado": "Itxita",
   "Cerrar": "Itxi",
   "Blanco, nulo y abstención": "Zuria, baliogabea eta abstentzioa",
@@ -67,15 +56,12 @@ const diccionario: Diccionario = {
   "Cierra en 1 día": "Egun 1 barru ixten da",
   "Cierra en {n} días": "{n} egun barru ixten da",
   "Cierra hoy": "Gaur ixten da",
-  "Cocientes de {provincia}": "Zatidurak: {provincia}",
   "Comprobar": "Egiaztatu",
   "Comunicación a la Junta Electoral de las coaliciones electorales":
     "Hauteskunde-koalizioen berri ematea Hauteskunde Batzarrari",
   "Comunidad autónoma": "Autonomia-erkidegoa",
   "Con fuentes oficiales": "Iturri ofizialekin",
   "Con tu pasaporte o DNI españoles.": "Zure pasaporte edo NAN espainiarrarekin.",
-  "Con un solo escaño se proclama la candidatura más votada: {nombre}.":
-    "Eserleku bakarra dagoenean, boto gehien jaso dituen hautagaitza aldarrikatzen da: {nombre}.",
   "Consulta de mesa y local · INE": "Mahaia eta lokala kontsultatzea · INE",
   "Consulta del censo electoral en ayuntamientos y consulados, y reclamaciones por inclusión o exclusión":
     "Hauteskunde-errolda udaletan eta kontsulatuetan kontsultatzea, eta sartzeagatiko edo kanpoan uzteagatiko erreklamazioak",
@@ -87,30 +73,17 @@ const diccionario: Diccionario = {
   "Convocatoria": "Deialdia",
   "Cuéntanos tu caso": "Kontatu zure kasua",
   "Cómo se lee el hemiciclo del Congreso": "Nola irakurri Kongresuaren hemizikloa",
-  "Cómo se reparten los 350 escaños": "Nola banatzen diren 350 eserlekuak",
-  "Cómo se reparten los escaños": "Nola banatzen diren eserlekuak",
-  "Cómo se repartieron en {provincia}": "Nola banatu ziren: {provincia}",
   "Cómo, dónde y hasta cuándo, con la fuente oficial de cada dato. Solo cómo se vota: nada de candidaturas, programas ni encuestas.":
     "Nola, non eta noiz arte, datu bakoitzaren iturri ofizialarekin. Nola bozkatzen den bakarrik: ez hautagaitzarik, ez programarik, ez inkestarik.",
   "Datos públicos": "Datu publikoak",
   "Datos simulados": "Datu simulatuak",
-  "Dentro de cada provincia": "Probintzia bakoitzaren barruan",
   "Descarga de papeletas · INE": "Boto-txartelak deskargatzea · INE",
   "Diputados": "Diputatuak",
   "Diputados y senadores por comunidad": "Diputatuak eta senatariak, erkidegoka",
   "Dónde se hace": "Non egiten da",
-  "El Congreso de los Diputados tiene 350 escaños. Todos los puntos son idénticos: cada uno es un diputado.":
-    "Diputatuen Kongresuak 350 eserleku ditu. Puntu guztiak berdinak dira: bakoitza diputatu bat da.",
   "El asistente no responde ahora. Prueba en un momento.":
     "Laguntzaileak ez du orain erantzuten. Saiatu berriro une batean.",
-  "El cálculo coincide con los escaños oficiales de 2023.":
-    "Kalkulua 2023ko eserleku ofizialekin bat dator.",
-  "El cálculo no coincide con los escaños oficiales: consulta Infoelectoral.":
-    "Kalkulua ez dator bat eserleku ofizialekin: kontsultatu Infoelectoral.",
-  "El gris": "Grisa",
-  "El grupo en rojo": "Talde gorria",
   "El proceso electoral, explicado.": "Hauteskunde-prozesua, azalduta.",
-  "El resto, según población": "Gainerakoak, biztanleriaren arabera",
   "Elecciones generales · 29N": "Hauteskunde orokorrak · 29N",
   "Elige cómo votar": "Aukeratu nola bozkatu",
   "Elige si vives en España o fuera y pregunta por tu caso: pasos y fechas oficiales.":
@@ -152,9 +125,6 @@ const diccionario: Diccionario = {
   "Envío del voto por correo · Art. 73.3 LOREG": "Botoa postaz bidaltzea · LOREG, 73.3 art.",
   "Envío por la Oficina del Censo Electoral de la documentación del voto por correo (residentes en España)":
     "Hauteskunde Erroldaren Bulegoak posta bidezko botoaren dokumentazioa bidaltzea (Espainian bizi direnak)",
-  "Escaños": "Eserlekuak",
-  "Escaños (1 a 37)": "Eserlekuak (1etik 37ra)",
-  "Escaños por candidatura": "Eserlekuak hautagaitzako",
   "Escaños que se eligen el {fecha} de {anio}. Los diputados salen del anexo del Real Decreto 806/2026. Los senadores son los de elección directa (art. 165 LOREG); cada parlamento autonómico designa además otros, que no se suman aquí.":
     "{anio}ko {fecha}an aukeratzen diren eserlekuak. Diputatuak 806/2026 Errege Dekretuaren eranskinetik ateratzen dira. Senatariak hautaketa zuzenekoak dira (LOREG, 165. art.); autonomia-parlamentu bakoitzak beste batzuk ere izendatzen ditu, baina hemen ez dira gehitzen.",
   "Escribe lo que has oído o leído sobre cómo se vota y lo contrastamos con la fuente oficial: coincide, no coincide o no se puede verificar. Nada de partidos, candidaturas, programas ni encuestas.":
@@ -173,8 +143,6 @@ const diccionario: Diccionario = {
   "Falta 1 día {para}.": "{para} egun 1 falta da.",
   "Faltan {n} días {para}.": "{para} {n} egun falta dira.",
   "Faltan {para}": "{para} falta da",
-  "Fuente: Ley Orgánica 5/1985 (LOREG), arts. 161 a 165, versión consolidada del BOE (texto informativo, sin valor jurídico). Origen de los datos: Ministerio del Interior.":
-    "Iturria: 5/1985 Lege Organikoa (LOREG), 161.etik 165.era arteko art., BOEren bertsio bateratua (informazio-testua, balio juridikorik gabe). Datuen jatorria: Barne Ministerioa.",
   "Fuentes oficiales": "Iturri ofizialak",
   "Fuera de alcance: aquí solo comprobamos y explicamos cómo se vota. No hablamos de partidos, candidaturas, programas ni encuestas, ni recomendamos el voto.":
     "Esparrutik kanpo: hemen nola bozkatzen den bakarrik egiaztatzen eta azaltzen dugu. Ez dugu alderdiez, hautagaitzez, programez edo inkestez hitz egiten, eta ez dugu botorik gomendatzen.",
@@ -197,20 +165,8 @@ const diccionario: Diccionario = {
   "LOREG · BOE consolidado": "LOREG · BOE bateratua",
   "La calificación es de cada verificador, no de esta herramienta.":
     "Kalifikazioa egiaztatzaile bakoitzarena da, ez tresna honena.",
-  "La ley D'Hondt con los resultados oficiales de 2023, provincia a provincia.":
-    "D'Hondt legea 2023ko emaitza ofizialekin, probintziaz probintzia.",
   "La votación del {fecha} ha terminado.": "Bozketa amaitu da ({fecha}).",
   "Lees en braille": "Braillez irakurtzen duzu",
-  "Ley Orgánica 5/1985 (LOREG), arts. 161 a 165 · BOE":
-    "5/1985 Lege Organikoa (LOREG), 161.etik 165.era arteko art. · BOE",
-  "Llega al 3 %": "% 3ra iristen da",
-  "Los anillos": "Eraztunak",
-  "Los escaños se asignan en proporción a los votos de cada candidatura (método de cocientes, conocido como regla D'Hondt). No entran en el reparto las que no lleguen al 3 % de los votos válidos. En Ceuta y Melilla se proclama al candidato más votado (art. 163).":
-    "Eserlekuak hautagaitza bakoitzaren botoen proportzioan esleitzen dira (zatiduren metodoa, D'Hondt araua izenez ezaguna). Baliozko botoen % 3ra iristen ez direnak ez dira banaketan sartzen. Ceutan eta Melillan boto gehien jaso dituen hautagaia aldarrikatzen da (163. art.).",
-  "Los otros 248 escaños se reparten en proporción a la población de derecho de cada provincia (arts. 162.2 y 162.3).":
-    "Beste 248 eserlekuak probintzia bakoitzeko zuzenbidezko biztanleriaren proportzioan banatzen dira (162.2 eta 162.3 art.).",
-  "Los votos de cada candidatura que llega al 3 %, divididos entre 1, 2, 3… Los {n} cocientes más altos, en rojo y numerados, son los escaños.":
-    "% 3ra iristen den hautagaitza bakoitzaren botoak, 1, 2, 3… zenbakiez zatituta. {n} zatidura handienak, gorriz eta zenbakituta, eserlekuak dira.",
   "Los votos por correo se entregan en las mesas durante la votación, {horario}. Lo que llegue después no se cuenta.":
     "Posta bidezko botoak bozketan zehar ematen dira mahaietan ({horario}). Geroago iristen dena ez da zenbatzen.",
   "Los votos por correo se entregan en las mesas durante la votación. Lo que llegue después no se cuenta.":
@@ -219,10 +175,8 @@ const diccionario: Diccionario = {
   "Matiz: {matiz}": "Ñabardura: {matiz}",
   "Me han dicho que si pido el voto por correo también puedo votar en la mesa":
     "Esan didate posta bidezko botoa eskatzen badut mahaian ere bozka dezakedala",
-  "Mínimo por provincia": "Gutxienekoa probintziako",
   "NO COINCIDE": "EZ DATOR BAT",
   "NO VERIFICABLE": "EZIN DA EGIAZTATU",
-  "No": "Ez",
   "No encuentro una fuente oficial que lo confirme o lo desmienta. Consúltalo en la sede oficial.":
     "Ez dut aurkitzen hori baieztatzen edo ezeztatzen duen iturri ofizialik. Kontsultatu egoitza ofizialean.",
   "No escribas datos personales. No guardamos lo que escribes.":
@@ -235,8 +189,6 @@ const diccionario: Diccionario = {
   "O pregúntalo directamente": "Edo galdetu zuzenean",
   "O vota en urna en el consulado": "Edo bozkatu hautestontzian kontsulatuan",
   "Oficina del Censo Electoral · INE": "Hauteskunde Erroldaren Bulegoa · INE",
-  "Origen de los datos: Ministerio del Interior. Elecciones al Congreso, 23 de julio de 2023.":
-    "Datuen jatorria: Barne Ministerioa. Kongresurako hauteskundeak, 2023ko uztailaren 23a.",
   "Papeletas descargables, como tarde": "Boto-txartel deskargagarriak, beranduenez",
   "Papeletas, sobres y certificado, por correo certificado. Firmas tú el recibo con tu DNI; si no estás, lo recoges en Correos.":
     "Boto-txartelak, gutun-azalak eta ziurtagiria, posta ziurtatuz. Zuk sinatzen duzu agiria zure NANarekin; etxean ez bazaude, Correosen jasotzen duzu.",
@@ -272,12 +224,7 @@ const diccionario: Diccionario = {
     "Probintziako Hauteskunde Batzarrek hautagaitzak aldarrikatzea",
   "Prohibido publicar, difundir o reproducir sondeos electorales":
     "Debekatuta dago hauteskunde-inkestak argitaratzea, zabaltzea edo erreproduzitzea",
-  "Provincia": "Probintzia",
   "Prueba con": "Probatu hau",
-  "Prueba la regla con tus números": "Probatu araua zure zenbakiekin",
-  "Práctica · datos ficticios": "Praktika · datu fiktizioak",
-  "Práctica: candidaturas": "Praktika: hautagaitzak",
-  "Práctica: cocientes": "Praktika: zatidurak",
   "Publicación en el BOE de las candidaturas presentadas": "Aurkeztutako hautagaitzak BOEn argitaratzea",
   "Publicación en el BOE de las candidaturas proclamadas": "Aldarrikatutako hautagaitzak BOEn argitaratzea",
   "Publicación en el BOE del Real Decreto 806/2026 de disolución y convocatoria; entra en vigor el mismo día":
@@ -290,12 +237,9 @@ const diccionario: Diccionario = {
   "Recibes las papeletas": "Boto-txartelak jasotzen dituzu",
   "Recibes los sobres": "Gutun-azalak jasotzen dituzu",
   "Redactando con las fuentes oficiales…": "Iturri ofizialekin idazten…",
-  "Referencias": "Erreferentziak",
   "Reflexión": "Hausnarketa",
   "Responde con las fuentes oficiales de cada dato.": "Datu bakoitzaren iturri ofizialekin erantzuten du.",
   "Resultado de la comprobación": "Egiaztapenaren emaitza",
-  "Resultados reales: {validos} votos válidos, de ellos {blanco} en blanco. El 3 % son {umbral} votos.":
-    "Benetako emaitzak: {validos} baliozko boto, horietatik {blanco} zuri. % 3: {umbral} boto.",
   "Saltar al contenido": "Joan edukira",
   "Senadores": "Senatariak",
   "Sesiones constitutivas del Congreso y del Senado (10:00)": "Kongresuaren eta Senatuaren eratze-saioak (10:00)",
@@ -306,14 +250,8 @@ const diccionario: Diccionario = {
     "Aldi baterako atzerrian dauden Espainiako egoiliarrek (ERTA) botoa eskatzea",
   "Solicitud del voto por correo (residentes en España y residentes en el extranjero que están temporalmente en España)":
     "Posta bidezko botoa eskatzea (Espainian bizi direnak eta aldi baterako Espainian dauden atzerriko egoiliarrak)",
-  "Son las filas de asientos. Solo ordenan los 350 puntos en forma de hemiciclo: no tienen significado propio.":
-    "Eserleku-ilarak dira. 350 puntuak hemiziklo itxuran ordenatzeko baino ez dira: ez dute esanahi berezirik.",
-  "Son los diputados de la comunidad que señales en el mapa. Su posición en el hemiciclo es ilustrativa: no es dónde se sientan.":
-    "Mapan hautatzen duzun erkidegoko diputatuak dira. Hemizikloan duten kokapena adierazgarria da: ez da benetan esertzen diren lekua.",
   "Sorteo de los miembros de las mesas electorales en los ayuntamientos":
     "Hauteskunde-mahaietako kideen zozketa udaletan",
-  "Sí": "Bai",
-  "Tabla de cocientes": "Zatiduren taula",
   "Te explicamos los pasos y las fechas de tu caso, con la fuente oficial de cada uno.":
     "Zure kasuko urratsak eta datak azaltzen dizkizugu, bakoitzaren iturri ofizialarekin.",
   "Te llega la documentación a casa": "Dokumentazioa etxera iristen zaizu",
@@ -323,16 +261,12 @@ const diccionario: Diccionario = {
   "Te lo dan en tu mesa el día de la votación. Si lo pides, no puedes votar por correo.":
     "Bozketa egunean ematen dizute zure mahaian. Eskatzen baduzu, ezin duzu postaz bozkatu.",
   "Todo para votar el {fecha}.": "Bozkatzeko behar duzun guztia ({fecha}).",
-  "Todos los escaños empiezan en el mismo gris: no representa partidos, resultados ni previsiones.":
-    "Eserleku guztiak gris berean hasten dira: ez ditu alderdiak, emaitzak edo aurreikuspenak adierazten.",
-  "Total · pulsa una comunidad": "Guztira · sakatu erkidego bat",
   "Traducción automática: ante la duda, vale la versión en castellano.":
     "Itzulpen automatikoa: zalantzarik izanez gero, gaztelaniazko bertsioak balio du.",
   "Tu caso": "Zure kasua",
   "Tu voto llega a la mesa": "Zure botoa mahaira iristen da",
   "Tú en persona, por correo postal (certificado si se puede) y sin coste. Nunca directamente a la Junta Electoral en España: ese voto es nulo.":
     "Zuk zeuk, posta arruntez (ziurtatua, ahal bada) eta kosturik gabe. Inoiz ez zuzenean Espainiako Hauteskunde Batzarrera: boto hori baliogabea da.",
-  "Un punto, un escaño": "Puntu bat, eserleku bat",
   "Una pieza del squad": "Squad-eko pieza bat",
   "VOTAR": "BOZKATU",
   "Ver en 3D": "Ikusi 3Dn",
@@ -360,9 +294,6 @@ const diccionario: Diccionario = {
   "Voto por correo · Correos": "Posta bidezko botoa · Correos",
   "Voto por correo, aquí o desde fuera": "Posta bidezko botoa, hemen edo kanpotik",
   "Voto por correo, hasta el {fecha}:": "Posta bidezko botoa (azken eguna: {fecha}):",
-  "Votos": "Botoak",
-  "Votos de {letra}": "{letra} hautagaitzaren botoak",
-  "Votos en blanco": "Boto zuriak",
   "cerrar": "itxi",
   "cierra hoy": "gaur ixten da",
   "de {abre} a {cierra}": "{abre}–{cierra}",
@@ -386,7 +317,6 @@ const diccionario: Diccionario = {
   "{d} d {h} h {m} min {s} s": "{d} e {h} h {m} min {s} s",
   "{d}d {h}h {m}m {s}s": "{d}e {h}h {m}m {s}s",
   "{fecha}, de {abre} a {cierra}, en tu mesa electoral.": "{fecha}, {abre}–{cierra}, zure hauteskunde-mahaian.",
-  "{n} escaños": "{n} eserleku",
   "{verificador} califica «{afirmacion}» como": "{verificador} erakundeak honela kalifikatzen du «{afirmacion}»:",
   "¿Algo está mal? Avísanos": "Zerbait gaizki dago? Jakinarazi iezaguzu",
   "¿Algo más?": "Beste zerbait?",

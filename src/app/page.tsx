@@ -3,10 +3,16 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chat } from "@/components/Chat";
+import { CuentaAtras } from "@/components/CuentaAtras";
 import { Fuentes } from "@/components/Fuentes";
 import { Pagina, Titular } from "@/components/Pagina";
 import { PlazosAbiertos } from "@/components/PlazosAbiertos";
-import { diasHasta, fechaLarga, fuenteCalendario, plazo } from "@/lib/calendario";
+import {
+  fechaLarga,
+  fuenteCalendario,
+  instanteMadrid,
+  plazo,
+} from "@/lib/calendario";
 
 // Los plazos se abren y cierran por fecha: se recalcula cada hora.
 export const revalidate = 3600;
@@ -36,25 +42,13 @@ const horario = votacion.evento.match(/de \d{1,2}:\d{2} a \d{1,2}:\d{2}/)?.[0];
 const remision = plazo("voto_correo_remision");
 const mesaIne = "https://sede.ine.gob.es/ce-mesas/?lang=es_ES";
 
-const faltan = (n: number) => (n === 1 ? "Falta 1 día" : `Faltan ${n} días`);
-
-// Las cuentas atrás van en días: el calendario da fechas, no horas de cierre.
-function cuentasAtras(): string[] {
-  const votar = diasHasta(votacion.inicio);
-  const correo = diasHasta(remision.fin);
-  return [
-    votar > 0
-      ? `${faltan(votar)} para votar.`
-      : votar === 0
-        ? "Hoy se vota."
-        : null,
-    correo > 0
-      ? `${faltan(correo)} para enviar el voto por correo (hasta el ${fechaLarga(remision.fin)}).`
-      : correo === 0
-        ? "Hoy es el último día para enviar el voto por correo."
-        : null,
-  ].filter((t): t is string => t !== null);
-}
+// Horas de Madrid. La votación abre a la hora del calendario; el voto por
+// correo se puede enviar hasta que acaba el último día del plazo, aunque cada
+// oficina de Correos tiene su horario.
+const [abre, cierra] = horario?.match(/\d{1,2}:\d{2}/g) ?? [];
+const abreVotacion = instanteMadrid(votacion.inicio, abre);
+const cierraVotacion = instanteMadrid(votacion.inicio, cierra ?? "24:00");
+const cierraCorreo = instanteMadrid(remision.fin, "24:00");
 
 export default function Home() {
   return (
@@ -82,9 +76,16 @@ export default function Home() {
           </p>
           {horario && <p>Horario {horario}, en tu mesa electoral.</p>}
           <ul className="mt-2 grid gap-1 text-sm tabular-nums">
-            {cuentasAtras().map((t) => (
-              <li key={t}>{t}</li>
-            ))}
+            <CuentaAtras
+              hasta={abreVotacion}
+              antes="Para votar faltan"
+              despues={cierra ? `Hoy se vota, hasta las ${cierra}.` : "Hoy se vota."}
+              finDespues={cierraVotacion}
+            />
+            <CuentaAtras
+              hasta={cierraCorreo}
+              antes={`Para enviar el voto por correo (hasta el ${fechaLarga(remision.fin)}, en horario de Correos) faltan`}
+            />
           </ul>
         </Card>
 

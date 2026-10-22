@@ -58,10 +58,22 @@ export function estado(p: Plazo, dia = hoy()): Estado {
   return "proximo";
 }
 
-// Días que faltan desde hoy hasta una fecha del calendario (0 = hoy; negativo, ya pasó).
-export function diasHasta(iso: string, dia = hoy()): number {
-  const ms = Date.parse(`${iso}T00:00:00Z`) - Date.parse(`${dia}T00:00:00Z`);
-  return ms / 86_400_000;
+// Un día del calendario a una hora de Madrid («9:00»), como instante en ms.
+// El desfase (+01:00 o +02:00) se toma de ese mismo día.
+export function instanteMadrid(iso: string, hora = "0:00"): number {
+  const [h, m] = hora.split(":").map(Number);
+  const [a, mes, d] = iso.split("-").map(Number);
+  const local = Date.UTC(a, mes - 1, d, h, m);
+  const desfase = new Intl.DateTimeFormat("en", {
+    timeZone: "Europe/Madrid",
+    timeZoneName: "longOffset",
+  })
+    .format(local)
+    .match(/([+-])(\d{2}):(\d{2})/);
+  if (!desfase) return local;
+  const signo = desfase[1] === "-" ? -1 : 1;
+  const minutos = signo * (+desfase[2] * 60 + +desfase[3]);
+  return local - minutos * 60_000;
 }
 
 const formato = new Intl.DateTimeFormat("es-ES", {

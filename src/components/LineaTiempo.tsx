@@ -6,6 +6,7 @@ import {
   estado,
   fechaCorta,
   fechaLarga,
+  nombreFuente,
   rango,
   type Plazo,
 } from "@/lib/calendario";
@@ -338,6 +339,15 @@ function PasoTexto({
                 : t("Cierra en {n} días", { n: quedan })}
           </p>
         )}
+        <p className="mt-1 text-sm text-(--text-secondary)">
+          {t("Fuente:")}{" "}
+          <a
+            href={paso.plazo.fuente}
+            className="rounded-sm underline underline-offset-4 outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {t(nombreFuente(paso.plazo.fuente))}
+          </a>
+        </p>
       </div>
     </li>
   );

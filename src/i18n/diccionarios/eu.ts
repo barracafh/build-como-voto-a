@@ -179,8 +179,7 @@ const diccionario: Diccionario = {
   "NO VERIFICABLE": "EZIN DA EGIAZTATU",
   "No encuentro una fuente oficial que lo confirme o lo desmienta. Consúltalo en la sede oficial.":
     "Ez dut aurkitzen hori baieztatzen edo ezeztatzen duen iturri ofizialik. Kontsultatu egoitza ofizialean.",
-  "No escribas datos personales. No guardamos lo que escribes.":
-    "Ez idatzi datu pertsonalik. Ez dugu gordetzen idazten duzuna.",
+  "No escribas datos personales. No guardamos lo que escribes. Para responder, se envía a un servicio de IA y, en el verificador, la afirmación se busca en Google Fact Check.": "Ez idatzi datu pertsonalik. Ez dugu gordetzen idazten duzuna. Erantzuteko, AA zerbitzu batera bidaltzen da, eta egiaztatzailean baieztapena Google Fact Check-en bilatzen da.",
   "No hace falta pedirlo: la documentación te llega a casa. El envío es gratis. Si lo mandas directo a España, no vale.":
     "Ez duzu eskatu behar: dokumentazioa etxera iristen zaizu. Bidalketa doakoa da. Zuzenean Espainiara bidaltzen baduzu, ez du balio.",
   "No puedo confirmarlo con las fuentes oficiales que manejo. Consúltalo en la sede oficial.":

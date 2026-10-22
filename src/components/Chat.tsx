@@ -388,7 +388,9 @@ export function Chat({ modo }: { modo: Modo }) {
           className="mt-3 flex items-start gap-2 px-4 text-sm text-(--text-secondary)"
         >
           <ShieldCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
-          {t("No escribas datos personales. No guardamos lo que escribes.")}
+          {t(
+            "No escribas datos personales. No guardamos lo que escribes. Para responder, se envía a un servicio de IA y, en el verificador, la afirmación se busca en Google Fact Check.",
+          )}
         </p>
         <p aria-live="polite" className="mt-2 px-4 text-base text-(--text-secondary)">
           {error}

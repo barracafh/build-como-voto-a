@@ -152,7 +152,7 @@ const diccionario: Diccionario = {
   "NO COINCIDE": "NON COINCIDE",
   "NO VERIFICABLE": "NON VERIFICABLE",
   "No encuentro una fuente oficial que lo confirme o lo desmienta. Consúltalo en la sede oficial.": "Non atopo unha fonte oficial que o confirme ou o desminta. Consúltao na sede oficial.",
-  "No escribas datos personales. No guardamos lo que escribes.": "Non escribas datos persoais. Non gardamos o que escribes.",
+  "No escribas datos personales. No guardamos lo que escribes. Para responder, se envía a un servicio de IA y, en el verificador, la afirmación se busca en Google Fact Check.": "Non escribas datos persoais. Non gardamos o que escribes. Para responder, envíase a un servizo de IA e, no verificador, a afirmación búscase en Google Fact Check.",
   "No hace falta pedirlo: la documentación te llega a casa. El envío es gratis. Si lo mandas directo a España, no vale.": "Non fai falta pedilo: a documentación chégache á casa. O envío é gratis. Se o mandas directo a España, non vale.",
   "No puedo confirmarlo con las fuentes oficiales que manejo. Consúltalo en la sede oficial.": "Non podo confirmalo coas fontes oficiais que manexo. Consúltao na sede oficial.",
   "No se ha podido responder. Prueba de nuevo.": "Non se puido responder. Proba de novo.",

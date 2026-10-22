@@ -56,20 +56,20 @@
   }
 }
 
-/* Brillo que recorre un texto mientras se espera. Solo usa grises del tema:
-   el tramo más claro (--muted-foreground) mantiene contraste AA sobre blanco. */
+/* Brillo que recorre un texto mientras se espera: del texto principal al gris
+   más claro del tema, que aún mantiene contraste AA sobre blanco. */
 @layer components {
   .brillo {
     background: linear-gradient(
         90deg,
-        var(--text-secondary) 40%,
+        var(--foreground) 35%,
         var(--muted-foreground) 50%,
-        var(--text-secondary) 60%
+        var(--foreground) 65%
       )
       0 0 / 300% 100%;
     background-clip: text;
     color: transparent;
-    animation: brillo 2s linear infinite;
+    animation: brillo 1.6s linear infinite;
   }
 
   @keyframes brillo {

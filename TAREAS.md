@@ -68,7 +68,7 @@ Base: `datos/resultados_congreso_2023_provincias.csv`, `contexto.md` §3.1–3.3
 - [x] Test: reproduce los 350 escaños de 2023 en las 52 circunscripciones
 - [x] Selector de provincia (`<select>`) → tabla de cocientes y escaños, sin campos editables (ahora oculto: `MOSTRAR_SELECTOR = false` en `Escanos.tsx`, se muestra València)
 - [x] Modo «juega con cifras» solo con candidaturas genéricas A, B, C…
-- [ ] Explicación de voto en blanco, nulo y abstención (§3.3)
+- [x] [Implementador] Explicación de voto en blanco, nulo y abstención (§3.3)
 - [x] Citar «Origen de los datos: Ministerio del Interior»
 - [x] [Nubi] Hemiciclo interactivo y D'Hondt con los resultados de 2023
 - [x] [Nubi] [Fran] Mapa de diputados y senadores por comunidad que ilumina su bloque en el hemiciclo

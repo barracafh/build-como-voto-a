@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { BadgeCheck } from "lucide-react";
-import { Atardecer } from "@/components/Atardecer";
 import { Votijo } from "@/components/Votijo";
 import { BotonAviso } from "@/components/BotonAviso";
 import { SelectorIdioma } from "@/components/SelectorIdioma";
@@ -138,7 +137,7 @@ export async function Titular({
         <span aria-hidden="true">←</span> {t("Inicio")}
       </Link>
       <div className="mt-6 grid gap-6 md:grid-cols-[minmax(0,1fr)_160px] md:items-end md:gap-12">
-        <Atardecer className="w-20 md:order-last md:w-full" />
+        <Votijo className="h-auto w-20 md:order-last md:w-full motion-safe:animate-[amanecer_1400ms_var(--ease-brand)_both]" />
         <div>
           <p className="font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
             {etiqueta}

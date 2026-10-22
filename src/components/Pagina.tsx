@@ -4,6 +4,7 @@ import { BadgeCheck } from "lucide-react";
 import { Votijo } from "@/components/Votijo";
 import { BotonAviso } from "@/components/BotonAviso";
 import { SelectorIdioma } from "@/components/SelectorIdioma";
+import { VideoPresentacion } from "@/components/VideoPresentacion";
 import { getT } from "@/i18n/servidor";
 import { marcar } from "@/i18n/traducir";
 import { cn } from "@/lib/utils";
@@ -38,6 +39,7 @@ export async function Pagina({ children }: { children: ReactNode }) {
           </Link>
           <div className="flex flex-wrap items-center gap-3">
             <SelectorIdioma />
+            <VideoPresentacion />
             {/* Un dato, no un control: texto con icono, sin aspecto de botón. */}
             <p className="inline-flex items-center gap-1.5 text-sm text-(--text-secondary)">
               <BadgeCheck aria-hidden="true" className="size-4 shrink-0" strokeWidth={1.75} />

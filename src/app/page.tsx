@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { BotonChat } from "@/components/BotonChat";
 import { Chat } from "@/components/Chat";
+import { Atardecer } from "@/components/Atardecer";
 import { Contador } from "@/components/Contador";
 import { Encabezado } from "@/components/Encabezado";
 import { CuentaAtras } from "@/components/CuentaAtras";
@@ -73,14 +74,13 @@ export default async function Home() {
 
   return (
     <Pagina>
-      {/* El héroe con el atardecer de Sol (--brand-gradient): titular, día y
+      {/* El héroe: titular junto al sol de cartel (Atardecer) y debajo la
           cuenta atrás. Es la única pieza con el sol de la vista; al bajar, una
-          versión compacta en el mismo rojo se queda flotando arriba a la
-          derecha. */}
+          versión compacta se queda flotando arriba a la derecha. */}
       <Flotante
         flotante={
           !terminada && (
-            <Card className="gap-0.5 bg-brand px-4 py-3 text-sm text-white ring-0 shadow-(--shadow-overlay)">
+            <Card className="gap-0.5 px-4 py-3 text-sm ring-0 shadow-(--shadow-overlay)">
               <p className="flex items-center gap-2.5 font-heading text-xl leading-[1.1] opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-150 motion-safe:duration-500 md:text-2xl">
                 <span className="size-3 shrink-0 rounded-full bg-brand-yellow ring-4 ring-brand-yellow/30 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]" />
                 {fecha(votacion.inicio)}
@@ -101,36 +101,41 @@ export default async function Home() {
       >
         <section
           aria-labelledby="titular"
-          className="salida-con-scroll relative overflow-hidden rounded-[28px] px-6 pt-9 pb-24 text-white [background:var(--brand-gradient)] md:-mx-12 md:px-12 md:pt-14 md:pb-32"
+          className="salida-con-scroll"
         >
-          <p className="font-mono text-xs tracking-[0.08em] uppercase">
-            {t("Elecciones generales · 29N")}
-          </p>
-          <h1
-            id="titular"
-            className="mt-4 max-w-[14ch] text-[clamp(38px,6vw,68px)] leading-[1.04] tracking-[-0.02em]"
-          >
-            {terminada
-              ? t("La votación del {fecha} ha terminado.", { fecha: fecha(votacion.inicio) })
-              : t("Todo para votar el {fecha}.", { fecha: fecha(votacion.inicio) })}
-          </h1>
-          <p className="mt-5 max-w-[52ch] text-lg">
-            {t(
-              "Cómo, dónde y hasta cuándo, con la fuente oficial de cada dato. Solo cómo se vota: nada de candidaturas, programas ni encuestas.",
-            )}
-          </p>
-          {horario && !terminada && (
-            <p className="mt-6 font-medium">
-              {t("{fecha}, de {abre} a {cierra}, en tu mesa electoral.", {
-                fecha: fecha(votacion.inicio),
-                abre: abre ?? "",
-                cierra: cierra ?? "",
-              })}
-            </p>
-          )}
+          <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_220px] md:items-end md:gap-12">
+            <Atardecer className="w-28 md:order-last md:w-full" />
+            <div>
+              <p className="font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
+                {t("Elecciones generales · 29N")}
+              </p>
+              <h1
+                id="titular"
+                className="mt-4 max-w-[14ch] text-[clamp(38px,6vw,68px)] leading-[1.04] tracking-[-0.02em]"
+              >
+                {terminada
+                  ? t("La votación del {fecha} ha terminado.", { fecha: fecha(votacion.inicio) })
+                  : t("Todo para votar el {fecha}.", { fecha: fecha(votacion.inicio) })}
+              </h1>
+              <p className="mt-5 max-w-[52ch] text-lg">
+                {t(
+                  "Cómo, dónde y hasta cuándo, con la fuente oficial de cada dato. Solo cómo se vota: nada de candidaturas, programas ni encuestas.",
+                )}
+              </p>
+              {horario && !terminada && (
+                <p className="mt-6 font-medium">
+                  {t("{fecha}, de {abre} a {cierra}, en tu mesa electoral.", {
+                    fecha: fecha(votacion.inicio),
+                    abre: abre ?? "",
+                    cierra: cierra ?? "",
+                  })}
+                </p>
+              )}
+            </div>
+          </div>
 
           {!terminada && (
-            <div className="mt-8 max-w-[520px]">
+            <div className="mt-10 border-t border-foreground/10 pt-8">
               <Contador
                 hasta={abreVotacion}
                 para={t("para votar")}
@@ -138,7 +143,7 @@ export default async function Home() {
                 finDespues={cierraVotacion}
               />
               {/* Sin hijos cuando ya no queda plazo: entonces no se ve la caja. */}
-              <ul className="mt-3 w-fit rounded-xl bg-background px-4 py-2 text-sm text-foreground empty:hidden">
+              <ul className="mt-3 w-fit rounded-xl bg-secondary px-4 py-2 text-sm text-foreground empty:hidden">
                 <CuentaAtras
                   corto
                   hasta={cierraCorreo}

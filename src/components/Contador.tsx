@@ -54,11 +54,11 @@ export function Contador({
       <p aria-hidden="true" className="mb-3 font-mono text-xs tracking-[0.08em] uppercase">
         {t("Faltan {para}", { para })}
       </p>
-      <div aria-hidden="true" className="grid grid-cols-4 gap-2 sm:gap-3">
+      <div aria-hidden="true" className="grid max-w-[560px] grid-cols-4 gap-2 sm:gap-3">
         {fichas.map(([n, etiqueta]) => (
           <div
             key={etiqueta}
-            className="rounded-xl bg-background px-2 pt-3 pb-2.5 text-center text-foreground sm:px-3 sm:pt-4"
+            className="rounded-xl bg-background px-2 pt-3 pb-2.5 text-center text-foreground ring-1 ring-foreground/10 sm:px-3 sm:pt-4"
           >
             <span
               suppressHydrationWarning

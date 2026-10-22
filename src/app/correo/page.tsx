@@ -125,14 +125,14 @@ async function PlazoClave({ opcion }: { opcion: (typeof opciones)[Donde] }) {
         <span className="font-medium">{t(opcion.titulo)}</span>
         <Link
           href="/correo"
-          className="inline-flex min-h-11 items-center rounded-sm underline underline-offset-4 outline-none focus-visible:ring-3 focus-visible:ring-white/70"
+          className="inline-flex min-h-11 items-center rounded-sm underline underline-offset-4 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           {t("Cambiar")}
         </Link>
       </p>
       <section
         aria-label={abierto ? t("Plazo abierto") : t("Plazo cerrado")}
-        className="max-w-[560px] rounded-2xl bg-background px-5 py-4 text-foreground"
+        className="max-w-[560px] rounded-2xl bg-secondary px-5 py-4 text-foreground"
       >
         <p className="font-mono text-xs tracking-[0.08em] text-(--text-secondary) uppercase">
           {abierto ? t("Plazo abierto") : t("Plazo cerrado")}

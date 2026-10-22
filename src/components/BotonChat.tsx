@@ -11,7 +11,8 @@ const seccion = (id: string) => {
 };
 
 // Botón flotante abajo a la derecha que lleva al chat de la página y deja el
-// cursor en su campo de texto. Se oculta mientras el chat está a la vista.
+// cursor en su campo de texto. Se oculta mientras el chat o el pie están a la
+// vista (en el pie taparía su texto).
 export function BotonChat({ destino }: { destino: string }) {
   const { t } = useIdioma();
   const [oculto, setOculto] = useState(true);
@@ -19,10 +20,17 @@ export function BotonChat({ destino }: { destino: string }) {
   useEffect(() => {
     const el = seccion(destino);
     if (!el) return;
-    const observador = new IntersectionObserver(([e]) => setOculto(e.isIntersecting), {
-      threshold: 0.2,
-    });
+    const vistos = new Map<Element, boolean>();
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const e of entradas) vistos.set(e.target, e.isIntersecting);
+        setOculto([...vistos.values()].some(Boolean));
+      },
+      { threshold: 0.2 },
+    );
     observador.observe(el);
+    const pie = document.querySelector("footer");
+    if (pie) observador.observe(pie);
     return () => observador.disconnect();
   }, [destino]);
 

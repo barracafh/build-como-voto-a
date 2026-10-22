@@ -65,6 +65,14 @@
   }
 }
 
+/* El sol de los héroes sale desde el horizonte (ver Atardecer). */
+@keyframes amanecer {
+  from {
+    opacity: 0;
+    translate: 0 40%;
+  }
+}
+
 /* El héroe de la portada se encoge hacia arriba a la derecha mientras sale de
    la pantalla, justo donde aparece su versión flotante. Va con el scroll
    (animation-timeline); sin soporte o con movimiento reducido, no se anima. */
@@ -84,6 +92,19 @@
       animation-timeline: view();
       animation-range: exit 0% exit 90%;
     }
+  }
+}
+
+@layer components {
+  /* Pie: tinta con un resplandor naranja abajo a la derecha. */
+  .fondo-pie {
+    background:
+      radial-gradient(
+        45% 80% at 100% 100%,
+        rgb(255 122 26 / 0.45) 0%,
+        rgb(255 122 26 / 0) 70%
+      ),
+      var(--foreground);
   }
 }
 

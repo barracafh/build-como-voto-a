@@ -297,7 +297,7 @@ function Grafico({
 
       <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-sm text-(--text-secondary)">
         <li className="flex items-center gap-2">
-          <span className="h-3 w-6 rounded-full bg-brand" /> {t("Abierto")}
+          <span className="h-3 w-6 rounded-full bg-foreground" /> {t("Abierto")}
         </li>
         <li className="flex items-center gap-2">
           <span className="h-3 w-6 rounded-full border border-dashed border-foreground/60" />{" "}
@@ -359,7 +359,7 @@ function Barra({
       <div
         className={cn(
           "absolute bottom-0 h-4 origin-left rounded-full motion-safe:animate-[crecer_900ms_var(--ease-brand)_both]",
-          e === "abierto" && "bg-brand",
+          e === "abierto" && "bg-foreground",
           e === "proximo" && "border border-dashed border-foreground/60 bg-background",
         )}
         style={{

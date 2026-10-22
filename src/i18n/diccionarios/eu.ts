@@ -80,6 +80,7 @@ const diccionario: Diccionario = {
     "Kalkulua ez dator bat eserleku ofizialekin: kontsultatu Infoelectoral.",
   "El gris": "Grisa",
   "El grupo en rojo": "Talde gorria",
+  "El proceso electoral, explicado.": "Hauteskunde-prozesua, azalduta.",
   "El resto, según población": "Gainerakoak, biztanleriaren arabera",
   "Elecciones generales · 29N": "Hauteskunde orokorrak · 29N",
   "Elige cómo votar": "Aukeratu nola bozkatu",
@@ -155,6 +156,7 @@ const diccionario: Diccionario = {
   "Hemiciclo en 3D": "Hemizikloa 3Dn",
   "Herramienta experimental. No es un servicio oficial.":
     "Tresna esperimentala. Ez da zerbitzu ofiziala.",
+  "Herramientas": "Tresnak",
   "Horario de votación · Art. 84.1 LOREG": "Bozketa-ordutegia · LOREG, 84.1 art.",
   "Hoy": "Gaur",
   "Hoy se vota, hasta las {hora}.": "Gaur bozkatzen da (itxiera: {hora}).",
@@ -326,6 +328,7 @@ const diccionario: Diccionario = {
   "Voto accesible · Ministerio del Interior": "Boto irisgarria · Barne Ministerioa",
   "Voto en urna de los residentes en el extranjero (CERA) en su consulado o en los lugares habilitados":
     "Atzerrian bizi direnen (CERA) hautestontzi bidezko botoa, beren kontsulatuan edo gaitutako lekuetan",
+  "Voto por correo": "Posta bidezko botoa",
   "Voto por correo · 29N": "Posta bidezko botoa · 29N",
   "Voto por correo · Correos": "Posta bidezko botoa · Correos",
   "Voto por correo, aquí o desde fuera": "Posta bidezko botoa, hemen edo kanpotik",

@@ -32,7 +32,7 @@ const COMUNIDADES = Object.entries(Object.groupBy(REGIONES, (r) => r.ccaa));
 // Frosted glass for what floats over the 3D scene: existing tokens with opacity, solid
 // again for people who ask for reduced transparency.
 const VIDRIO =
-  "border border-border/60 bg-background/75 shadow-(--shadow-overlay) backdrop-blur-xl backdrop-saturate-150 [@media(prefers-reduced-transparency:reduce)]:bg-background";
+  "border border-border/60 bg-background/85 shadow-(--shadow-overlay) backdrop-blur-xl backdrop-saturate-150 [@media(prefers-reduced-transparency:reduce)]:bg-background";
 
 const TOTAL = { nombre: "España", diputados: 350, senadores: 209 };
 
@@ -200,7 +200,7 @@ export function MapaCortes() {
   const leyenda = (lista: readonly string[], narracion?: ReactNode) => {
     const { datos, grupo, censo, provincias } = resumir(lista);
     return (
-      <div aria-live="polite" className="border-t border-border pt-4">
+      <div aria-live="polite" className="@container border-t border-border pt-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="font-mono text-xs tracking-[0.06em] text-(--text-secondary) uppercase">
@@ -232,7 +232,7 @@ export function MapaCortes() {
             </div>
           ))}
         </dl>
-        <dl className="mt-6 grid gap-x-4 gap-y-2 text-base sm:grid-cols-[auto_minmax(0,1fr)]">
+        <dl className="mt-6 grid gap-x-4 gap-y-2 text-base @sm:grid-cols-[auto_minmax(0,1fr)]">
           <dt className="text-(--text-secondary)">{t("Electores")}</dt>
           <dd className="tabular-nums">{fmt.format(censo.electores)}</dd>
           <dt className="text-(--text-secondary)">{t("Por diputado")}</dt>

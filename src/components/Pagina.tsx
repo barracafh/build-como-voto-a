@@ -59,10 +59,10 @@ export async function Pagina({ children }: { children: ReactNode }) {
         <div className="bg-foreground rounded-[28px] px-(--page-gutter) pt-12 pb-8 text-background md:px-12 md:pt-16">
           <div className="mx-auto grid max-w-(--container-content) gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
             <div>
-              <p className="inline-flex items-center gap-3 font-semibold">
+              <div className="inline-flex items-center gap-3 font-semibold">
                 <Atardecer logo className="size-8 shrink-0" />
                 {ficha.nombre}
-              </p>
+              </div>
               <p className="mt-5 max-w-[16ch] text-[clamp(22px,2.6vw,28px)] font-medium leading-[1.2]">
                 {t(ficha.frase)}
               </p>

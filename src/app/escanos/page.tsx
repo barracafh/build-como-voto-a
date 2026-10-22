@@ -85,8 +85,8 @@ const fuentes = [
     url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20742",
   },
   {
-    nombre: marcar("Infoelectoral · Ministerio del Interior"),
-    url: "https://infoelectoral.interior.gob.es",
+    nombre: marcar("Infoelectoral · Resultados electorales · Ministerio del Interior"),
+    url: "https://infoelectoral.interior.gob.es/es/elecciones-celebradas/resultados-electorales/",
   },
 ];
 
@@ -218,7 +218,7 @@ export default async function EscanosPage() {
           <Fuentes fuentes={fuentes} />
           <p className="text-sm text-(--text-secondary)">
             {t(
-              "Fuente: Ley Orgánica 5/1985 (LOREG), arts. 161 a 163, versión consolidada del BOE (texto informativo, sin valor jurídico). Origen de los datos: Ministerio del Interior.",
+              "Fuente: Ley Orgánica 5/1985 (LOREG), arts. 161 a 165, versión consolidada del BOE (texto informativo, sin valor jurídico). Origen de los datos: Ministerio del Interior.",
             )}
           </p>
         </div>

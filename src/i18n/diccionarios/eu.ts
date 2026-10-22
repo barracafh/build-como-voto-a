@@ -142,8 +142,8 @@ const diccionario: Diccionario = {
   "Falta 1 día {para}.": "{para} egun 1 falta da.",
   "Faltan {n} días {para}.": "{para} {n} egun falta dira.",
   "Faltan {para}": "{para} falta da",
-  "Fuente: Ley Orgánica 5/1985 (LOREG), arts. 161 a 163, versión consolidada del BOE (texto informativo, sin valor jurídico). Origen de los datos: Ministerio del Interior.":
-    "Iturria: 5/1985 Lege Organikoa (LOREG), 161.etik 163.era arteko art., BOEren bertsio bateratua (informazio-testua, balio juridikorik gabe). Datuen jatorria: Barne Ministerioa.",
+  "Fuente: Ley Orgánica 5/1985 (LOREG), arts. 161 a 165, versión consolidada del BOE (texto informativo, sin valor jurídico). Origen de los datos: Ministerio del Interior.":
+    "Iturria: 5/1985 Lege Organikoa (LOREG), 161.etik 165.era arteko art., BOEren bertsio bateratua (informazio-testua, balio juridikorik gabe). Datuen jatorria: Barne Ministerioa.",
   "Fuentes oficiales": "Iturri ofizialak",
   "Fuera de alcance: aquí solo comprobamos y explicamos cómo se vota. No hablamos de partidos, candidaturas, programas ni encuestas, ni recomendamos el voto.":
     "Esparrutik kanpo: hemen nola bozkatzen den bakarrik egiaztatzen eta azaltzen dugu. Ez dugu alderdiez, hautagaitzez, programez edo inkestez hitz egiten, eta ez dugu botorik gomendatzen.",
@@ -160,7 +160,7 @@ const diccionario: Diccionario = {
   "Hoy se vota, hasta las {hora}.": "Gaur bozkatzen da (itxiera: {hora}).",
   "Hoy se vota.": "Gaur bozkatzen da.",
   "Idioma": "Hizkuntza",
-  "Infoelectoral · Ministerio del Interior": "Infoelectoral · Barne Ministerioa",
+  "Infoelectoral · Resultados electorales · Ministerio del Interior": "Infoelectoral · Hauteskunde-emaitzak · Barne Ministerioa",
   "Jornada de reflexión": "Hausnarketa eguna",
   "Jornada de votación, de 9:00 a 20:00": "Bozketa eguna, 9:00etatik 20:00etara",
   "LOREG · BOE consolidado": "LOREG · BOE bateratua",

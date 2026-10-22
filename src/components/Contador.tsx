@@ -32,7 +32,7 @@ export function Contador({
   const ms = hasta - ahora;
   if (ms <= 0) {
     return despues && ahora < finDespues ? (
-      <p className="font-heading text-[clamp(26px,4vw,36px)] leading-[1.1]">{despues}</p>
+      <p className="text-[clamp(22px,3vw,28px)] font-medium leading-[1.2]">{despues}</p>
     ) : null;
   }
 

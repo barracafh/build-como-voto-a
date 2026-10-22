@@ -19,8 +19,9 @@ import {
   plazo,
 } from "@/lib/calendario";
 
-// Los plazos se abren y cierran por fecha: se recalcula cada hora.
-export const revalidate = 3600;
+// Los plazos se abren y cierran por fecha y hora: se calcula en cada visita,
+// para que nunca se sirva una versión guardada de antes de un cierre.
+export const dynamic = "force-dynamic";
 
 const piezas = [
   {
@@ -59,6 +60,9 @@ const cierraVotacion = instanteMadrid(votacion.inicio, cierra ?? "24:00");
 const cierraCorreo = instanteMadrid(remision.fin, "24:00");
 
 export default function Home() {
+  // Pasadas las 20:00 del día de la votación ya no hay nada que contar.
+  const terminada = Date.now() >= cierraVotacion;
+
   return (
     <Pagina>
       {/* El héroe con el atardecer de Sol (--brand-gradient): titular, día y
@@ -67,22 +71,24 @@ export default function Home() {
           derecha. */}
       <Flotante
         flotante={
-          <Card className="gap-0.5 bg-brand px-4 py-3 text-sm text-white ring-0 shadow-(--shadow-overlay)">
-            <p className="flex items-center gap-2.5 font-heading text-xl leading-[1.1] opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-150 motion-safe:duration-500 md:text-2xl">
-              <span className="size-3 shrink-0 rounded-full bg-brand-yellow ring-4 ring-brand-yellow/30 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]" />
-              {fechaLarga(votacion.inicio)}
-            </p>
-            <ul className="mt-1 grid gap-0.5 font-mono text-xs opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-300 motion-safe:duration-500">
-              <CuentaAtras
-                corto
-                hasta={abreVotacion}
-                antes="VOTAR"
-                despues={cierra ? `Hoy se vota, hasta las ${cierra}.` : "Hoy se vota."}
-                finDespues={cierraVotacion}
-              />
-              <CuentaAtras corto hasta={cierraCorreo} antes="CORREO" />
-            </ul>
-          </Card>
+          !terminada && (
+            <Card className="gap-0.5 bg-brand px-4 py-3 text-sm text-white ring-0 shadow-(--shadow-overlay)">
+              <p className="flex items-center gap-2.5 font-heading text-xl leading-[1.1] opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-150 motion-safe:duration-500 md:text-2xl">
+                <span className="size-3 shrink-0 rounded-full bg-brand-yellow ring-4 ring-brand-yellow/30 motion-safe:animate-[latir_2.4s_var(--ease-brand)_infinite]" />
+                {fechaLarga(votacion.inicio)}
+              </p>
+              <ul className="mt-1 grid gap-0.5 font-mono text-xs opacity-0 group-data-[visible=true]/flotante:opacity-100 motion-safe:transition-opacity motion-safe:delay-300 motion-safe:duration-500">
+                <CuentaAtras
+                  corto
+                  hasta={abreVotacion}
+                  antes="VOTAR"
+                  despues={cierra ? `Hoy se vota, hasta las ${cierra}.` : "Hoy se vota."}
+                  finDespues={cierraVotacion}
+                />
+                <CuentaAtras corto hasta={cierraCorreo} antes="CORREO" />
+              </ul>
+            </Card>
+          )
         }
       >
         <section
@@ -96,34 +102,39 @@ export default function Home() {
             id="titular"
             className="mt-4 max-w-[14ch] text-[clamp(38px,6vw,68px)] leading-[1.04] tracking-[-0.02em]"
           >
-            Todo para votar el 29 de noviembre.
+            {terminada
+              ? `La votación del ${fechaLarga(votacion.inicio)} ha terminado.`
+              : `Todo para votar el ${fechaLarga(votacion.inicio)}.`}
           </h1>
           <p className="mt-5 max-w-[52ch] text-lg">
             Cómo, dónde y hasta cuándo, con la fuente oficial de cada dato. Solo
             cómo se vota: nada de candidaturas, programas ni encuestas.
           </p>
-          {horario && (
+          {horario && !terminada && (
             <p className="mt-6 font-medium">
               {fechaLarga(votacion.inicio)}, {horario}, en tu
               mesa electoral.
             </p>
           )}
 
-          <div className="mt-8 max-w-[520px]">
-            <Contador
-              hasta={abreVotacion}
-              para="para votar"
-              despues={cierra ? `Hoy se vota, hasta las ${cierra}.` : "Hoy se vota."}
-              finDespues={cierraVotacion}
-            />
-            <ul className="mt-3 w-fit rounded-xl bg-background px-4 py-2 text-sm text-foreground">
-              <CuentaAtras
-                corto
-                hasta={cierraCorreo}
-                antes={`Voto por correo, hasta el ${fechaLarga(remision.fin)}:`}
+          {!terminada && (
+            <div className="mt-8 max-w-[520px]">
+              <Contador
+                hasta={abreVotacion}
+                para="para votar"
+                despues={cierra ? `Hoy se vota, hasta las ${cierra}.` : "Hoy se vota."}
+                finDespues={cierraVotacion}
               />
-            </ul>
-          </div>
+              {/* Sin hijos cuando ya no queda plazo: entonces no se ve la caja. */}
+              <ul className="mt-3 w-fit rounded-xl bg-background px-4 py-2 text-sm text-foreground empty:hidden">
+                <CuentaAtras
+                  corto
+                  hasta={cierraCorreo}
+                  antes={`Voto por correo, hasta el ${fechaLarga(remision.fin)}:`}
+                />
+              </ul>
+            </div>
+          )}
         </section>
       </Flotante>
 

@@ -341,6 +341,26 @@ const diccionario: Diccionario = {
   "Web del INE": "Web do INE",
   "Y el día 29 no estarás en tu localidad, pero sí en España.": "E o día 29 non estarás na túa localidade, pero si en España.",
   "Ya han cerrado todos los plazos de este caso.": "Xa pecharon todos os prazos deste caso.",
+  // Termómetro de confianza del chat.
+  "1 fuente oficial comprobada en la base": "1 fonte oficial comprobada na base",
+  "Alta": "Alta",
+  "Baja": "Baixa",
+  "Media": "Media",
+  "Cita literal de la fuente oficial": "Cita literal da fonte oficial",
+  "El veredicto sale de una ficha con cita literal de la fuente oficial.": "O veredicto sae dunha ficha con cita literal da fonte oficial.",
+  "Grado de confianza": "Grao de confianza",
+  "Grado de confianza: {nivel}": "Grao de confianza: {nivel}",
+  "Lo redacta el asistente con la base oficial. Sus fuentes existen en la base, pero el texto no se contrasta frase a frase.": "Redáctao o asistente coa base oficial. As súas fontes existen na base, pero o texto non se contrasta frase a frase.",
+  "Ninguna ficha oficial lo confirma ni lo contradice.": "Ningunha ficha oficial o confirma nin o contradí.",
+  "No hay una fuente oficial en la base que lo sostenga.": "Non hai unha fonte oficial na base que o sosteña.",
+  "No: ": "Non: ",
+  "Sí: ": "Si: ",
+  "Sin cita literal": "Sen cita literal",
+  "Sin cita literal: el texto lo redacta el asistente": "Sen cita literal: o texto redáctao o asistente",
+  "Sin fuente oficial que lo sostenga": "Sen fonte oficial que o sosteña",
+  "Sin verificaciones publicadas en Google Fact Check": "Sen verificacións publicadas en Google Fact Check",
+  "{n} fuentes oficiales comprobadas en la base": "{n} fontes oficiais comprobadas na base",
+  "{n} verificaciones publicadas en Google Fact Check": "{n} verificacións publicadas en Google Fact Check",
 };
 
 export default diccionario;

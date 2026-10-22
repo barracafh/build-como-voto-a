@@ -422,6 +422,26 @@ const diccionario: Diccionario = {
   "Web del INE": "INEren webgunea",
   "Y el día 29 no estarás en tu localidad, pero sí en España.": "Eta 29an ez zara zure herrian egongo, baina Espainian bai.",
   "Ya han cerrado todos los plazos de este caso.": "Kasu honetako epe guztiak itxi dira dagoeneko.",
+  // Termómetro de confianza del chat.
+  "1 fuente oficial comprobada en la base": "Iturri ofizial 1 egiaztatuta oinarrian",
+  "Alta": "Handia",
+  "Baja": "Txikia",
+  "Media": "Ertaina",
+  "Cita literal de la fuente oficial": "Iturri ofizialaren aipu literala",
+  "El veredicto sale de una ficha con cita literal de la fuente oficial.": "Ebazpena iturri ofizialaren aipu literala duen fitxa batetik dator.",
+  "Grado de confianza": "Konfiantza-maila",
+  "Grado de confianza: {nivel}": "Konfiantza-maila: {nivel}",
+  "Lo redacta el asistente con la base oficial. Sus fuentes existen en la base, pero el texto no se contrasta frase a frase.": "Laguntzaileak idazten du, oinarri ofizialarekin. Bere iturriak oinarrian daude, baina testua ez da esaldiz esaldi egiaztatzen.",
+  "Ninguna ficha oficial lo confirma ni lo contradice.": "Ez dago hori berresten edo ezeztatzen duen fitxa ofizialik.",
+  "No hay una fuente oficial en la base que lo sostenga.": "Oinarrian ez dago hori babesten duen iturri ofizialik.",
+  "No: ": "Ez: ",
+  "Sí: ": "Bai: ",
+  "Sin cita literal": "Aipu literalik gabe",
+  "Sin cita literal: el texto lo redacta el asistente": "Aipu literalik gabe: testua laguntzaileak idazten du",
+  "Sin fuente oficial que lo sostenga": "Hori babesten duen iturri ofizialik gabe",
+  "Sin verificaciones publicadas en Google Fact Check": "Google Fact Check-en argitaratutako egiaztapenik ez",
+  "{n} fuentes oficiales comprobadas en la base": "{n} iturri ofizial egiaztatuta oinarrian",
+  "{n} verificaciones publicadas en Google Fact Check": "Google Fact Check-en argitaratutako egiaztapenak: {n}",
 };
 
 export default diccionario;

@@ -16,6 +16,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Fuentes } from "@/components/Fuentes";
 import { Publicadas } from "@/components/Publicadas";
+import { Termometro } from "@/components/Termometro";
 import { ruta } from "@/config/sitio";
 import { useIdioma } from "@/i18n/cliente";
 import { marcar } from "@/i18n/traducir";
@@ -253,6 +254,7 @@ export function Chat({ modo }: { modo: Modo }) {
           {!!turno.respuesta.publicadas?.length && (
             <Publicadas publicadas={turno.respuesta.publicadas} />
           )}
+          <Termometro respuesta={turno.respuesta} />
         </section>
       ))}
 

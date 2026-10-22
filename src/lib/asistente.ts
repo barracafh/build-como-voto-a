@@ -44,6 +44,8 @@ export type Respuesta = {
   verificacion?: Verificacion;
   // Solo en el verificador: verificaciones profesionales ya publicadas.
   publicadas?: Publicada[];
+  // La respuesta fija de «no puedo confirmarlo»: sin fuente que la sostenga.
+  sinConfirmar?: true;
 };
 
 // Las respuestas fijas se escriben en castellano y se traducen con `t` al
@@ -63,6 +65,7 @@ const noConfirmable = (t: T): Respuesta => ({
   ),
   pasos: [],
   fuentes: sedeOficial,
+  sinConfirmar: true,
 });
 
 // Cómo se llama cada lengua en las instrucciones al modelo.

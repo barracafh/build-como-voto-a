@@ -24,7 +24,7 @@ Una guía para votar el 29/11/2026 (aquí, por correo y desde el extranjero) y u
 ## Primeros pasos (hora 0)
 
 - [ ] `bun install` ✓, `.env.local` con `HELMCODE_API_KEY` y `HELMCODE_MODEL`, `bun run dev` → `localhost:3000/como-voto-a`
-- [ ] Repartir piezas entre el squad ([akae] A: voto por correo · B: verificador · C: D'Hondt)
+- [ ] Repartir piezas entre el squad (A: voto por correo · B: verificador · C: D'Hondt)
 - [x] `ficha.json`: `datos` → `"reales"` (son datos públicos) y añadir Infoelectoral a `fuentes`
 - [x] Portada (`src/app/page.tsx`): día de votación, índice de piezas, plazos abiertos y consulta de mesa del INE
 - [x] Rutas vacías por pieza para trabajar sin conflictos: `/correo` (A), `/verificar` (B), `/escanos` (C). Cabecera y pie comunes en `src/components/Pagina.tsx`
@@ -34,12 +34,12 @@ Una guía para votar el 29/11/2026 (aquí, por correo y desde el extranjero) y u
 
 Base: `contexto.md` §2.2 (España), §2.3 (CERA), §2.4 (ERTA), calendario.
 
-- [ ] [akae] Selector de perfil con controles nativos: resido en España y no estaré / resido fuera (CERA) / estaré fuera temporalmente (ERTA)
-- [ ] [akae] Mapear cada perfil a sus `id` del calendario → pasos numerados con fecha y enlace (BOE, JEC, Correos, INE)
-- [ ] [akae] Marcar plazos cerrados según la fecha de hoy (p. ej. ERTA termina el 31/10)
-- [ ] [akae] Tarjeta sol para el plazo más urgente del perfil
-- [ ] [akae] «Dónde se hace»: Correos, consulado, consulta de mesa del INE (`sede.ine.gob.es/ce-mesas`)
-- [ ] [akae] Opcional: texto libre → IA clasifica en un perfil (sin guardar el texto) y se muestra la misma respuesta determinista
+- [ ] Selector de perfil con controles nativos: resido en España y no estaré / resido fuera (CERA) / estaré fuera temporalmente (ERTA)
+- [ ] Mapear cada perfil a sus `id` del calendario → pasos numerados con fecha y enlace (BOE, JEC, Correos, INE)
+- [ ] Marcar plazos cerrados según la fecha de hoy (p. ej. ERTA termina el 31/10)
+- [ ] Tarjeta sol para el plazo más urgente del perfil
+- [ ] «Dónde se hace»: Correos, consulado, consulta de mesa del INE (`sede.ine.gob.es/ce-mesas`)
+- [ ] Opcional: texto libre → IA clasifica en un perfil (sin guardar el texto) y se muestra la misma respuesta determinista
 
 ## Pieza B · ¿Es verdad lo que me han dicho?
 

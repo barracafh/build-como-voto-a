@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { LoaderCircle } from "lucide-react";
 import type { Modo, Respuesta } from "@/lib/asistente";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -49,14 +50,21 @@ export function Chat({ modo }: { modo: Modo }) {
   const { etiqueta, placeholder, ejemplos } = textos[modo];
   const [turnos, setTurnos] = useState<Turno[]>([]);
   const [texto, setTexto] = useState("");
-  const [cargando, setCargando] = useState(false);
+  // La pregunta que espera respuesta; mientras no es null, se está consultando.
+  const [pendiente, setPendiente] = useState<string | null>(null);
+  const cargando = pendiente !== null;
   const [error, setError] = useState("");
   const campo = useRef<HTMLTextAreaElement>(null);
+  const espera = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (cargando) espera.current?.scrollIntoView({ block: "center" });
+  }, [cargando]);
 
   async function preguntar(pregunta: string) {
     pregunta = pregunta.trim();
     if (!pregunta || cargando) return;
-    setCargando(true);
+    setPendiente(pregunta);
     setError("");
     const mensajes = [
       ...turnos.flatMap((t) => [
@@ -82,7 +90,7 @@ export function Chat({ modo }: { modo: Modo }) {
           : "No se ha podido responder. Prueba de nuevo.",
       );
     } finally {
-      setCargando(false);
+      setPendiente(null);
       campo.current?.focus();
     }
   }
@@ -155,6 +163,37 @@ export function Chat({ modo }: { modo: Modo }) {
         </section>
       ))}
 
+      {pendiente !== null && (
+        <section
+          ref={espera}
+          aria-labelledby="pregunta-pendiente"
+          aria-busy="true"
+          className="[&>*+*]:mt-6"
+        >
+          <h2
+            id="pregunta-pendiente"
+            className="font-sans text-[clamp(26px,4vw,34px)] leading-[1.15] tracking-[-0.02em]"
+          >
+            {pendiente}
+          </h2>
+          <p role="status" className="flex items-center gap-3 font-medium">
+            <LoaderCircle
+              aria-hidden="true"
+              className="size-6 shrink-0 text-brand motion-safe:animate-spin"
+            />
+            <span className="brillo">Consultando las fuentes oficiales…</span>
+          </p>
+          <div aria-hidden="true" className="grid gap-3">
+            {["w-full", "w-11/12", "w-3/4"].map((ancho) => (
+              <div
+                key={ancho}
+                className={`h-4 rounded-md bg-muted motion-safe:animate-pulse ${ancho}`}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
       <form onSubmit={enviar} className="[&>*+*]:mt-4">
         <label htmlFor="pregunta" className="block text-base font-medium">
           {turnos.length ? "¿Algo más?" : etiqueta}
@@ -176,10 +215,7 @@ export function Chat({ modo }: { modo: Modo }) {
           placeholder={placeholder}
           className="md:text-base"
         />
-        <p
-          id="aviso-privacidad"
-          className="text-base text-(--text-secondary)"
-        >
+        <p id="aviso-privacidad" className="text-base text-(--text-secondary)">
           No escribas datos personales. No guardamos lo que escribes.
         </p>
         <Button
@@ -189,14 +225,20 @@ export function Chat({ modo }: { modo: Modo }) {
           disabled={cargando || !texto.trim()}
           className="max-md:w-full"
         >
-          {modo === "verificar" ? "Comprobar" : "Preguntar"}
+          {cargando && (
+            <LoaderCircle
+              aria-hidden="true"
+              className="motion-safe:animate-spin"
+            />
+          )}
+          {cargando
+            ? "Consultando…"
+            : modo === "verificar"
+              ? "Comprobar"
+              : "Preguntar"}
         </Button>
         <p aria-live="polite" className="text-base text-(--text-secondary)">
-          {cargando ? (
-            <span className="brillo">Consultando las fuentes oficiales…</span>
-          ) : (
-            error
-          )}
+          {error}
         </p>
       </form>
 

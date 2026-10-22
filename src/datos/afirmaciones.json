@@ -1,0 +1,595 @@
+[
+  {
+    "id": "correo-y-mesa",
+    "afirmacion": "Si pides el voto por correo y no lo usas, puedes votar en la mesa",
+    "variantes": [
+      "Si pido el voto por correo puedo votar también en la mesa",
+      "Para asegurar el voto por correo hay que ir a votar a la mesa también",
+      "Aunque haya pedido el voto por correo puedo ir a votar en persona",
+      "Puedo votar por correo y además en el colegio electoral"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 73.1 LOREG",
+    "cita": "realizará la anotación correspondiente en el censo, a fin de que el día de las elecciones no se realice el voto personalmente",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#asetentaytres",
+    "fuente": "LOREG, art. 73.1 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "La anotación en el censo se hace al recibir la solicitud: aunque no llegues a enviar el voto por correo, ya no puedes votar en persona en la mesa."
+  },
+  {
+    "id": "dni-fotocopia",
+    "afirmacion": "Puedo votar con una fotocopia del DNI",
+    "variantes": [
+      "Para votar vale una fotocopia del DNI",
+      "Se puede votar enseñando una copia del DNI"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 85.1 LOREG; Interior, preguntas frecuentes",
+    "cita": "deben ser los originales, no valen fotocopias",
+    "url": "https://infoelectoral.interior.gob.es/es/proceso-electoral/preguntas-frecuentes/desarrollo-de-la-votacion/",
+    "fuente": "Preguntas frecuentes sobre la votación · Interior",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "El art. 85.1 LOREG admite DNI, pasaporte o permiso de conducir con la fotografía del titular."
+  },
+  {
+    "id": "correo-plazo-solicitud",
+    "afirmacion": "El último día para pedir el voto por correo es el 19 de noviembre",
+    "variantes": [
+      "Se puede solicitar el voto por correo hasta el 19 de noviembre",
+      "El plazo para pedir el voto por correo acaba el 19 de noviembre"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 72.a LOREG; INE",
+    "cita": "Los electores residentes podrán solicitar el voto por correo desde el 6 de octubre hasta el 19 de noviembre, ambos inclusive.",
+    "url": "https://www.ine.es/dyngs/CEL/index.htm?cid=1700",
+    "fuente": "Guía de las elecciones · INE (Oficina del Censo Electoral)",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Vale para quien vive en España. Quien está temporalmente en el extranjero (ERTA) tiene otro plazo y otro trámite.",
+    "plazo": "voto_correo_solicitud"
+  },
+  {
+    "id": "papeleta-tachada",
+    "afirmacion": "Una papeleta tachada o con una anotación es válida",
+    "variantes": [
+      "Si tachas un nombre de la papeleta el voto sigue valiendo",
+      "Se puede escribir en la papeleta y el voto vale",
+      "Una papeleta con una leyenda escrita es un voto válido"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 96.2 LOREG",
+    "cita": "Serán también nulos en todos los procesos electorales los votos emitidos en papeletas en las que se hubieren modificado, añadido o tachado nombres de candidatos comprendidos en ellas o alterado su orden de colocación, así como aquéllas en las que se hubiera introducido cualquier leyenda o expresión",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#anoventayseis",
+    "fuente": "LOREG, art. 96.2 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Según la Instrucción JEC 1/2012, una señal, cruz o aspa junto a un candidato no anula el voto si no altera la configuración de la papeleta ni expresa reproche. En el Senado el candidato se marca con aspa."
+  },
+  {
+    "id": "obligatorio-votar",
+    "afirmacion": "Es obligatorio votar",
+    "variantes": [
+      "Votar es obligatorio en España",
+      "Te multan si no vas a votar",
+      "Si no votas te sancionan"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 5 LOREG",
+    "cita": "Nadie puede ser obligado o coaccionado bajo ningún pretexto en el ejercicio de su derecho de sufragio, ni a revelar su voto.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#aquinto",
+    "fuente": "LOREG, art. 5 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Votar es un derecho. Lo que sí es obligatorio es ser miembro de mesa si te toca en el sorteo (art. 27.1 LOREG)."
+  },
+  {
+    "id": "encuestas-26",
+    "afirmacion": "Se pueden publicar encuestas el 26 de noviembre",
+    "variantes": [
+      "Se pueden publicar sondeos electorales hasta la víspera de la votación",
+      "Los medios pueden difundir encuestas electorales el 26 de noviembre"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 69.7 LOREG",
+    "cita": "Durante los cinco días anteriores al de la votación queda prohibida la publicación y difusión o reproducción de sondeos electorales por cualquier medio de comunicación.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#asesentaynueve",
+    "fuente": "LOREG, art. 69.7 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Según el calendario, la prohibición va del 24 al 28 de noviembre.",
+    "plazo": "sondeos"
+  },
+  {
+    "id": "voto-blanco-reparto",
+    "afirmacion": "El voto en blanco se reparte entre los partidos más votados",
+    "variantes": [
+      "El voto en blanco va para el partido más votado",
+      "Votar en blanco beneficia al partido ganador porque se le suma",
+      "Los votos en blanco se suman a las candidaturas con más votos"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 108.4 LOREG",
+    "cita": "se computarán como votos válidos los obtenidos por cada candidatura más los votos en blanco",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#acientoocho",
+    "fuente": "LOREG, art. 108.4 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "El voto en blanco es válido y cuenta para calcular el 3 % mínimo, pero el reparto de escaños solo divide los votos de cada candidatura (art. 163.1 LOREG)."
+  },
+  {
+    "id": "cera-pedir-voto",
+    "afirmacion": "Los residentes en el extranjero tienen que pedir el voto",
+    "variantes": [
+      "Si vives fuera de España tienes que solicitar el voto",
+      "Desde el extranjero hay que rogar el voto",
+      "Los españoles que viven en el extranjero deben pedir la documentación para votar"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 75.1 LOREG (reforma de la LO 12/2022); INE",
+    "cita": "A los electores inscritos en el Censo Electoral de Residentes-Ausentes se les remitirá de oficio la documentación necesaria para el ejercicio del derecho de voto, sin necesidad de solicitud previa.",
+    "url": "https://www.ine.es/dyngs/CEL/index.htm?cid=1700",
+    "fuente": "Guía de las elecciones · INE (Oficina del Censo Electoral)",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Vale para quien vive de forma habitual en el extranjero (CERA). Quien vive en España y está fuera temporalmente (ERTA) sí tiene que solicitarlo."
+  },
+  {
+    "id": "horario-votacion",
+    "afirmacion": "Se vota de 9:00 a 20:00",
+    "variantes": [
+      "Los colegios electorales abren a las nueve y cierran a las ocho de la tarde",
+      "La votación dura de las nueve a las veinte horas"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 84.1 LOREG",
+    "cita": "se iniciará a las nueve horas la votación, que continuará sin interrupción hasta las veinte horas",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#aochentaycuatro",
+    "fuente": "LOREG, art. 84.1 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Es el horario general de las mesas. Si la votación se interrumpe, se prorroga tanto tiempo como haya estado interrumpida (art. 84.4 LOREG).",
+    "plazo": "votacion"
+  },
+  {
+    "id": "votar-dos-veces",
+    "afirmacion": "Se puede votar más de una vez en las mismas elecciones",
+    "variantes": [
+      "Puedo votar dos veces si voy a dos mesas",
+      "Es posible votar varias veces en las mismas elecciones"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 4.2 LOREG",
+    "cita": "Nadie puede votar más de una vez en las mismas elecciones.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#acuarto",
+    "fuente": "LOREG, art. 4.2 · BOE consolidado",
+    "fecha_consulta": "2026-10-22"
+  },
+  {
+    "id": "revelar-voto",
+    "afirmacion": "Te pueden obligar a decir a quién has votado",
+    "variantes": [
+      "En la mesa te pueden preguntar a quién votas y tienes que contestar",
+      "Hay que decir a quién has votado si te lo piden"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 5 LOREG",
+    "cita": "Nadie puede ser obligado o coaccionado bajo ningún pretexto en el ejercicio de su derecho de sufragio, ni a revelar su voto.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#aquinto",
+    "fuente": "LOREG, art. 5 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "El voto es secreto (art. 86.1 LOREG)."
+  },
+  {
+    "id": "carne-conducir",
+    "afirmacion": "Se puede votar con el carné de conducir",
+    "variantes": [
+      "El permiso de conducir sirve para identificarse en la mesa",
+      "Puedo votar con el pasaporte en vez del DNI"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 85.1 LOREG",
+    "cita": "mediante documento nacional de identidad, pasaporte o permiso de conducir en que aparezca la fotografía del titular",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#aochentaycinco",
+    "fuente": "LOREG, art. 85.1 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Debe ser el documento original y llevar tu fotografía."
+  },
+  {
+    "id": "resguardo-dni",
+    "afirmacion": "Sirve el resguardo del DNI en trámite para votar",
+    "variantes": [
+      "Si tengo el DNI en renovación puedo votar con el resguardo",
+      "Con el justificante de haber pedido el DNI se puede votar"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 85.1 LOREG; Interior, preguntas frecuentes",
+    "cita": "No sirve el resguardo del DNI en trámite, puesto que en él no aparece la fotografía del elector.",
+    "url": "https://infoelectoral.interior.gob.es/es/proceso-electoral/preguntas-frecuentes/desarrollo-de-la-votacion/",
+    "fuente": "Preguntas frecuentes sobre la votación · Interior",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Puedes identificarte con el pasaporte o el permiso de conducir, si llevan tu fotografía."
+  },
+  {
+    "id": "tarjeta-censal",
+    "afirmacion": "Sin la tarjeta censal no se puede votar",
+    "variantes": [
+      "Hay que llevar la tarjeta censal para poder votar",
+      "Si no te llega la tarjeta censal no puedes votar"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 85.1 LOREG",
+    "cita": "El derecho a votar se acredita por la inscripción en los ejemplares certificados de las listas del censo o por certificación censal específica y, en ambos casos, por la identificación del elector",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#aochentaycinco",
+    "fuente": "LOREG, art. 85.1 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "La tarjeta censal te informa de tu mesa y tu local, pero la ley pide estar en las listas del censo e identificarte."
+  },
+  {
+    "id": "justificante-voto",
+    "afirmacion": "En la mesa te pueden dar un justificante de haber votado",
+    "variantes": [
+      "Se puede pedir un certificado de haber votado",
+      "Puedo pedir en el colegio un papel que diga que he votado"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Interior, preguntas frecuentes",
+    "cita": "Si, el justificante se puede solicitar ante la Mesa electoral el mismo día de la votación.",
+    "url": "https://infoelectoral.interior.gob.es/es/proceso-electoral/preguntas-frecuentes/desarrollo-de-la-votacion/",
+    "fuente": "Preguntas frecuentes sobre la votación · Interior",
+    "fecha_consulta": "2026-10-22"
+  },
+  {
+    "id": "fuera-del-censo",
+    "afirmacion": "Si no estás en el censo puedes votar enseñando el DNI",
+    "variantes": [
+      "Aunque no aparezca en las listas puedo votar con mi DNI",
+      "Si no salgo en el censo me dejan votar igualmente con el DNI"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 85.3 y 85.5 LOREG; Interior, preguntas frecuentes",
+    "cita": "Si el elector no figura en la lista del censo, solo podrá votar en la Mesa si presenta alguno de estos documentos:",
+    "url": "https://infoelectoral.interior.gob.es/es/proceso-electoral/preguntas-frecuentes/desarrollo-de-la-votacion/",
+    "fuente": "Preguntas frecuentes sobre la votación · Interior",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Esos documentos son una sentencia judicial que reconozca tu derecho a estar en el censo o una certificación censal específica de alta."
+  },
+  {
+    "id": "mayoria-de-edad",
+    "afirmacion": "Si cumples 18 años el día de la votación ya puedes votar",
+    "variantes": [
+      "Puedo votar si cumplo los 18 justo el día de las elecciones",
+      "Quien cumple la mayoría de edad el día de la votación puede votar"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 85.2 LOREG",
+    "cita": "contendrán exclusivamente los ciudadanos mayores de edad en la fecha de la votación",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#aochentaycinco",
+    "fuente": "LOREG, art. 85.2 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Hay que estar inscrito en el censo electoral."
+  },
+  {
+    "id": "correo-fotocopia-solicitud",
+    "afirmacion": "Para pedir el voto por correo en Correos basta una fotocopia del DNI",
+    "variantes": [
+      "Puedo solicitar el voto por correo con una fotocopia del DNI",
+      "En Correos aceptan una copia del DNI para pedir el voto"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 72.b LOREG",
+    "cita": "En ningún caso se admitirá a estos efectos fotocopia del documento nacional de identidad.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#asetentaydos",
+    "fuente": "LOREG, art. 72.b · BOE consolidado",
+    "fecha_consulta": "2026-10-22"
+  },
+  {
+    "id": "correo-solicitud-otro",
+    "afirmacion": "Cualquiera puede pedir el voto por correo en tu nombre",
+    "variantes": [
+      "Un familiar puede ir a Correos a pedir mi voto por correo",
+      "Puedo mandar a otra persona a solicitar mi voto por correo"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 72.b LOREG",
+    "cita": "La solicitud deberá formularse personalmente.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#asetentaydos",
+    "fuente": "LOREG, art. 72.b · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Si una enfermedad o incapacidad te impide hacerlo en persona, puede pedirlo otra persona autorizada ante notario o cónsul, con certificación médica oficial y gratuita (art. 72.c LOREG)."
+  },
+  {
+    "id": "correo-franqueo",
+    "afirmacion": "Hay que pagar el sello para enviar el voto por correo",
+    "variantes": [
+      "El sobre del voto por correo hay que franquearlo",
+      "Enviar el voto por correo cuesta dinero"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 73.3 LOREG",
+    "cita": "Este sobre no necesita franqueo.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#asetentaytres",
+    "fuente": "LOREG, art. 73.3 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Se envía por correo certificado."
+  },
+  {
+    "id": "correo-envio-plazo",
+    "afirmacion": "El voto por correo se puede enviar hasta el 25 de noviembre",
+    "variantes": [
+      "El último día para mandar el voto por correo es el 25 de noviembre",
+      "Hay que enviar el voto por correo como tarde el 25 de noviembre"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 73.3 LOREG; INE",
+    "cita": "Recibida la documentación, estos electores deberán enviar su voto a la mesa electoral, por correo certificado, no más tarde del día 25 de noviembre.",
+    "url": "https://www.ine.es/dyngs/CEL/index.htm?cid=1700",
+    "fuente": "Guía de las elecciones · INE (Oficina del Censo Electoral)",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Vale para quien vive en España y ha pedido el voto por correo. Se envía por correo certificado.",
+    "plazo": "voto_correo_remision"
+  },
+  {
+    "id": "correo-llega-tarde",
+    "afirmacion": "Los votos por correo que llegan después de las 20:00 del día de la votación se cuentan en la mesa",
+    "variantes": [
+      "Si el voto por correo llega tarde el día de las elecciones se cuenta igual",
+      "Los sobres que llegan a Correos después de las ocho de la tarde se llevan a la mesa"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 73.4 LOREG",
+    "cita": "Los sobres recibidos después de las veinte horas del día fijado para la votación se remitirán a la Junta Electoral de Zona.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#asetentaytres",
+    "fuente": "LOREG, art. 73.4 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Correos lleva a las mesas los votos que recibe hasta las 20:00 del día de la votación."
+  },
+  {
+    "id": "correo-recoge-otro",
+    "afirmacion": "La documentación del voto por correo la puede recoger cualquiera que esté en tu casa",
+    "variantes": [
+      "Si no estoy, mi vecino puede firmar la entrega del voto por correo",
+      "Cualquier familiar puede recibir mi documentación del voto por correo"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 73.2 LOREG",
+    "cita": "El aviso de recibo acreditativo de la recepción de la documentación a que alude el párrafo anterior deberá ser firmado personalmente por el interesado previa acreditación de su identidad.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#asetentaytres",
+    "fuente": "LOREG, art. 73.2 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Si no estás en casa, debes recogerla en la oficina de Correos en persona o mediante el representante autorizado del art. 72.c."
+  },
+  {
+    "id": "cera-urna-consulado",
+    "afirmacion": "Desde el extranjero se puede votar en urna en el consulado",
+    "variantes": [
+      "Si vivo fuera puedo votar en persona en el consulado",
+      "Los residentes en el extranjero pueden depositar el voto en la urna del consulado"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 75.4 LOREG; INE",
+    "cita": "Depositar su voto en la urna situada en su Oficina Consular o en los centros habilitados que se citan en la hoja de instrucciones, desde el 21 hasta el 26 de noviembre.",
+    "url": "https://www.ine.es/dyngs/CEL/index.htm?cid=1700",
+    "fuente": "Guía de las elecciones · INE (Oficina del Censo Electoral)",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Vale para quien vive de forma habitual en el extranjero (CERA). También puede votar por correo postal dirigido al consulado.",
+    "plazo": "cera_deposito_urna"
+  },
+  {
+    "id": "cera-junta-directo",
+    "afirmacion": "Desde el extranjero puedes enviar el voto directamente a la Junta Electoral en España",
+    "variantes": [
+      "Si vivo fuera puedo mandar mi voto por correo directamente a España",
+      "No hace falta pasar por el consulado para votar por correo desde el extranjero"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 75.7 LOREG; INE",
+    "cita": "No se debe enviar el voto directamente a la Junta Electoral Provincial en España, ya que serán considerados votos nulos los que no hayan sido recibidos a través de los correspondientes consulados.",
+    "url": "https://www.ine.es/dyngs/CEL/index.htm?cid=1700",
+    "fuente": "Guía de las elecciones · INE (Oficina del Censo Electoral)",
+    "fecha_consulta": "2026-10-22"
+  },
+  {
+    "id": "cera-gratuito",
+    "afirmacion": "Votar por correo desde el extranjero cuesta dinero",
+    "variantes": [
+      "Si vives fuera tienes que pagar el envío del voto",
+      "El voto desde el extranjero hay que pagarlo"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 75.12 LOREG",
+    "cita": "El procedimiento previsto en este artículo tendrá carácter gratuito para los electores.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#asetentaycinco",
+    "fuente": "LOREG, art. 75.12 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Donde no haya apartado de Correos gratuito, se reembolsa el coste del envío (art. 75.12 LOREG)."
+  },
+  {
+    "id": "erta-plazo-solicitud",
+    "afirmacion": "Si estás unos meses fuera de España, tienes que pedir el voto como tarde el 31 de octubre",
+    "variantes": [
+      "Los que están temporalmente en el extranjero pueden pedir el voto hasta el 31 de octubre",
+      "El plazo para el voto ERTA acaba el 31 de octubre"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 74 LOREG; RD 1621/2007; INE",
+    "cita": "Solicitar la documentación electoral a la Delegación Provincial de la Oficina del Censo Electoral de su provincia no más tarde del día 31 de octubre.",
+    "url": "https://www.ine.es/dyngs/CEL/index.htm?cid=1700",
+    "fuente": "Guía de las elecciones · INE (Oficina del Censo Electoral)",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Hay que estar inscrito en el Registro de Matrícula Consular como no residente y entregar la solicitud en persona en el consulado.",
+    "plazo": "erta_solicitud"
+  },
+  {
+    "id": "congreso-350",
+    "afirmacion": "El Congreso tiene 350 diputados",
+    "variantes": [
+      "Se eligen 350 diputados",
+      "En el Congreso hay trescientos cincuenta escaños"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 162.1 LOREG",
+    "cita": "El Congreso está formado por trescientos cincuenta Diputados.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#acientosesentaydos",
+    "fuente": "LOREG, art. 162.1 · BOE consolidado",
+    "fecha_consulta": "2026-10-22"
+  },
+  {
+    "id": "umbral-3",
+    "afirmacion": "Para entrar en el reparto de escaños del Congreso hace falta al menos el 3 % de los votos válidos de la circunscripción",
+    "variantes": [
+      "Una candidatura con menos del 3 % de los votos no entra en el reparto de escaños",
+      "La barrera para conseguir diputados es el 3 % en cada provincia"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 163.1.a LOREG",
+    "cita": "No se tienen en cuenta aquellas candidaturas que no hubieran obtenido, al menos, el 3 por 100 de los votos válidos emitidos en la circunscripción.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#acientosesentaytres",
+    "fuente": "LOREG, art. 163.1.a · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Los votos válidos incluyen los votos en blanco (art. 108.4 LOREG). Pasar del 3 % no garantiza un escaño."
+  },
+  {
+    "id": "dos-papeletas-distintas",
+    "afirmacion": "Si metes en el sobre papeletas de dos candidaturas distintas, el voto vale",
+    "variantes": [
+      "Se pueden meter dos papeletas diferentes en el mismo sobre",
+      "Un sobre con papeletas de distintas candidaturas es válido"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 96.1 LOREG",
+    "cita": "Es nulo el voto emitido en sobre o papeleta diferente del modelo oficial, así como el emitido en papeleta sin sobre o en sobre que contenga más de una papeleta de distinta candidatura.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#anoventayseis",
+    "fuente": "LOREG, art. 96.1 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Si son varias papeletas de la misma candidatura, cuenta como un solo voto válido."
+  },
+  {
+    "id": "dos-papeletas-iguales",
+    "afirmacion": "Dos papeletas iguales en el mismo sobre anulan el voto",
+    "variantes": [
+      "Si metes dos papeletas de la misma candidatura el voto es nulo",
+      "Meter dos papeletas repetidas en el sobre invalida el voto"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 96.1 LOREG",
+    "cita": "En el supuesto de contener más de una papeleta de la misma candidatura, se computará como un solo voto válido.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#anoventayseis",
+    "fuente": "LOREG, art. 96.1 · BOE consolidado",
+    "fecha_consulta": "2026-10-22"
+  },
+  {
+    "id": "sobre-vacio",
+    "afirmacion": "Un sobre vacío es un voto nulo",
+    "variantes": [
+      "Si metes el sobre sin papeleta el voto es nulo",
+      "El sobre sin papeleta no cuenta como voto válido"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 96.5 LOREG",
+    "cita": "Se considera voto en blanco, pero válido, el sobre que no contenga papeleta",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#anoventayseis",
+    "fuente": "LOREG, art. 96.5 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "El voto en blanco es válido y cuenta para calcular el 3 %, pero no da escaño a ninguna candidatura."
+  },
+  {
+    "id": "senado-marcas",
+    "afirmacion": "En el Senado puedes marcar a todos los candidatos que quieras",
+    "variantes": [
+      "En la papeleta del Senado se pueden marcar todos los nombres",
+      "En el Senado no hay límite de candidatos que puedes votar"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 166.1.a LOREG",
+    "cita": "Los electores pueden dar su voto a un máximo de tres candidatos en las circunscripciones provinciales, dos en Gran Canaria, Mallorca, Tenerife, Ceuta y Melilla, y uno en las restantes circunscripciones insulares.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#acientosesentayseis",
+    "fuente": "LOREG, art. 166.1.a · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Marcar más nombres de los permitidos anula el voto al Senado (art. 96.3 LOREG)."
+  },
+  {
+    "id": "campana-15-dias",
+    "afirmacion": "La campaña electoral dura 15 días",
+    "variantes": [
+      "La campaña dura quince días",
+      "La campaña electoral son dos semanas y un día"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 51.2 LOREG",
+    "cita": "Dura quince días.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#acincuentayuno",
+    "fuente": "LOREG, art. 51.2 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Según el calendario, va del 13 al 27 de noviembre.",
+    "plazo": "campana"
+  },
+  {
+    "id": "campana-vispera",
+    "afirmacion": "El día antes de la votación se puede hacer campaña",
+    "variantes": [
+      "En la jornada de reflexión se puede pedir el voto",
+      "El sábado antes de votar se pueden hacer mítines"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 53 LOREG",
+    "cita": "No puede difundirse propaganda electoral ni realizarse acto alguno de campaña electoral una vez que ésta haya legalmente terminado.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#acincuentaytres",
+    "fuente": "LOREG, art. 53 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "La campaña termina a las cero horas del día anterior a la votación (art. 51.3 LOREG): el 28 de noviembre es jornada de reflexión.",
+    "plazo": "jornada_reflexion"
+  },
+  {
+    "id": "mesa-voluntaria",
+    "afirmacion": "Ser miembro de mesa es voluntario",
+    "variantes": [
+      "Si te toca la mesa electoral puedes no ir",
+      "Puedes negarte a ser miembro de mesa sin dar explicaciones"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 27.1 LOREG",
+    "cita": "Los cargos de Presidente y Vocal de las Mesas Electorales son obligatorios.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#aveintisiete",
+    "fuente": "LOREG, art. 27.1 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Puedes alegar una causa justificada y documentada ante la Junta Electoral de Zona en 7 días desde la notificación (art. 27.3 LOREG). No ir sin causa es delito (art. 143 LOREG)."
+  },
+  {
+    "id": "mesa-dia-siguiente",
+    "afirmacion": "Los miembros de mesa tienen libre todo el día siguiente a la votación",
+    "variantes": [
+      "Si estás en la mesa electoral al día siguiente no trabajas",
+      "El lunes después de las elecciones los miembros de mesa no van a trabajar"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 28.1 LOREG",
+    "cita": "tienen derecho a una reducción de su jornada de trabajo de cinco horas el día inmediatamente posterior",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#aveintiocho",
+    "fuente": "LOREG, art. 28.1 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Vale para trabajadores por cuenta ajena y funcionarios. Si el día de la votación es laborable, tienen además permiso retribuido de jornada completa ese día."
+  },
+  {
+    "id": "persona-confianza",
+    "afirmacion": "Una persona con discapacidad puede votar con ayuda de alguien de su confianza",
+    "variantes": [
+      "Si no sé leer puedo ir a votar acompañado de alguien que me ayude",
+      "Las personas ciegas pueden votar con la ayuda de una persona de confianza"
+    ],
+    "resultado": "COINCIDE",
+    "articulo": "Art. 87.1 LOREG",
+    "cita": "pueden servirse para estas operaciones de una persona de su confianza",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#aochentaysiete",
+    "fuente": "LOREG, art. 87.1 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "Las personas ciegas o con discapacidad visual también pueden usar el voto accesible en Braille, que se solicita antes (art. 87.2 LOREG)."
+  },
+  {
+    "id": "discapacidad-sin-voto",
+    "afirmacion": "Las personas con discapacidad intelectual no pueden votar",
+    "variantes": [
+      "Las personas incapacitadas judicialmente no tienen derecho a voto",
+      "Si tienes una discapacidad no te dejan votar"
+    ],
+    "resultado": "NO COINCIDE",
+    "articulo": "Art. 3.2 LOREG",
+    "cita": "Toda persona podrá ejercer su derecho de sufragio activo, consciente, libre y voluntariamente, cualquiera que sea su forma de comunicarlo y con los medios de apoyo que requiera.",
+    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#atercero",
+    "fuente": "LOREG, art. 3.2 · BOE consolidado",
+    "fecha_consulta": "2026-10-22",
+    "matiz": "La LO 2/2018 suprimió las causas de privación del voto por incapacitación o internamiento. Solo carecen de él quienes tengan una condena firme que lo prive (art. 3.1 LOREG)."
+  }
+]

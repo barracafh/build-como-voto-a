@@ -152,6 +152,18 @@ describe("guardas sobre la clasificación del modelo", () => {
     expect(r.verificacion?.resultado).toBe("COINCIDE");
   });
 
+  test("la afirmación mostrada es la del usuario, no la del modelo", () => {
+    const texto = "Me han dicho que no es obligatorio votar";
+    const r = resolver(
+      {
+        ...afirmacion("obligatorio-votar", "contraria"),
+        afirmacion: "Se puede votar por WhatsApp",
+      },
+      texto,
+    );
+    expect(r.verificacion?.afirmacion).toBe(texto);
+  });
+
   test("una ficha que no tiene que ver con el texto: no verificable", () => {
     const r = resolver(afirmacion("congreso-350"), "Es obligatorio votar");
     expect(r.verificacion?.resultado).toBe("NO VERIFICABLE");

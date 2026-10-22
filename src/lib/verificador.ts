@@ -273,7 +273,9 @@ export function resolver(
   if (c.tipo === "fuera_de_alcance") return fueraDeAlcance(t);
   if (c.tipo === "sin_afirmacion") return sinAfirmacion(t);
 
-  const afirmacion = (c.afirmacion?.trim() || texto.trim()).slice(0, 300);
+  // Se muestra lo que escribió el usuario, no la paráfrasis del modelo: si no,
+  // una instrucción inyectada pondría cualquier frase junto al veredicto.
+  const afirmacion = texto.trim().slice(0, 300);
   const ficha = fichas.find((f) => f.id === c.ficha);
   if (
     !ficha ||

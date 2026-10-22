@@ -3,10 +3,18 @@
 import { Check, Minus, Thermometer } from "lucide-react";
 import { useIdioma } from "@/i18n/cliente";
 import type { Respuesta } from "@/lib/asistente";
-import { confianza, NIVELES } from "@/lib/confianza";
+import { confianza, NIVELES, type Nivel } from "@/lib/confianza";
+
+// Semáforo: un punto rojo, dos ámbar o tres verdes. Rojo y ámbar son de Sol;
+// el verde no existe en Sol y se usa solo aquí, a petición del equipo.
+const COLOR: Record<Nivel, string> = {
+  baja: "bg-brand",
+  media: "bg-brand-yellow",
+  alta: "bg-[#15803d]",
+};
 
 // Pie de cada respuesta: el grado de confianza y lo que se ha comprobado. Las
-// tres marcas son decorativas: el nivel también va escrito.
+// puntos son decorativos: el nivel también va escrito.
 export function Termometro({ respuesta }: { respuesta: Respuesta }) {
   const { t } = useIdioma();
   const c = confianza(respuesta);
@@ -26,11 +34,11 @@ export function Termometro({ respuesta }: { respuesta: Respuesta }) {
         <span className="font-medium">
           {t("Grado de confianza: {nivel}", { nivel: t(etiqueta) })}
         </span>
-        <span aria-hidden="true" className="flex gap-1">
+        <span aria-hidden="true" className="flex gap-1.5">
           {[1, 2, 3].map((i) => (
             <span
               key={i}
-              className={`h-2 w-6 rounded-full ${i <= marcas ? "bg-brand" : "bg-muted ring-1 ring-foreground/10 ring-inset"}`}
+              className={`size-3 rounded-full ${i <= marcas ? COLOR[c.nivel] : "bg-muted ring-1 ring-foreground/15 ring-inset"}`}
             />
           ))}
         </span>

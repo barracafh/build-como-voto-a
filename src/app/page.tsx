@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Mail, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -6,6 +7,7 @@ import { Chat } from "@/components/Chat";
 import { CuentaAtras } from "@/components/CuentaAtras";
 import { Flotante } from "@/components/Flotante";
 import { Fuentes } from "@/components/Fuentes";
+import { MapaEspana } from "@/components/MapaEspana";
 import { Pagina, Titular } from "@/components/Pagina";
 import { PlazosAbiertos } from "@/components/PlazosAbiertos";
 import {
@@ -21,16 +23,19 @@ export const revalidate = 3600;
 const piezas = [
   {
     href: "/correo",
+    icono: Mail,
     titulo: "Voto por correo, aquí o desde fuera",
     texto: "Elige si vives en España o fuera y pregunta por tu caso: pasos y fechas oficiales.",
   },
   {
     href: "/verificar",
+    icono: Search,
     titulo: "¿Es verdad lo que me han dicho?",
     texto: "Contrasta lo que circula sobre cómo se vota con la fuente oficial.",
   },
   {
     href: "/escanos",
+    icono: MapaEspana,
     titulo: "Cómo se reparten los escaños",
     texto: "La ley D'Hondt con los resultados oficiales de 2023, provincia a provincia.",
   },
@@ -128,7 +133,11 @@ export default function Home() {
                   href={p.href}
                   className="flex min-h-11 items-center justify-between gap-4 px-5 py-4 transition-colors outline-none hover:bg-muted focus-visible:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset"
                 >
-                  <span className="min-w-0">
+                  <p.icono
+                    aria-hidden="true"
+                    className="size-7 shrink-0 text-brand"
+                  />
+                  <span className="min-w-0 flex-1">
                     <span className="block font-medium">{p.titulo}</span>
                     <span className="block text-base text-(--text-secondary)">
                       {p.texto}

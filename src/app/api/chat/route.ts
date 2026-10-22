@@ -91,7 +91,7 @@ export async function POST(req: Request) {
           // la salida en bruto del modelo, solo la respuesta ya resuelta.
           if (modo !== "verificar") enviar({ trozo });
         }
-        const validada = validar(leerJson(texto), modo, ultima, t);
+        const validada = validar(leerJson(texto), modo, ultima, t, idioma);
         const fin =
           modo === "verificar" ? validada : conFicha(validada, ultima, t);
         if (fin.verificacion)

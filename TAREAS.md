@@ -45,6 +45,7 @@ Base: `contexto.md` §2.2 (España), §2.3 (CERA), §2.4 (ERTA), calendario.
 - [x] [Sandra] Calendario gráfico del voto por correo en España en `?donde=aqui` (`CalendarioEspana` sobre `LineaTiempo`), con el camino ERTA como alternativa
 - [x] [Sandra] Calendario gráfico CERA en `?donde=fuera` (`CalendarioExtranjero`): documentación, papeletas y correo o urna en el consulado
 - [ ] Revisar con más casos reales que los pasos y fechas coinciden con el calendario
+- [x] [Implementador] Chat: el modelo devuelve el `id` del plazo y la fecha de cada paso sale de `rango()`; una fecha fuera del calendario → «no puedo confirmarlo» (PLUT-25, `src/lib/asistente.test.ts`)
 
 ## Pieza B · ¿Es verdad lo que me han dicho?
 

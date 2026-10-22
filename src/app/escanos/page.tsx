@@ -12,7 +12,7 @@ export default function Page() {
         entradilla="La ley D'Hondt aplicada a cada provincia con los resultados oficiales de 2023."
       />
       <section className="mt-16 text-lg [&>*+*]:mt-8">
-        <Badge variant="secondary">En construcción</Badge>
+        <Badge variant="secondary">En construcción · mapa de votaciones</Badge>
         <Fuentes
           fuentes={[
             {

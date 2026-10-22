@@ -4,6 +4,6 @@ export const site = {
 };
 
 // <Link> añade la ruta del equipo. Para fetch e imágenes de public/ (también
-// next/image), usa fetch(ruta("/api/ia")) y src={ruta("/foto.png")}.
+// next/image), usa fetch(ruta("/api/chat")) y src={ruta("/foto.png")}.
 export const ruta = (path: string) =>
   `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${path}`;

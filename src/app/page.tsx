@@ -42,8 +42,8 @@ const piezas = [
   },
   {
     href: "/escanos",
-    titulo: marcar("Cómo se reparten los escaños"),
-    texto: marcar("La ley D'Hondt con los resultados oficiales de 2023, provincia a provincia."),
+    titulo: marcar("Del voto al escaño"),
+    texto: marcar("Cuántos diputados y senadores elige cada comunidad y qué pasa con el voto en blanco, el nulo y la abstención."),
     icono: MapaEspana,
   },
 ];

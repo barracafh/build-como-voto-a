@@ -494,6 +494,8 @@ const diccionario: Diccionario = {
   "Votos válidos": "Baliozko botoak",
   "La fuente oficial lo dice así ({articulo}): «{afirmacion}».": "Iturri ofizialak honela dio ({articulo}): «{afirmacion}».",
   "La fuente oficial ({articulo}) no dice eso: «{afirmacion}» no coincide con ella.": "Iturri ofizialak ({articulo}) ez du hori esaten: «{afirmacion}» ez dator bat harekin.",
+  "Del voto al escaño": "Bototik eserlekura",
+  "Cuántos diputados y senadores elige cada comunidad y qué pasa con el voto en blanco, el nulo y la abstención.": "Erkidego bakoitzak zenbat diputatu eta senatari aukeratzen dituen, eta zer gertatzen den boto zuriarekin, baliogabearekin eta abstentzioarekin.",
 };
 
 export default diccionario;

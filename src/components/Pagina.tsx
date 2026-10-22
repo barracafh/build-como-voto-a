@@ -13,7 +13,7 @@ const herramientas = [
   ["/", marcar("Inicio")],
   ["/correo", marcar("Voto por correo")],
   ["/verificar", marcar("¿Es verdad lo que me han dicho?")],
-  ["/escanos", marcar("Cómo se reparten los escaños")],
+  ["/escanos", marcar("Del voto al escaño")],
 ] as const;
 
 const etiquetaPie = "font-mono text-xs tracking-[0.08em] text-background/70 uppercase";

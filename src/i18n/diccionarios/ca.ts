@@ -413,6 +413,8 @@ const diccionario: Diccionario = {
   "Votos válidos": "Vots vàlids",
   "La fuente oficial lo dice así ({articulo}): «{afirmacion}».": "La font oficial ho diu així ({articulo}): «{afirmacion}».",
   "La fuente oficial ({articulo}) no dice eso: «{afirmacion}» no coincide con ella.": "La font oficial ({articulo}) no diu això: «{afirmacion}» no hi coincideix.",
+  "Del voto al escaño": "Del vot a l’escó",
+  "Cuántos diputados y senadores elige cada comunidad y qué pasa con el voto en blanco, el nulo y la abstención.": "Quants diputats i senadors tria cada comunitat i què passa amb el vot en blanc, el nul i l’abstenció.",
 };
 
 export default diccionario;

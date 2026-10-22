@@ -9,7 +9,12 @@ export async function BotonAviso({ className }: { className?: string }) {
   return (
     <a
       href={site.feedbackUrl}
-      className={cn(buttonVariants({ variant: "sunset", size: "lg" }), className)}
+      className={cn(
+        buttonVariants({ variant: "outline", size: "lg" }),
+        // outline no fija color de texto: corta la herencia de text-background del pie.
+        "text-foreground",
+        className,
+      )}
     >
       {t("¿Algo está mal? Avísanos")}
     </a>

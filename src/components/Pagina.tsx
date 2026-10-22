@@ -66,7 +66,7 @@ export async function Pagina({ children }: { children: ReactNode }) {
               <p className="mt-5 max-w-[16ch] text-[clamp(22px,2.6vw,28px)] font-medium leading-[1.2]">
                 {t(ficha.frase)}
               </p>
-              <BotonAviso className="mt-8 bg-background text-foreground" />
+              <BotonAviso className="mt-8" />
             </div>
 
             <nav aria-labelledby="pie-herramientas">

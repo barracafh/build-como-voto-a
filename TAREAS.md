@@ -23,11 +23,12 @@ Una guía para votar el 29/11/2026 (aquí, por correo y desde el extranjero) y u
 
 ## Primeros pasos (hora 0)
 
-- [ ] `bun install`, `.env.local` con `HELMCODE_API_KEY` y `HELMCODE_MODEL`, `bun run dev` → `localhost:3000/como-voto-a`
+- [ ] `bun install` ✓, `.env.local` con `HELMCODE_API_KEY` y `HELMCODE_MODEL`, `bun run dev` → `localhost:3000/como-voto-a`
 - [ ] Repartir piezas entre el squad (A: voto por correo · B: verificador · C: D'Hondt)
-- [ ] `ficha.json`: `datos` → `"reales"` (son datos públicos) y añadir Infoelectoral a `fuentes`
-- [ ] Portada: sustituir el ejemplo de `src/app/page.tsx` por el índice de las piezas (conservar aviso, «¿Algo está mal? Avísanos» y `<Fuentes />`)
-- [ ] Cargar el calendario tipado en `src/lib/calendario.ts` (soporta `fecha` y `fecha_inicio`/`fecha_fin`)
+- [x] `ficha.json`: `datos` → `"reales"` (son datos públicos) y añadir Infoelectoral a `fuentes`
+- [x] Portada (`src/app/page.tsx`): día de votación, índice de piezas, plazos abiertos y consulta de mesa del INE
+- [x] Rutas vacías por pieza para trabajar sin conflictos: `/correo` (A), `/verificar` (B), `/escanos` (C). Cabecera y pie comunes en `src/components/Pagina.tsx`
+- [x] Calendario tipado en `src/lib/calendario.ts`: `plazo(id)`, `estado(p)` (cerrado/abierto/próximo, hora de Madrid), `rango(p)`, `fuenteCalendario`
 
 ## Pieza A · Voto por correo, aquí y fuera
 

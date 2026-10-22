@@ -42,6 +42,7 @@ Base: `contexto.md` §2.2 (España), §2.3 (CERA), §2.4 (ERTA), calendario.
 - [ ] Opcional: texto libre → IA clasifica en un perfil (sin guardar el texto) y se muestra la misma respuesta determinista
 - [x] [Javier] Selector «Vivo en España / Vivo fuera de España» en `/correo` (`?donde=aqui|fuera`) con tarjeta sol del plazo clave
 - [x] [Javier] Chatbot por perfil (`modo` `correo-aqui` / `correo-fuera` en `src/lib/asistente.ts`), sin guardar el texto
+- [x] [Sandra] Calendario gráfico del voto por correo en España en `?donde=aqui` (`CalendarioEspana` sobre `LineaTiempo`, reutilizable para el extranjero)
 - [ ] Revisar con más casos reales que los pasos y fechas coinciden con el calendario
 
 ## Pieza B · ¿Es verdad lo que me han dicho?

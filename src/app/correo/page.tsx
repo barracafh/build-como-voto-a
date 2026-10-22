@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { CalendarioEspana } from "@/components/CalendarioEspana";
 import { Chat } from "@/components/Chat";
 import { Fuentes, type Source } from "@/components/Fuentes";
 import { Pagina, Titular } from "@/components/Pagina";
@@ -19,6 +20,10 @@ const opciones = {
       {
         nombre: "Plazos para los electores · INE",
         url: "https://www.ine.es/dyngs/CEL/index.htm?cid=1702",
+      },
+      {
+        nombre: "Art. 73 LOREG · BOE",
+        url: "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#asetentaytres",
       },
     ],
   },
@@ -124,6 +129,8 @@ function Elegida({ opcion }: { opcion: (typeof opciones)[Donde] }) {
         </p>
         <p>{p.evento}</p>
       </Card>
+
+      {opcion.modo === "correo-aqui" && <CalendarioEspana />}
 
       <Fuentes fuentes={fuentes} />
 

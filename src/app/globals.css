@@ -41,3 +41,17 @@
     }
   }
 }
+
+/* Líneas de tiempo: las barras crecen desde su inicio y el sol de la votación
+   late. Solo con motion-safe: (ver LineaTiempo). */
+@keyframes crecer {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes latir {
+  50% {
+    scale: 1.15;
+  }
+}

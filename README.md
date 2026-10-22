@@ -1,4 +1,36 @@
-# Tu herramienta, lista para empezar
+# Votijo
+
+Todo para votar el 29N, con fuente oficial. Publicada en <https://build.barraca.house/como-voto-a>. Herramienta experimental, no es un servicio oficial.
+
+## El problema
+
+Para votar en las elecciones generales del 29 de noviembre de 2026 hay plazos que cierran semanas antes (pedir el voto por correo hasta el 19/11, el voto desde el extranjero temporal hasta el 31/10), la información está repartida entre el BOE, la Junta Electoral Central, el INE, Interior y Correos, y circulan afirmaciones sobre cómo se vota sin ninguna fuente.
+
+## Para quién
+
+Cualquier persona con derecho a voto, sobre todo quien no estará en su localidad el día 29, quien vive en el extranjero (CERA) o pasa unos meses fuera (ERTA), quien vota por primera vez y quien duda de algo que le han contado. En castellano, català/valencià, euskara y galego.
+
+## Qué hemos hecho
+
+- **Portada**: día y horario de votación, cuenta atrás a la votación y al último día para enviar el voto por correo, plazos abiertos por tipo de votante en un gráfico y un chat para preguntar directamente.
+- **Voto por correo** (`/correo`): para quien vive en España, quien estará fuera unos meses y quien vive fuera, los pasos con su fecha del calendario oficial, el plazo más urgente, dónde se hace y un chat sobre su caso.
+- **¿Es verdad lo que me han dicho?** (`/verificar`): 39 fichas con cita literal del BOE, Interior e INE. El modelo solo elige la ficha; el veredicto (coincide, no coincide o no verificable), la cita y la fuente salen de ella. Enlaza verificaciones ya publicadas en Google Fact Check, atribuidas a quien las firma.
+- **Del voto al escaño** (`/escanos`): diputados y senadores por comunidad en un mapa y un hemiciclo, también en 3D y narrado; el peso del censo de cada circunscripción y qué pasa con el voto en blanco, el nulo y la abstención.
+- **Chat**: respuestas en directo, fechas siempre del calendario oficial y nunca del modelo, y un termómetro de confianza (alta, media o baja) según lo que se ha comprobado. Si la pregunta encaja con una ficha, responde la ficha con su cita.
+- **Reglas**: no se piden ni se guardan datos personales, el aviso del chat dice qué se envía al servicio de IA y a Google Fact Check, nada de partidos, candidaturas ni encuestas, y diseño Sol. 128 tests, entre ellos que D'Hondt reproduce los 350 escaños de 2023 y una batería del verificador.
+
+## Qué falta para producción
+
+- Revisión humana de las 39 fichas y de cada paso frente a su fuente, y de las traducciones automáticas por hablantes nativos (sobre todo el euskera).
+- Más fichas y más casos reales en el verificador: hoy lo que no encaja con una ficha sale como «no verificable».
+- Proveedores de IA y de verificaciones con un acuerdo de tratamiento de datos, o un modelo propio.
+- Auditoría de accesibilidad completa (en `/escanos` aún hay scroll horizontal a 320 px) y transcripción de las narraciones.
+- Mantener el calendario y las fichas al día si la Junta Electoral publica cambios.
+- Validación jurídica y de un organismo oficial antes de ofrecerla como servicio.
+
+---
+
+## Plantilla del evento
 
 Plantilla de cada equipo: Next.js y Tailwind, con rutas de servidor para llamar a la IA. La organización crea un repo por equipo a partir de esta carpeta, con los datos de su track, y lo conecta a su proyecto de Vercel. Este directorio tiene su propio `package.json` y `bun.lock`; no depende del workspace del evento.
 

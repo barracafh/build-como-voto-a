@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { conFicha, validar, type Respuesta } from "./asistente";
-import { fechaLarga, plazo, plazos, rango } from "./calendario";
+import { fechaCorta, fechaLarga, plazo, plazos, rango } from "./calendario";
 import { confianza } from "./confianza";
 import { fechasEnTexto } from "./fechas-texto";
 
@@ -60,6 +60,18 @@ const inventada = Array.from(
   { length: 30 },
   (_, i) => `2026-11-${String(i + 1).padStart(2, "0")}`,
 ).find((d) => !citadas.has(d))!;
+
+// Un día 1 de algún mes de 2026 que tampoco está en el calendario.
+const primero = Array.from(
+  { length: 12 },
+  (_, i) => `2026-${String(i + 1).padStart(2, "0")}-01`,
+).find((d) => !citadas.has(d))!;
+
+// «29 de noviembre» → «29» y «noviembre».
+const partes = (iso: string, idioma: "es" | "ca" | "gl" = "es") => {
+  const [dia, ...resto] = fechaLarga(iso, idioma).split(" ");
+  return { dia, mes: resto.join(" ").replace(/^(de |d’)/, "") };
+};
 
 const respuesta = (pasos: unknown[], texto = "Así se pide el voto por correo.") =>
   validar(
@@ -124,6 +136,36 @@ describe("validar: fechas de los pasos", () => {
       expect(respuesta([], texto).sinConfirmar).toBe(true);
   });
 
+  test("meses abreviados, ordinales y mes + día: «no puedo confirmarlo»", () => {
+    const { dia, mes } = partes(inventada);
+    const ca = partes(primero, "ca");
+    for (const texto of [
+      `Tienes hasta el ${fechaCorta(inventada)} para pedirlo.`,
+      `Tienes hasta el ${fechaCorta(inventada)}. para pedirlo.`,
+      `Fins al ${fechaCorta(inventada, "ca")}.`,
+      `Ata o ${fechaCorta(inventada, "gl")}.`,
+      `Epea: ${fechaCorta(inventada, "eu")}.`,
+      `Tienes hasta el ${dia}º de ${mes}.`,
+      `Tienes hasta el ${dia}.º de ${mes}.`,
+      `Fins a l’${ca.dia}r de ${ca.mes}.`,
+      `Tienes hasta ${mes} ${dia}.`,
+    ])
+      expect(respuesta([], texto).sinConfirmar).toBe(true);
+  });
+
+  test("un paso sin plazo con fecha abreviada inventada: «no puedo confirmarlo»", () => {
+    const r = respuesta([
+      { texto: `Envíalo el ${fechaCorta(inventada)}`, plazo: null },
+    ]);
+    expect(r.sinConfirmar).toBe(true);
+    expect(r.pasos).toEqual([]);
+  });
+
+  test("«des de» en catalán no es diciembre", () => {
+    const r = respuesta([], "Pots enviar-lo fins al dia 7 des de qualsevol oficina.");
+    expect(r.sinConfirmar).toBeUndefined();
+  });
+
   test("con formato antiguo, una fecha del calendario en el paso lo descarta", () => {
     const r = respuesta([
       `Vota el ${fechaLarga(votacion.inicio)}.`,
@@ -157,6 +199,12 @@ describe("fechasEnTexto", () => {
         expect(fechasEnTexto(rango(p, idioma))).toEqual(
           p.inicio === p.fin ? [md(p.inicio)] : [md(p.inicio), md(p.fin)],
         );
+  });
+
+  test("lee las fechas tal como las escribe fechaCorta() en cada lengua", () => {
+    for (const p of plazos)
+      for (const idioma of ["es", "ca", "gl", "eu"] as const)
+        expect(fechasEnTexto(fechaCorta(p.fin, idioma))).toEqual([md(p.fin)]);
   });
 
   test("euskera, con declinación y rango", () => {

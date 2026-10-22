@@ -1,15 +1,18 @@
 import { ESCANOS } from "@/datos/hemiciclo";
 
-// Hemiciclo de 350 puntos de Barraca.pen. Los escaños [desde, hasta) se pintan
+// Bloques de escaños [desde, hasta) que van en rojo: uno por comunidad señalada.
+export type Bloques = readonly (readonly [desde: number, hasta: number])[];
+export const enBloques = (bloques: Bloques, i: number) =>
+  bloques.some(([desde, hasta]) => i >= desde && i < hasta);
+
+// Hemiciclo de 350 puntos de Barraca.pen. Los escaños de `bloques` se pintan
 // en rojo; el resto, en un único gris. Cada punto crece al
 // pasar el ratón por encima.
 export function Hemiciclo({
-  desde,
-  hasta,
+  bloques,
   etiqueta,
 }: {
-  desde: number;
-  hasta: number;
+  bloques: Bloques;
   etiqueta: string;
 }) {
   return (
@@ -25,7 +28,7 @@ export function Hemiciclo({
           cx={cx}
           cy={cy}
           r="10"
-          fill={i >= desde && i < hasta ? "var(--brand)" : "var(--disabled-foreground)"}
+          fill={enBloques(bloques, i) ? "var(--brand)" : "var(--disabled-foreground)"}
           className="origin-center [transform-box:fill-box] hover:scale-140 motion-safe:transition-[fill,scale] motion-safe:duration-100"
         />
       ))}

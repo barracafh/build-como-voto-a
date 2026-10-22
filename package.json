@@ -10,7 +10,8 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "typecheck": "tsc --noEmit",
-    "narracion": "bun scripts/narracion.ts"
+    "narracion": "bun scripts/narracion.ts",
+    "ondas": "bun scripts/ondas.ts"
   },
   "dependencies": {
     "@base-ui/react": "1.8.0",

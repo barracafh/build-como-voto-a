@@ -12,11 +12,12 @@ const MAX_BYTES = 32 * 1024;
 // GLM completo, no flash: razona mejor sobre la base oficial.
 const MODELO = "glm5.3";
 
-// POST {"modo": "correo-aqui" | "correo-fuera" | "verificar",
+// POST {"modo": "general" | "correo-aqui" | "correo-fuera" | "verificar",
 //       "mensajes": [{"role": "user" | "assistant", "content": "…"}],
 //       "idioma": "es" | "ca" | "eu" | "gl"}.
-// Responde en NDJSON: líneas {"trozo": "…"} con el texto del modelo según llega
-// y una última {"fin": Respuesta} ya validada, o {"error": "…"}.
+// Responde en NDJSON: líneas {"progreso": true} sin contenido y una última
+// {"fin": Respuesta} ya validada, o {"error": "…"}. El texto del modelo nunca
+// sale sin pasar por validar(): el flujo solo mantiene viva la conexión.
 // Las instrucciones dependen solo del modo. No se guarda ni se registra nada
 // de lo que escribe el ciudadano: ni base de datos, ni console.*, ni caché.
 export async function POST(req: Request) {
@@ -81,15 +82,19 @@ export async function POST(req: Request) {
       const enviar = (linea: object) =>
         control.enqueue(codificador.encode(JSON.stringify(linea) + "\n"));
       let texto = "";
+      let avisado = false;
       try {
         for await (const trozo of completarEnVivo(
           [{ role: "system", content: sistema(modo, idioma) }, ...historial],
           MODELO,
         )) {
           texto += trozo;
-          // El verificador no muestra el texto en vivo: así la ruta no devuelve
-          // la salida en bruto del modelo, solo la respuesta ya resuelta.
-          if (modo !== "verificar") enviar({ trozo });
+          // Solo avisa de que el modelo ya escribe, sin su texto. El
+          // verificador no avisa: espera a la respuesta ya resuelta.
+          if (!avisado && modo !== "verificar") {
+            avisado = true;
+            enviar({ progreso: true });
+          }
         }
         const validada = validar(leerJson(texto), modo, ultima, t, idioma);
         const fin =

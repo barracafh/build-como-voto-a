@@ -25,9 +25,10 @@ import { VignetteShader } from "three/examples/jsm/shaders/VignetteShader.js";
 import { ruta } from "@/config/sitio";
 import { CAMARA_3D, ESCANOS_3D, MODELO_HEMICICLO, RADIO_BOLITA } from "@/datos/hemiciclo-3d";
 import { CargandoSala } from "./CargandoSala";
+import { type Bloques, enBloques } from "./Hemiciclo";
 
 // The chamber from src/hemiciclo.blend, seen from the .blend camera behind the presidency.
-// One instanced ball per seat, in the same left-to-right order as ESCANOS, so [desde, hasta)
+// One instanced ball per seat, in the same left-to-right order as ESCANOS, so each block
 // is still the contiguous block of the selected community.
 const POSICION = new Vector3(...CAMARA_3D.posicion);
 const OBJETIVO = new Vector3(...CAMARA_3D.objetivo);
@@ -60,27 +61,30 @@ function Sala({
 
 // Camera pose for a selection: the .blend camera with nothing selected; otherwise above the
 // chamber floor, on the line from the hemicycle centre (the origin; seat rows go from radius
-// 6 to 16) towards the centroid of [desde, hasta). Staying inside radius 5 keeps the camera
+// 6 to 16) towards the centroid of the selected seats. Staying inside radius 5 keeps the camera
 // off the walls, wherever the community sits; larger communities pull it back to the centre.
-function encuadre(desde: number, hasta: number) {
-  if (hasta <= desde) return { posicion: POSICION, objetivo: OBJETIVO };
+function encuadre(bloques: Bloques) {
   const objetivo = new Vector3();
-  for (let i = desde; i < hasta; i++) objetivo.add(new Vector3(...ESCANOS_3D[i]));
-  objetivo.divideScalar(hasta - desde);
-  const radio = Math.hypot(objetivo.x, objetivo.z);
-  const alejado = Math.min(5, Math.max(0.5, radio - 5 - Math.sqrt(hasta - desde)));
+  let n = 0;
+  for (const [desde, hasta] of bloques)
+    for (let i = desde; i < hasta; i++, n++) objetivo.add(new Vector3(...ESCANOS_3D[i]));
+  if (!n) return { posicion: POSICION, objetivo: OBJETIVO };
+  objetivo.divideScalar(n);
+  const radio = Math.hypot(objetivo.x, objetivo.z) || 1;
+  const alejado = Math.min(5, Math.max(0.5, radio - 5 - Math.sqrt(n)));
   const posicion = new Vector3(objetivo.x / radio, 0, objetivo.z / radio).multiplyScalar(alejado);
   posicion.y = objetivo.y + 3;
   return { posicion, objetivo };
 }
 
-function Camara({ desde, hasta }: { desde: number; hasta: number }) {
+function Camara({ bloques }: { bloques: Bloques }) {
   const invalidate = useThree((s) => s.invalidate);
   const camara = useThree((s) => s.camera) as PerspectiveCamera;
   const aspecto = useThree((s) => s.size.width / s.size.height);
   const reducido = useMemo(() => matchMedia("(prefers-reduced-motion: reduce)").matches, []);
   const mirando = useMemo(() => OBJETIVO.clone(), []);
-  const destino = useMemo(() => encuadre(desde, hasta), [desde, hasta]);
+  const clave = bloques.join(";");
+  const destino = useMemo(() => encuadre(bloques), [clave]);
 
   useLayoutEffect(() => {
     const ajuste = (2 * Math.atan(TAN_HORIZONTAL / aspecto) * 180) / Math.PI;
@@ -103,17 +107,18 @@ function Camara({ desde, hasta }: { desde: number; hasta: number }) {
   return null;
 }
 
-function Escanos({ desde, hasta }: { desde: number; hasta: number }) {
+function Escanos({ bloques }: { bloques: Bloques }) {
   const malla = useRef<InstancedMesh>(null);
   const reducido = useMemo(() => matchMedia("(prefers-reduced-motion: reduce)").matches, []);
   const gris = useMemo(() => resolver("--disabled"), []);
   const rojo = useMemo(() => resolver("--brand"), []);
   const actuales = useMemo(() => ESCANOS_3D.map(() => gris.clone()), [gris]);
-  const destinos = ESCANOS_3D.map((_, i) => (i >= desde && i < hasta ? rojo : gris));
+  const destinos = ESCANOS_3D.map((_, i) => (enBloques(bloques, i) ? rojo : gris));
   const invalidate = useThree((s) => s.invalidate);
 
   // frameloop="demand" only draws on request: start the transition on every new selection.
-  useEffect(() => invalidate(), [desde, hasta, invalidate]);
+  const clave = bloques.join(";");
+  useEffect(() => invalidate(), [clave, invalidate]);
 
   const reloj = useRef(reducido ? Infinity : 0);
 
@@ -215,12 +220,10 @@ function PostProcesado() {
 }
 
 export default function Hemiciclo3D({
-  desde,
-  hasta,
+  bloques,
   etiqueta,
 }: {
-  desde: number;
-  hasta: number;
+  bloques: Bloques;
   etiqueta: string;
 }) {
   const [progreso, setProgreso] = useState<number>();
@@ -237,11 +240,11 @@ export default function Hemiciclo3D({
           <directionalLight position={[0, 12, 8]} intensity={1.5} />
           <Ambiente />
           <PostProcesado />
-          <Camara desde={desde} hasta={hasta} />
+          <Camara bloques={bloques} />
           <Suspense fallback={null}>
             <Sala onProgreso={setProgreso} onCargada={() => setCargada(true)} />
           </Suspense>
-          {cargada && <Escanos desde={desde} hasta={hasta} />}
+          {cargada && <Escanos bloques={bloques} />}
         </Canvas>
       </div>
       {/* After the canvas so it paints on top; outside role="img", which hides its children from assistive tech. */}

@@ -29,8 +29,9 @@ export function Atardecer({
   const recorte = `atardecer-sol-${id}`;
 
   return (
-    <div aria-hidden="true" className={cn("relative", className)} style={style}>
-      <div className={cn("overflow-hidden", logo && "size-full")}>
+    // span con display block, no div: el sol va también dentro de párrafos (<p>).
+    <span aria-hidden="true" className={cn("relative block", className)} style={style}>
+      <span className={cn("block overflow-hidden", logo && "size-full")}>
         {/* Se corta antes del borde de abajo: el sol está saliendo. */}
         <svg
           viewBox={logo ? "0 0 200 200" : "0 0 200 186"}
@@ -58,8 +59,8 @@ export function Atardecer({
             ))}
           </g>
         </svg>
-      </div>
-      {!logo && <div className="h-px bg-foreground" />}
-    </div>
+      </span>
+      {!logo && <span className="block h-px bg-foreground" />}
+    </span>
   );
 }

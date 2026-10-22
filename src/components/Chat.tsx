@@ -16,6 +16,15 @@ const textos: Record<
   Modo,
   { etiqueta: string; placeholder: string; ejemplos: string[] }
 > = {
+  general: {
+    etiqueta: "Escribe tu pregunta",
+    placeholder: "Por ejemplo: ¿hasta qué hora puedo votar?",
+    ejemplos: [
+      "Vivo en València y el día 29 no estoy, ¿cómo voto?",
+      "¿Qué documento tengo que llevar para votar?",
+      "¿Tengo horas libres en el trabajo para ir a votar?",
+    ],
+  },
   "correo-aqui": {
     etiqueta: "Cuéntanos tu caso",
     placeholder: "Por ejemplo: el día 29 estaré de viaje, ¿cómo voto?",

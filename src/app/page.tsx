@@ -3,9 +3,11 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Chat } from "@/components/Chat";
 import { Fuentes } from "@/components/Fuentes";
 import { Pagina, Titular } from "@/components/Pagina";
 import {
+  diasHasta,
   estado,
   fechaLarga,
   fuenteCalendario,
@@ -48,7 +50,29 @@ const plazosElector = [
 const votacion = plazo("votacion");
 // El horario también sale del calendario («Jornada de votación, de 9:00 a 20:00»).
 const horario = votacion.evento.match(/de \d{1,2}:\d{2} a \d{1,2}:\d{2}/)?.[0];
+// Último día para enviar el voto por correo desde España (también ERTA).
+const remision = plazo("voto_correo_remision");
 const mesaIne = "https://sede.ine.gob.es/ce-mesas/?lang=es_ES";
+
+const faltan = (n: number) => (n === 1 ? "Falta 1 día" : `Faltan ${n} días`);
+
+// Las cuentas atrás van en días: el calendario da fechas, no horas de cierre.
+function cuentasAtras(): string[] {
+  const votar = diasHasta(votacion.inicio);
+  const correo = diasHasta(remision.fin);
+  return [
+    votar > 0
+      ? `${faltan(votar)} para votar.`
+      : votar === 0
+        ? "Hoy se vota."
+        : null,
+    correo > 0
+      ? `${faltan(correo)} para enviar el voto por correo (hasta el ${fechaLarga(remision.fin)}).`
+      : correo === 0
+        ? "Hoy es el último día para enviar el voto por correo."
+        : null,
+  ].filter((t): t is string => t !== null);
+}
 
 export default function Home() {
   const vigentes = plazosElector
@@ -79,6 +103,11 @@ export default function Home() {
             {fechaLarga(votacion.inicio)}
           </p>
           {horario && <p>Horario {horario}, en tu mesa electoral.</p>}
+          <ul className="mt-2 grid gap-1 text-sm tabular-nums">
+            {cuentasAtras().map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
         </Card>
 
         <div>
@@ -109,6 +138,21 @@ export default function Home() {
               </li>
             ))}
           </ul>
+        </div>
+
+        <div>
+          <h2
+            id="pregunta-directa"
+            className="font-sans text-[clamp(30px,5vw,44px)] leading-[1.08] tracking-[-0.03em]"
+          >
+            O pregúntalo directamente
+          </h2>
+          <p className="mt-2 text-base text-(--text-secondary)">
+            Responde con las fuentes oficiales de cada dato.
+          </p>
+          <div className="mt-6">
+            <Chat modo="general" />
+          </div>
         </div>
 
         {vigentes.length > 0 && (
@@ -179,6 +223,10 @@ export default function Home() {
               url: votacion.fuentesAdicionales[0],
             },
             { nombre: "Consulta de mesa y local · INE", url: mesaIne },
+            {
+              nombre: "Envío del voto por correo · Art. 73.3 LOREG",
+              url: remision.fuentesAdicionales[0],
+            },
           ]}
         />
       </section>

@@ -12,11 +12,16 @@ import {
 
 // correo-aqui: vive en España (también si estará fuera unos días, ERTA).
 // correo-fuera: vive en el extranjero (CERA). verificar: fact check.
-export const MODOS = ["correo-aqui", "correo-fuera", "verificar"] as const;
+// general: cualquier duda sobre cómo se vota, desde la portada.
+export const MODOS = [
+  "general",
+  "correo-aqui",
+  "correo-fuera",
+  "verificar",
+] as const;
 export type Modo = (typeof MODOS)[number];
 
-export const esModo = (m: unknown): m is Modo =>
-  MODOS.includes(m as Modo);
+export const esModo = (m: unknown): m is Modo => MODOS.includes(m as Modo);
 
 export type Resultado = "COINCIDE" | "NO COINCIDE" | "NO VERIFICABLE";
 
@@ -80,6 +85,10 @@ const noVerificable = (afirmacion: string): Respuesta => ({
 });
 
 const tarea: Record<Modo, string> = {
+  general: `Resuelves cualquier duda sobre cómo se vota: el día de la votación, la mesa, la documentación, el voto por correo desde España (apartado 2.2), desde el extranjero (CERA, apartado 2.3, o ERTA, apartado 2.4) y el sistema electoral.
+- Si la respuesta tiene trámites, da pasos numerados, en orden, cada uno con su fecha del CALENDARIO si la tiene.
+- Si el usuario cuenta algo que le han dicho para saber si es cierto, responde con lo que dice la base y sugiérele la sección «¿Es verdad lo que me han dicho?» para contrastarlo con cita literal.
+- Si no queda claro su caso, explica las opciones en pocas frases.`,
   "correo-aqui": `Ayudas a votar por correo a quien vive en España (inscrito en el censo de residentes en España, CER).
 - Si el día 29 no estará en su localidad o no puede ir a la mesa: voto por correo de residentes en España (apartado 2.2).
 - Si estará temporalmente en el extranjero durante el proceso electoral: voto ERTA (apartado 2.4). Avisa de que es otro trámite y de su plazo.
@@ -99,12 +108,15 @@ Da pasos numerados, en orden, cada uno con su fecha del CALENDARIO.`,
 };
 
 const formato: Record<Modo, string> = {
+  general: `{"tipo": "pregunta" | "fuera_de_alcance", "respuesta": "1 a 3 frases", "pasos": ["paso, con su fecha si la tiene"], "fuentes": [{"nombre": "nombre corto", "url": "url"}]}`,
   "correo-aqui": `{"tipo": "pregunta" | "fuera_de_alcance", "respuesta": "1 a 3 frases", "pasos": ["paso con su fecha"], "fuentes": [{"nombre": "nombre corto", "url": "url"}]}`,
   "correo-fuera": `{"tipo": "pregunta" | "fuera_de_alcance", "respuesta": "1 a 3 frases", "pasos": ["paso con su fecha"], "fuentes": [{"nombre": "nombre corto", "url": "url"}]}`,
   verificar: `{"tipo": "afirmacion" | "sin_afirmacion" | "fuera_de_alcance", "afirmacion": "la afirmación del usuario", "resultado": "COINCIDE" | "NO COINCIDE" | "NO VERIFICABLE", "cita": "fragmento literal", "respuesta": "1 a 3 frases", "matiz": "lo que el resultado no dice", "pasos": [], "fuentes": [{"nombre": "nombre corto", "url": "url"}]}`,
 };
 
-export const sistema = (modo: Modo) => `Eres un asistente de «¿Cómo voto? (29N)», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del 29 de noviembre de 2026. Hoy es ${hoy()}.
+export const sistema = (
+  modo: Modo,
+) => `Eres un asistente de «¿Cómo voto? (29N)», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del 29 de noviembre de 2026. Hoy es ${hoy()}.
 
 ${tarea[modo]}
 

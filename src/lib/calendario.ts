@@ -58,6 +58,12 @@ export function estado(p: Plazo, dia = hoy()): Estado {
   return "proximo";
 }
 
+// Días que faltan desde hoy hasta una fecha del calendario (0 = hoy; negativo, ya pasó).
+export function diasHasta(iso: string, dia = hoy()): number {
+  const ms = Date.parse(`${iso}T00:00:00Z`) - Date.parse(`${dia}T00:00:00Z`);
+  return ms / 86_400_000;
+}
+
 const formato = new Intl.DateTimeFormat("es-ES", {
   day: "numeric",
   month: "long",

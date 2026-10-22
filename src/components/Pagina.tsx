@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { BadgeCheck } from "lucide-react";
 import { Atardecer } from "@/components/Atardecer";
+import { Votijo } from "@/components/Votijo";
 import { BotonAviso } from "@/components/BotonAviso";
 import { SelectorIdioma } from "@/components/SelectorIdioma";
 import { getT } from "@/i18n/servidor";
@@ -33,7 +34,7 @@ export async function Pagina({ children }: { children: ReactNode }) {
             href="/"
             className="inline-flex items-center gap-3 rounded-lg text-lg leading-tight font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
           >
-            <Atardecer logo className="size-9 shrink-0" />
+            <Votijo className="size-9 shrink-0" />
             {ficha.nombre}
           </Link>
           <div className="flex flex-wrap items-center gap-3">
@@ -60,7 +61,7 @@ export async function Pagina({ children }: { children: ReactNode }) {
           <div className="mx-auto grid max-w-(--container-content) gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
             <div>
               <div className="inline-flex items-center gap-3 font-semibold">
-                <Atardecer logo className="size-8 shrink-0" />
+                <Votijo className="size-8 shrink-0" />
                 {ficha.nombre}
               </div>
               <p className="mt-5 max-w-[16ch] text-[clamp(22px,2.6vw,28px)] font-medium leading-[1.2]">

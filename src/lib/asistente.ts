@@ -4,7 +4,7 @@
 // solo elige la ficha y el veredicto sale de ella.
 import type { Source } from "@/components/Fuentes";
 import type { Publicada } from "@/lib/factcheck";
-import { fuenteCalendario, hoy } from "@/lib/calendario";
+import { fuenteCalendario, hoy, plazo } from "@/lib/calendario";
 import {
   calendarioTexto,
   conocimiento,
@@ -104,13 +104,15 @@ const formato: Record<ModoGuia, string> = {
   "correo-fuera": `{"tipo": "pregunta" | "fuera_de_alcance", "respuesta": "1 a 3 frases", "pasos": ["paso con su fecha"], "fuentes": [{"nombre": "nombre corto", "url": "url"}]}`,
 };
 
+const votacion = plazo("votacion");
+
 export const sistema = (modo: Modo, idioma: Idioma = "es") =>
   modo === "verificar" ? sistemaVerificador(hoy()) : sistemaGuia(modo, idioma);
 
 const sistemaGuia = (
   modo: ModoGuia,
   idioma: Idioma,
-) => `Eres un asistente de «¿Cómo voto? (29N)», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del 29 de noviembre de 2026. Hoy es ${hoy()}.
+) => `Eres un asistente de «¿Cómo voto? (29N)», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del ${votacion.inicio}. Hoy es ${hoy()}.
 
 ${tarea[modo]}
 

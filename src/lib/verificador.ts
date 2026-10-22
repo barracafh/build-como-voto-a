@@ -6,7 +6,7 @@
 import datos from "@/datos/afirmaciones.json";
 import type { Source } from "@/components/Fuentes";
 import { marcar, traductor, type T } from "@/i18n/traducir";
-import { fuenteCalendario } from "@/lib/calendario";
+import { fuenteCalendario, plazo } from "@/lib/calendario";
 import { calendarioTexto, citaLiteral, fuentePermitida } from "@/lib/conocimiento";
 
 export type Resultado = "COINCIDE" | "NO COINCIDE" | "NO VERIFICABLE";
@@ -26,6 +26,8 @@ export type Ficha = {
 };
 
 export const fichas = datos as Ficha[];
+
+const votacion = plazo("votacion");
 
 // Formato del verificador: contexto.md, apartado 6.2.
 export type Verificacion = {
@@ -339,7 +341,7 @@ const listaFichas = fichas
 
 export const sistemaVerificador = (
   hoy: string,
-) => `Eres el clasificador del verificador de «¿Cómo voto? (29N)», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del 29 de noviembre de 2026. Hoy es ${hoy}.
+) => `Eres el clasificador del verificador de «¿Cómo voto? (29N)», una herramienta experimental, no oficial, sobre cómo se vota en las elecciones generales del ${votacion.inicio}. Hoy es ${hoy}.
 
 El usuario escribe algo que ha oído o leído. Tu única tarea es decidir a qué FICHA corresponde. No das veredictos ni redactas respuestas: el resultado lo pone la ficha.
 

@@ -124,8 +124,8 @@ const diccionario: Diccionario = {
   "Escaños": "Eserlekuak",
   "Escaños (1 a 37)": "Eserlekuak (1etik 37ra)",
   "Escaños por candidatura": "Eserlekuak hautagaitzako",
-  "Escaños que se eligen el 29 de noviembre de 2026. Los diputados salen del anexo del Real Decreto 806/2026. Los senadores son los de elección directa (art. 165 LOREG); cada parlamento autonómico designa además otros, que no se suman aquí.":
-    "2026ko azaroaren 29an aukeratzen diren eserlekuak. Diputatuak 806/2026 Errege Dekretuaren eranskinetik ateratzen dira. Senatariak hautaketa zuzenekoak dira (LOREG, 165. art.); autonomia-parlamentu bakoitzak beste batzuk ere izendatzen ditu, baina hemen ez dira gehitzen.",
+  "Escaños que se eligen el {fecha} de {anio}. Los diputados salen del anexo del Real Decreto 806/2026. Los senadores son los de elección directa (art. 165 LOREG); cada parlamento autonómico designa además otros, que no se suman aquí.":
+    "{anio}ko {fecha}an aukeratzen diren eserlekuak. Diputatuak 806/2026 Errege Dekretuaren eranskinetik ateratzen dira. Senatariak hautaketa zuzenekoak dira (LOREG, 165. art.); autonomia-parlamentu bakoitzak beste batzuk ere izendatzen ditu, baina hemen ez dira gehitzen.",
   "Escribe lo que has oído o leído sobre cómo se vota y lo contrastamos con la fuente oficial: coincide, no coincide o no se puede verificar. Nada de partidos, candidaturas, programas ni encuestas.":
     "Idatzi nola bozkatzen den buruz entzun edo irakurri duzuna, eta iturri ofizialarekin alderatuko dugu: bat dator, ez dator bat edo ezin da egiaztatu. Ez alderdirik, ez hautagaitzarik, ez programarik, ez inkestarik.",
   "Escribe lo que te han dicho sobre cómo se vota y lo contrasto con la fuente oficial. Para saber cómo votar por correo, entra en «Voto por correo».":

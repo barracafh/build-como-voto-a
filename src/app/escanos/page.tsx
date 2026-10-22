@@ -9,9 +9,12 @@ import { PROVINCIA_POR_DEFECTO } from "@/datos/provincia";
 import { cargarProvincias } from "@/datos/resultados";
 import ficha from "../../../ficha.json";
 import { getT } from "@/i18n/servidor";
+import { fechaLarga, plazo } from "@/lib/calendario";
 import { marcar } from "@/i18n/traducir";
 
 export const metadata: Metadata = { title: `Escaños · ${ficha.nombre}` };
+
+const votacion = plazo("votacion");
 
 const referencias = [
   [
@@ -88,7 +91,7 @@ const fuentes = [
 ];
 
 export default async function EscanosPage() {
-  const { t } = await getT();
+  const { t, idioma } = await getT();
   const provincias = cargarProvincias();
   const p = provincias.find((q) => q.codigo === PROVINCIA_POR_DEFECTO)!;
   const ejemplo = [
@@ -114,7 +117,11 @@ export default async function EscanosPage() {
           <MapaCortes />
           <p className="text-base text-(--text-secondary)">
             {t(
-              "Escaños que se eligen el 29 de noviembre de 2026. Los diputados salen del anexo del Real Decreto 806/2026. Los senadores son los de elección directa (art. 165 LOREG); cada parlamento autonómico designa además otros, que no se suman aquí.",
+              "Escaños que se eligen el {fecha} de {anio}. Los diputados salen del anexo del Real Decreto 806/2026. Los senadores son los de elección directa (art. 165 LOREG); cada parlamento autonómico designa además otros, que no se suman aquí.",
+              {
+                fecha: fechaLarga(votacion.inicio, idioma),
+                anio: votacion.inicio.slice(0, 4),
+              },
             )}
           </p>
         </section>

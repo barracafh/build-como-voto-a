@@ -56,7 +56,7 @@ export async function Pagina({ children }: { children: ReactNode }) {
       </main>
 
       <footer className="p-2">
-        <div className="fondo-pie rounded-[28px] px-(--page-gutter) pt-12 pb-8 text-background md:px-12 md:pt-16">
+        <div className="bg-foreground rounded-[28px] px-(--page-gutter) pt-12 pb-8 text-background md:px-12 md:pt-16">
           <div className="mx-auto grid max-w-(--container-content) gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
             <div>
               <p className="inline-flex items-center gap-3 font-semibold">
@@ -66,7 +66,7 @@ export async function Pagina({ children }: { children: ReactNode }) {
               <p className="mt-5 max-w-[16ch] text-[clamp(22px,2.6vw,28px)] font-medium leading-[1.2]">
                 {t(ficha.frase)}
               </p>
-              <BotonAviso className="mt-8 bg-background text-foreground" />
+              <BotonAviso className="mt-8" />
             </div>
 
             <nav aria-labelledby="pie-herramientas">

@@ -91,6 +91,7 @@ Base: `datos/resultados_congreso_2023_provincias.csv`, `contexto.md` §3.1–3.3
 - [x] [Fran] Next.js 16.4.2 por dos avisos de seguridad
 - [x] [Sandra] Skill `revisar-commit` con la checklist antes de cada commit
 - [x] [Implementador] Serif solo en `h1`, `h2` y cifras (pie y «hoy se vota» en sans); `/escanos` enlaza Resultados electorales de Infoelectoral y cita arts. 161 a 165 en las dos fuentes (PLUT-33)
+- [x] [Implementador] «¿Algo está mal? Avísanos» pasa a `outline`: un solo `sunset` por pantalla (el de enviar del chat) (PLUT-29)
 - [ ] Revisión de las traducciones por hablantes nativos, sobre todo el euskera (las fechas no se pueden declinar)
 
 ## Cierre y demo

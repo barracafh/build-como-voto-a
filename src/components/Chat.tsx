@@ -268,7 +268,7 @@ export function Chat({ modo }: { modo: Modo }) {
               aria-hidden="true"
               className="size-6 shrink-0 text-brand motion-safe:animate-spin"
             />
-            <span className="brillo">
+            <span className="text-(--text-secondary)">
               {redactando
                 ? t("Redactando con las fuentes oficiales…")
                 : t("Consultando las fuentes oficiales…")}

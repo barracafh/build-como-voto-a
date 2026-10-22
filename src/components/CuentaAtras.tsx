@@ -4,9 +4,17 @@ import { useEffect, useState } from "react";
 
 const dos = (n: number) => String(n).padStart(2, "0");
 
-function restante(ms: number) {
+function restante(ms: number, corto: boolean) {
   const s = Math.floor(ms / 1000);
-  return `${Math.floor(s / 86400)} d ${dos(Math.floor(s / 3600) % 24)} h ${dos(Math.floor(s / 60) % 60)} min ${dos(s % 60)} s`;
+  const [d, h, m, seg] = [
+    Math.floor(s / 86400),
+    dos(Math.floor(s / 3600) % 24),
+    dos(Math.floor(s / 60) % 60),
+    dos(s % 60),
+  ];
+  return corto
+    ? `${d}d ${h}h ${m}m ${seg}s`
+    : `${d} d ${h} h ${m} min ${seg} s`;
 }
 
 // Cuenta atrás hasta un instante, segundo a segundo. Después muestra `despues`
@@ -17,11 +25,13 @@ export function CuentaAtras({
   antes,
   despues,
   finDespues = 0,
+  corto = false,
 }: {
   hasta: number;
   antes: string;
   despues?: string;
   finDespues?: number;
+  corto?: boolean;
 }) {
   const [ahora, setAhora] = useState(() => Date.now());
 
@@ -38,9 +48,9 @@ export function CuentaAtras({
       <time
         dateTime={new Date(hasta).toISOString()}
         suppressHydrationWarning
-        className="font-mono font-medium tabular-nums"
+        className="font-medium whitespace-nowrap tabular-nums"
       >
-        {restante(ms)}
+        {restante(ms, corto)}
       </time>
     </li>
   );

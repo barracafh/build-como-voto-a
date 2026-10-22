@@ -4,6 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chat } from "@/components/Chat";
 import { CuentaAtras } from "@/components/CuentaAtras";
+import { Flotante } from "@/components/Flotante";
 import { Fuentes } from "@/components/Fuentes";
 import { Pagina, Titular } from "@/components/Pagina";
 import { PlazosAbiertos } from "@/components/PlazosAbiertos";
@@ -63,31 +64,52 @@ export default function Home() {
         aria-labelledby="votacion"
         className="mt-16 text-lg [&>*+*]:mt-8"
       >
-        {/* La tarjeta con el sol: el dato que más importa. */}
-        <Card
-          render={<section />}
-          className="gap-2 px-6 py-6 text-base ring-0 [background:radial-gradient(120%_90%_at_100%_0%,#ffd34d_0%,rgba(255,211,77,0)_60%),var(--brand-yellow)]"
+        {/* La tarjeta con el sol: el dato que más importa. Al bajar, una versión
+            compacta se queda flotando arriba a la derecha. */}
+        <Flotante
+          flotante={
+            <Card className="gap-0.5 px-4 py-3 text-sm ring-0 shadow-(--shadow-overlay) [background:radial-gradient(120%_90%_at_100%_0%,#ffd34d_0%,rgba(255,211,77,0)_60%),var(--brand-yellow)]">
+              <p className="font-heading text-xl leading-[1.1] md:text-2xl">
+                {fechaLarga(votacion.inicio)}
+              </p>
+              <ul className="mt-1 grid gap-0.5">
+                <CuentaAtras
+                  corto
+                  hasta={abreVotacion}
+                  antes="Votar:"
+                  despues={cierra ? `Hoy se vota, hasta las ${cierra}.` : "Hoy se vota."}
+                  finDespues={cierraVotacion}
+                />
+                <CuentaAtras corto hasta={cierraCorreo} antes="Correo:" />
+              </ul>
+            </Card>
+          }
         >
-          <h2 id="votacion" className="text-sm font-medium">
-            Día de la votación
-          </h2>
-          <p className="font-heading text-[clamp(30px,5vw,44px)] leading-[1.08]">
-            {fechaLarga(votacion.inicio)}
-          </p>
-          {horario && <p>Horario {horario}, en tu mesa electoral.</p>}
-          <ul className="mt-2 grid gap-1 text-sm tabular-nums">
-            <CuentaAtras
-              hasta={abreVotacion}
-              antes="Para votar faltan"
-              despues={cierra ? `Hoy se vota, hasta las ${cierra}.` : "Hoy se vota."}
-              finDespues={cierraVotacion}
-            />
-            <CuentaAtras
-              hasta={cierraCorreo}
-              antes={`Para enviar el voto por correo (hasta el ${fechaLarga(remision.fin)}, en horario de Correos) faltan`}
-            />
-          </ul>
-        </Card>
+          <Card
+            render={<section />}
+            className="gap-2 px-6 py-6 text-base ring-0 [background:radial-gradient(120%_90%_at_100%_0%,#ffd34d_0%,rgba(255,211,77,0)_60%),var(--brand-yellow)]"
+          >
+            <h2 id="votacion" className="text-sm font-medium">
+              Día de la votación
+            </h2>
+            <p className="font-heading text-[clamp(30px,5vw,44px)] leading-[1.08]">
+              {fechaLarga(votacion.inicio)}
+            </p>
+            {horario && <p>Horario {horario}, en tu mesa electoral.</p>}
+            <ul className="mt-2 grid gap-1 text-sm tabular-nums">
+              <CuentaAtras
+                hasta={abreVotacion}
+                antes="Para votar faltan"
+                despues={cierra ? `Hoy se vota, hasta las ${cierra}.` : "Hoy se vota."}
+                finDespues={cierraVotacion}
+              />
+              <CuentaAtras
+                hasta={cierraCorreo}
+                antes={`Para enviar el voto por correo (hasta el ${fechaLarga(remision.fin)}, en horario de Correos) faltan`}
+              />
+            </ul>
+          </Card>
+        </Flotante>
 
         <div>
           <h2

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import type { Plazo } from "./calendario";
-import { abiertos, pestanasAbiertas } from "./plazos-abiertos";
+import { abiertos, pestanasAbiertas, urgente } from "./plazos-abiertos";
 
 const p = (id: string, inicio: string, fin: string): Plazo => ({
   id,
@@ -58,5 +58,30 @@ describe("pestanasAbiertas", () => {
     expect(pestanasAbiertas(pestanas, "2026-11-03").map((p) => p.id)).toEqual([
       "aqui",
     ]);
+  });
+});
+
+describe("urgente", () => {
+  const erta = [
+    p("pedir", "2026-10-06", "2026-10-31"),
+    p("recibir", "2026-11-03", "2026-11-09"),
+    p("enviar", "2026-11-03", "2026-11-25"),
+  ];
+
+  test("el abierto que antes cierra", () => {
+    const largo = p("largo", "2026-10-06", "2026-11-19");
+    expect(urgente([largo, ...erta], "2026-10-22")?.id).toBe("pedir");
+  });
+
+  test("sin abiertos, el próximo que antes empieza", () => {
+    expect(urgente(erta, "2026-11-01")?.id).toBe("recibir");
+  });
+
+  test("entre abiertos, gana el que cierra antes aunque empiece igual", () => {
+    expect(urgente(erta, "2026-11-05")?.id).toBe("recibir");
+  });
+
+  test("null cuando han cerrado todos", () => {
+    expect(urgente(erta, "2026-11-26")).toBeNull();
   });
 });

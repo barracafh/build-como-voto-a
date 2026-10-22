@@ -23,3 +23,15 @@ export function pestanasAbiertas<
     return grupos.length > 0 ? [{ ...t, grupos }] : [];
   });
 }
+
+// El plazo que más apremia: el abierto que antes cierra; si no hay ninguno
+// abierto, el próximo que antes empieza. null si ya han cerrado todos.
+export function urgente(plazos: readonly Plazo[], hoy: string): Plazo | null {
+  const abiertos = plazos.filter((p) => estado(p, hoy) === "abierto");
+  if (abiertos.length > 0)
+    return abiertos.reduce((a, b) => (b.fin < a.fin ? b : a));
+  const proximos = plazos.filter((p) => estado(p, hoy) === "proximo");
+  if (proximos.length > 0)
+    return proximos.reduce((a, b) => (b.inicio < a.inicio ? b : a));
+  return null;
+}

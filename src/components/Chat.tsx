@@ -192,7 +192,11 @@ export function Chat({ modo }: { modo: Modo }) {
           {modo === "verificar" ? "Comprobar" : "Preguntar"}
         </Button>
         <p aria-live="polite" className="text-base text-(--text-secondary)">
-          {cargando ? "Consultando las fuentes oficiales…" : error}
+          {cargando ? (
+            <span className="brillo">Consultando las fuentes oficiales…</span>
+          ) : (
+            error
+          )}
         </p>
       </form>
 

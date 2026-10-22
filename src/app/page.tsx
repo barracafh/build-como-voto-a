@@ -46,6 +46,8 @@ const plazosElector = [
 ].map(plazo);
 
 const votacion = plazo("votacion");
+// El horario también sale del calendario («Jornada de votación, de 9:00 a 20:00»).
+const horario = votacion.evento.match(/de \d{1,2}:\d{2} a \d{1,2}:\d{2}/)?.[0];
 const mesaIne = "https://sede.ine.gob.es/ce-mesas/?lang=es_ES";
 
 export default function Home() {
@@ -76,7 +78,7 @@ export default function Home() {
           <p className="font-heading text-[clamp(30px,5vw,44px)] leading-[1.08]">
             {fechaLarga(votacion.inicio)}
           </p>
-          <p>De 9:00 a 20:00, en tu mesa electoral.</p>
+          {horario && <p>Horario {horario}, en tu mesa electoral.</p>}
         </Card>
 
         <div>
@@ -157,7 +159,7 @@ export default function Home() {
           <a
             href={mesaIne}
             className={cn(
-              buttonVariants({ variant: "sunset", size: "lg" }),
+              buttonVariants({ variant: "outline", size: "lg" }),
               "max-md:w-full",
             )}
           >

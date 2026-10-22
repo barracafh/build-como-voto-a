@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Badge } from "@/components/ui/badge";
+import { BadgeCheck } from "lucide-react";
 import { Atardecer } from "@/components/Atardecer";
 import { BotonAviso } from "@/components/BotonAviso";
 import { SelectorIdioma } from "@/components/SelectorIdioma";
@@ -25,19 +25,25 @@ export async function Pagina({ children }: { children: ReactNode }) {
   const { t } = await getT();
   return (
     <>
-      <header className="mx-auto flex min-h-20 max-w-(--container-content) flex-wrap items-center justify-between gap-4 px-(--page-gutter) py-4">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-3 rounded-lg text-lg leading-tight font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-        >
-          <Atardecer logo className="size-9 shrink-0" />
-          {ficha.nombre}
-        </Link>
-        <div className="flex flex-wrap items-center gap-3">
-          <SelectorIdioma />
-          <Badge variant="outline" className="h-9 rounded-full px-3 text-sm">
-            {ficha.datos === "reales" ? t("Datos públicos") : t("Datos simulados")}
-          </Badge>
+      {/* Una línea a todo el ancho la separa del contenido. Sin sombra: arriba a
+          la derecha flota la tarjeta de la votación. */}
+      <header className="border-b border-foreground/10">
+        <div className="mx-auto flex min-h-20 max-w-(--container-content) flex-wrap items-center justify-between gap-4 px-(--page-gutter) py-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-3 rounded-lg text-lg leading-tight font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            <Atardecer logo className="size-9 shrink-0" />
+            {ficha.nombre}
+          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <SelectorIdioma />
+            {/* Un dato, no un control: texto con icono, sin aspecto de botón. */}
+            <p className="inline-flex items-center gap-1.5 text-sm text-(--text-secondary)">
+              <BadgeCheck aria-hidden="true" className="size-4 shrink-0" strokeWidth={1.75} />
+              {ficha.datos === "reales" ? t("Datos públicos") : t("Datos simulados")}
+            </p>
+          </div>
         </div>
       </header>
 

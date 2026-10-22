@@ -11,6 +11,15 @@ const RD: Source = {
   url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20742",
 };
 
+const LOREG_VOTO: Source = {
+  nombre: "Ley Orgánica 5/1985 (LOREG), arts. 5, 96, 108 y 163 · BOE",
+  url: "https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672",
+};
+const JEC: Source = {
+  nombre: "Instrucción 1/2012 de la Junta Electoral Central · BOE",
+  url: "https://www.boe.es/buscar/doc.php?id=BOE-A-2012-3859",
+};
+
 export type Narracion = { texto: string; fuentes: readonly Source[] };
 
 const CIERRE = " El bloque en rojo es ilustrativo: no indica dónde se sientan.";
@@ -54,6 +63,12 @@ export const NARRACION: Record<string, Narracion> = {
     texto:
       "El Senado se elige de otra forma. Cada provincia elige 4 senadores. Gran Canaria, Mallorca y Tenerife eligen 3, y cada una de las demás islas con circunscripción propia, 1. Ceuta y Melilla eligen 2 cada una. En total, 209 senadores de elección directa. Aquí no se usa la regla D'Hondt ni hay barrera del 3 por ciento: cada elector marca hasta 3 nombres en las provincias, y salen elegidos los más votados. Además, los parlamentos autonómicos designan otros senadores, que no se suman en este mapa.",
     fuentes: [LOREG],
+  },
+  // contexto.md §3.3 (LOREG arts. 5, 96, 108 y 163; Instrucción JEC 1/2012).
+  blanco: {
+    texto:
+      "Votar en blanco, votar nulo y abstenerse no es lo mismo. El voto en blanco es un sobre sin papeleta. Es un voto válido: no va a ninguna candidatura ni da escaños, pero cuenta para calcular el 3 por ciento de los votos válidos que hace falta para entrar en el reparto. Por eso, cuantos más votos en blanco, más votos necesita una candidatura para llegar a ese 3 por ciento. El voto nulo es, por ejemplo, una papeleta que no es la oficial, un sobre con papeletas de candidaturas distintas, o una papeleta tachada, con añadidos o con leyendas. No es un voto válido: no cuenta para el 3 por ciento ni para el reparto. Según la Junta Electoral Central, una señal o una cruz junto a un candidato no anula el voto si no altera la papeleta ni expresa reproche. La abstención es no votar. Votar no es obligatorio, y la abstención no altera el reparto: los escaños se asignan solo con los votos válidos.",
+    fuentes: [LOREG_VOTO, JEC],
   },
   ...Object.fromEntries(
     Object.entries(COMUNIDADES).map(([codigo, texto]) => [

@@ -25,7 +25,7 @@ const bajarA = (page: Page, selector: string) =>
 const escenas: { texto: string; acciones: (page: Page) => Promise<void> }[] = [
   {
     texto:
-      "Esto es ¿Cómo voto?, una herramienta experimental para las elecciones generales del 29 de noviembre. Explica cómo, dónde y hasta cuándo se vota, con la fuente oficial de cada dato. Solo cómo se vota: nada de partidos, programas ni encuestas.",
+      "Esto es Votijo, una herramienta experimental para las elecciones generales del 29 de noviembre. Explica cómo, dónde y hasta cuándo se vota, con la fuente oficial de cada dato. Solo cómo se vota: nada de partidos, programas ni encuestas.",
     acciones: async (page) => {
       await page.goto(base);
     },

@@ -8,7 +8,7 @@ import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium, type Page } from "playwright";
 
-const base = process.env.VIDEO_URL ?? "http://localhost:3000/como-voto-a";
+const base = process.env.VIDEO_URL ?? "http://localhost:3000/punto-atencion-ciudadana/como-voto-a";
 const clave = process.env.ELEVENLABS_API_KEY;
 const voz = process.env.ELEVENLABS_VOICE_ID;
 if (!clave || !voz) throw new Error("Faltan ELEVENLABS_API_KEY o ELEVENLABS_VOICE_ID en .env.local");

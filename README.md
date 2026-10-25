@@ -1,12 +1,12 @@
 > **Build night BARRACA x SOTI** · 22 de octubre de 2026, Flywire, València.
 >
-> **Votijo**, de flywire-salsing (track ¿Cómo voto?). Todo para votar el 29N, con fuente oficial. Publicada en https://build.barraca.house/como-voto-a; la IA funciona hasta el 30 de noviembre de 2026.
+> **Votijo**, de flywire-salsing (track ¿Cómo voto?). Todo para votar el 29N, con fuente oficial. Publicada en https://build.barraca.house/punto-atencion-ciudadana/como-voto-a; la IA funciona hasta el 30 de noviembre de 2026.
 >
 > Repo archivado: es el código tal como quedó tras la noche. Si quieres seguir con él, haz un fork. El CLI del evento y su registro ya no existen, así que las instrucciones de `buildnight` que haya más abajo ya no sirven.
 
 # Votijo
 
-Todo para votar el 29N, con fuente oficial. Publicada en <https://build.barraca.house/como-voto-a>. Herramienta experimental, no es un servicio oficial.
+Todo para votar el 29N, con fuente oficial. Publicada en <https://build.barraca.house/punto-atencion-ciudadana/como-voto-a>. Herramienta experimental, no es un servicio oficial.
 
 ## El problema
 
